@@ -20,6 +20,7 @@
 %\newcommand{\cvb}[1]{\begin{center}\begin{verbatim} #1 \end{verbatim}\end{center}}
 \newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
 \newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[totalheight=2in]{#1}\caption{#2}\label{fig: #3}\end{minipage}}\end{figure}}
+\newcommand{\control}[1]{\begin{center}\begin{minipage}{10cm}\texttt{#1}\end{minipage}\end{center}}
 
 
 \newcommand {\foto}[4]{\begin{figure}
@@ -49,6 +50,26 @@
 \section{Origenes.}
 
 El c\'odigo \lpmd comenz\'o a desarrollarse durante junio del a\~no 2007 como una idea de desarrollar e implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el dise\~no de plugins y de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \textit{Grupo de NanoMateriales} \textbf{http://www.gnm.cl}, actualmente existen m\'as colaboradores en le desarollo del c\'odigo (v\'ease \textbf{gente}).
+
+Pruebas de Texto y comandos.
+
+\begin{center}
+\texttt{cellmanager minimumimage}
+\end{center}
+
+\control{cellmanager minimumimage \\ other line \\ another line more}
+
+
+\begin{minipage}[c]{10cm}
+ \texttt{cellmanager minimumimage}
+\end{minipage}
+
+\begin{center}
+ \begin{minipage}[c]{5cm}
+ \texttt{cellmanager minimumimage \\ other line \\ another line more}
+\end{minipage}
+\end{center}
+
 
 \section{Caracter\'isticas Globales.}
 
@@ -80,6 +101,13 @@ La \'ultima versi\'on estable de los paquetes es :
  \item lpmd    : ver. 0.5
 \end{itemize}
 
+\begin{description}
+ \item [liblpmd] Version 0.1.0
+ \item [plugins] Version 0.5.1
+ \item [lpmd] Version 0.5
+\end{description}
+
+
 Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de \'esta forma se mantiene un \textbf{orden} segun la version que conocemos.
 
 \subsection{Descarga versi\'on en desarrollo}
@@ -102,25 +130,17 @@ Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paqu
 
 En primer lugar descomprima el fichero 
 
-\begin{center}
-\begin{verbatim}
- tar -xvzf liblpmd-X.X.X.tar.gz
-\end{verbatim}
-\end{center}
+\control{tar -xvzf liblpmd-X.X.X.tar.gz}
 
 lo que le generar\'a un nuevo directorio, para instalar esta librer\'ia con todos los m\'etodos necesarios para el funcionamiento de \lpmd y la implementaci\'on de plugins ejecute :
-\begin{center}
-\begin{verbatim}
- ./configure
- make
-\end{verbatim}
-\end{center}
+
+\control{./configure \\ make}
 
 y como administrador, 
 
-\begin{verbatim}
- make install
-\end{verbatim}
+
+\control{make install}
+
 
 Por \textit{default} el directorio de instalaci\'on de la API programa es \verb|/usr/local/|, en caso de requerir una ubicaci\'on distinta revise las opciones con \verb|./configure --help|.
 
@@ -130,33 +150,23 @@ En caso de cualquier error envie un mail a alguno de los desarrolladores princip
 
 Una de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicacion de la instalaci\'on de la libreria lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse con:
 
-\begin{verbatim}
- ./configure --with-lpmd=/usr/local
- make
-\end{verbatim}
+\control{./configure --with-lpmd=/usr/local \\ make}
 
 y proceder la instalaci\'on como superusuario:
 
-\begin{verbatim}
- make install
-\end{verbatim}
+\control{make install}
 
-Esto ubicara todos los plugins incluidos en el paquete \verb|plugins| en el directorio \verb|/usr/local/lib/lpmd|. De esta forma ya estamos listos para comenzar la instalaci\'on de lpmd y realizar las primeras pruebas.
+Esto ubicar\'a todos los plugins incluidos en el paquete \verb|plugins| en el directorio \verb|/usr/local/lib/lpmd|. De esta forma ya estamos listos para comenzar la instalaci\'on de lpmd y realizar las primeras pruebas.
 
 \subsection{Instalando lpmd}
 
 Es uno de los paquetes m\'as peque\~nos y rapidos de instalar, para proceder, se hace de manera similar que los anteriores, ejecutando :
 
-\begin{verbatim}
- ./configure 
- make
-\end{verbatim}
+\control{./configure \\ make}
 
 y proceder a instalar como superusuario:
 
-\begin{verbatim}
- make install
-\end{verbatim}
+\control{make install}
 
 Esto generara un ejecutable \verb|lpmd| en \verb|/usr/local/bin/lpmd|, que puede ser ejecutado desde cualquier sitio (si se presenta algun problema, corriga su \verb|PATH|).
 
@@ -173,9 +183,11 @@ Para los detalles de el fichero de sistema revise el cap\'itulo~\ref{chap:input}
 
 \subsection{Actualizando lpmd}
 
-\lpmd tiene m\'as de una forma de acutualizarse, para eso en primer lugar debemos tener claro que version de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
+\lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro que versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
 
-Actualmente la API se encuentra en la versi\'on \textbf{1.0.1} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
+Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrara una linea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
+
+Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
 
 
 \chapter{El fichero de Entrada}
@@ -248,9 +260,7 @@ El flag cell es utilizado para describir la celda de simulaci\'on y asignar las 
 
 Formas de uso :
 
-\begin{verbatim}
- cell a=10 b=5 c=5 alpha=45 beta=90 gamma=90
-\end{verbatim}
+\control{cell a=10 b=5 c=5 alpha=45 beta=90 gamma=90}
 
 \subsection{Entrada Salida}
 
@@ -267,17 +277,17 @@ Formas de uso
 
 \begin{itemize}
  \item Carga desde un fichero XYZ.
-\begin{verbatim}
- input module=xyz file=fichero.xyz level=0
-\end{verbatim}
+
+\control{input module=xyz file=fichero.xyz level=0}
+
  \item Inicializa una celda del tipo fcc
-\begin{verbatim}
- input module=fcc a=1 nx=3 ny=3 nz=3
-\end{verbatim}
+
+\control{input module=fcc a=1 nx=3 ny=3 nz=3}
+
  \item Inicializa con metodo skewstart
-\begin{verbatim}
- input module=skewstart atoms=108 symbol=Ar
-\end{verbatim}
+
+\control{input module=skewstart atoms=108 symbol=Ar}
+
 \end{itemize}
 
 \subsubsection{output}
@@ -285,56 +295,103 @@ Formas de uso
 
 \subsection{Propiedades Generales}
 \subsubsection{repeat}
+Indica el nivel de repeticion dela celda en cada eje, no utilize esto en celdas para las cuales las condiciones de borde no sean peri\'odicas, podr\'ia conseguir resultados no deseados, recomendamos esto encarecidamente.
 \subsubsection{charge}
+Set de las cargas en eV para las especies at\'omicas.
 \subsubsection{periodic}
+Indica la periodicidad de la celda, en cada eje.
 \subsubsection{steps}
+N\'umero de pasos de la simulaci\'on de DM.
 \subsubsection{distcache}
+Utiliza cache de distancias, puede ahorrar tiempo en algunas simulaciones, recomndamos que siempre se utilize.
 \subsubsection{dumping}
+Genera una salida global del sistema para poder restaurar a partir de ese punto.
 \subsubsection{monitor}
+Cada cuantos pasos la simulacion muestra las propiedades globales.
 \subsubsection{temperature}
+Indica la temperatura inicial del sistema.
+\subsubsection{startinfo}
+Muestra ono ifnormacion inicial del sistema, celda y modulos no usados.
 
 \subsection{M\'odulos : Propiedades del sistema}
 \subsubsection{tempscaling}
+Escalamiento de velocidades cl\'asico, seg\'un la temperatura indicada.
 \subsubsection{berendsen}
+Termostato de berendsen, mucho m\'as suave que tempscaling.
 
 \subsection{M\'odulos : Propiedades de Celda}
 \subsubsection{cellscaling}
+Escala la celda cierto porcentaje, puede ser por eje o total.
 \subsubsection{crystalfcc}
+Genera una celda cristalina del tipo fcc.
 \subsubsection{crystalsc}
+Genera una celda cstalino del tipo sc.
 \subsubsection{lpmd}
+M\'odulo lectura/escritura de formato lpmd.
 \subsubsection{xyz}
+M\'odulo lectura/escrtura de formato xyz.
 \subsubsection{skewstart}
+Genera una celda con m\'etodo SkewStart (Refson).
+\subsubsection{cellmanager}
+Especifica el manejador de celda, actualmente hay dos m\'odulos manejadores de celda, minima imagen y listas linkeadas. cada m\'odulo debe declararsepreviemente con los parametros requeridos.
 
 \subsection{M\'odulos : Potenciales Interat\'omicos}
 \subsubsection{lennardjones}
+Utiliza potencial de LJ.
 \subsubsection{fastlj}
+Utiliza Potencial de LJ tabulado.
 \subsubsection{morse}
+Utiliza Potencial de Morse para la interacci\'on de las especis at\'omicas.
 \subsubsection{constantforce}
+Mantiene una fuerza constante.
 \subsubsection{harmonic}
+Potencial arm\'onico entre especies at\'omicas.
 \subsubsection{buckingham}
+Potencial de Buckingham IMPORANTE, no incluye parte coulombiana.
 \subsubsection{nullpairpotential}
+Potencial de pares nulo entre especies.
 \subsubsection{nullpotential}
+Potencial nulo entre especies.
 
 \subsection{M\'odulos : Integradores}
 \subsubsection{beeman}
+Integrador de beeman.
 \subsubsection{euler}
+Integrador de Euler.
 \subsubsection{nullintegrator}
+Integrador nulo.
 \subsubsection{velocityverlet}
+Utiliza metodo velocity verlet para integrar.
 \subsubsection{verlet}
+Utiliza metodo verlet para integrar.
 
 \subsection{M\'odulos : Visualizadores}
 \subsubsection{povray}
+Genera diretorios con ficheros pov para visualizar el sistema.
 
 \subsection{M\'odulos : Propiedades Es\'aticas}
 \subsubsection{angdist}
+Calcula la distribucion angular de la celda
 \subsubsection{cordnum}
+Calcula el n\'umero de cordinaci\'on de la celda.
 \subsubsection{cordnumfunc}
+Calcula el n\'umero de cordinaci\'on de la celda.
 \subsubsection{gdr}
+Caulcula la funcion de distribucion de pares de la celda.
 
 \subsection{M\'odulos : Propiedades Din\'amicas}
 \subsubsection{vacf}
+Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda.
 
 \section{Ficheros de Salida}
+
+\subsection{Tipos de fichero de salida}
+\subsection{Fichero generado por output}
+Este fichero se genero con el nombre entregado en el fichero de control a la linea \textbf{output}, por ejemplo si utilizo...
+\subsection{Salida standard}
+Esta es la salida que muestra en pantalla lpmd.
+\subsection{Salida de errores}
+Estos son los erroes que tira el c\'odigo.
 
 \chapter{Desarrollando M\'odulos}
 \label{chap:own}
@@ -381,12 +438,19 @@ Consideremos por ejemplo la funci\'on de distribuci\'on de pares (\verb|g(r)|) (
 \end{center}
 
 
-
 \subsection{Temporal}
+
+Las propiedades temporales n est\'an dise\~nadas para ser evaluadas duratne a siulaci\'on, sin embargo es facil su implementacion en la API, lo que puede llevar a utilziarlas en otros c\'odigos, tales como fumody.
+
+La idea es utilizar los archivos de configuraci\'on de salida de lpmd.
 
 \section{Desarrollando Integrador}
 
+Un integrador cumple la funcion de ...
+
 \section{Desarrollando Utilidades}
+
+La API (liblpmd) es la principal herramienta que deja lpmd, que puede ser utilizada no solo por \'el sino que por utilidades que nosotros deseamos dise\~nar.
 
 \chapter{Ejemplos.}
 \label{chap:exa}
@@ -394,14 +458,21 @@ Consideremos por ejemplo la funci\'on de distribuci\'on de pares (\verb|g(r)|) (
 \section{Ejemplos B\'asicos}
 
 \subsection{Dimero 1D}
+Muestra un dimero 
 
 \subsection{Mallas 2D}
+Una red Triangular.
 
 \subsection{Sistemas Cristalinos 3D}
+Una muestra de Ar108.
 
 \subsection{Ejemplos m\'as Complejos}
+Pared fija bajo presion, o una caja que suelta un gas.
 
 \chapter{Paralelizaci\'on}
+
+Por qu\'e paralelizar, desde donde comenzar. 
+
 
 \chapter{Gente}
 \label{chap:auth}
@@ -430,8 +501,8 @@ Programadores Adicionales:
 Colaboradores :
 
 \begin{itemize}
- \item Gonzalo Gutierrez
- \item Eduardo Menendez
+ \item Gonz\'alo Guti\'errez
+ \item Eduardo Men\'endez
 \end{itemize}
 
 
