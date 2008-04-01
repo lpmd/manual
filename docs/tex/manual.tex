@@ -49,7 +49,7 @@
 
 \section{Origenes.}
 
-El c\'odigo \lpmd comenz\'o a desarrollarse durante junio del a\~no 2007 como una idea de desarrollar e implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el dise\~no de plugins y de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \textit{Grupo de NanoMateriales} \textbf{http://www.gnm.cl}, actualmente existen m\'as colaboradores en le desarollo del c\'odigo (v\'ease \textbf{gente}).
+El c\'odigo \lpmd comenz\'o a desarrollarse durante junio del a\~no 2007 como una idea de desarrollar e implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el dise\~no de plugins y de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \textit{Grupo de NanoMateriales} (\textbf{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo (v\'ease \textbf{gente}).
 
 Pruebas de Texto y comandos.
 
@@ -99,7 +99,7 @@ Dentro de las caracter\'isticas principales de \lpmd tenemos:
 
 \section{Descarga}
 
-Para el correcto funcionamiento de \lpmd es necesario instalar previamente una libreria y un set de plugins. Por lo que se requieren descargar 3 paquetes principales. La divisi\'on del c\'odigo en este set de paquetes se debe a la reutilizaci\'on de la \textbf{API} y los \textbf{plugins} para nuevos programas de utilidades o bien para un propio usuario interesado en la programaci\'on.
+Para el correcto funcionamiento de \lpmd es necesario instalar previamente una librer\'ia y un set de plugins. Por lo que se requieren descargar 3 paquetes principales. La divisi\'on del c\'odigo en este set de paquetes se debe a la reutilizaci\'on de la \textbf{API} y los \textbf{plugins} para nuevos programas de utilidades o bien para un propio usuario interesado en la programaci\'on.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -120,13 +120,13 @@ La \'ultima versi\'on estable de los paquetes es :
 \end{description}
 
 
-Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de \'esta forma se mantiene un \textbf{orden} segun la version que conocemos.
+Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Descarga versi\'on en desarrollo}
+\subsection{Descarga de versi\'on en desarrollo}
 
-Para los interesados en el desarrollo actual de lpmd y sus dependencias principales pueden ser descargadas con:
+Para los interesados en el desarrollo actual de lpmd y sus dependencias principales, las pueden descargar con:
 
 \begin{center}
  \begin{verbatim}
@@ -137,7 +137,7 @@ Para los interesados en el desarrollo actual de lpmd y sus dependencias principa
 \end{center}
 
 \section{Instalaci\'on}
-Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}, a continuaci\'on se muestra una descripci\'on de como instalar cada uno de los paquetes.
+Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}, a continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
 
 \cajatx{Nota : Los que poseen la versi\'on inestable cuentan con el fichero \textbf{autogen.sh} para poder generar los Makefiles.}
 
@@ -145,7 +145,11 @@ Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paqu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando liblpmd}
 
-En primer lugar descomprima el fichero 
+En primer lugar debe tener instalado automake y libtool, si no lo tiene puede hacerlo como administrador de la siguiente manera:
+
+\control{apt-get install automake libtool}
+
+Ahora descomprima el fichero
 
 \control{tar -xvzf liblpmd-X.X.X.tar.gz}
 
@@ -153,7 +157,7 @@ lo que le generar\'a un nuevo directorio, para instalar esta librer\'ia con todo
 
 \control{./configure \\ make}
 
-y como administrador, 
+y como administrador,
 
 
 \control{make install}
@@ -167,11 +171,11 @@ En caso de cualquier error envie un mail a alguno de los desarrolladores princip
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando plugins}
 
-Una de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicacion de la instalaci\'on de la libreria lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse con:
+Uno de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse con:
 
 \control{./configure --with-lpmd=/usr/local \\ make}
 
-y proceder la instalaci\'on como superusuario:
+y proceder la instalaci\'on como administrador:
 
 \control{make install}
 
@@ -181,17 +185,17 @@ Esto ubicar\'a todos los plugins incluidos en el paquete \verb|plugins| en el di
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando lpmd}
 
-Es uno de los paquetes m\'as peque\~nos y rapidos de instalar, para proceder, se hace de manera similar que los anteriores, ejecutando :
+Es uno de los paquetes m\'as peque\~nos y r\'apidos de instalar, para proceder, se hace de manera similar que los anteriores, ejecutando :
 
 \control{./configure \\ make}
 
-y proceder a instalar como superusuario:
+y proceder a instalar como administrador:
 
 \control{make install}
 
-Esto generara un ejecutable \verb|lpmd| en \verb|/usr/local/bin/lpmd|, que puede ser ejecutado desde cualquier sitio (si se presenta algun problema, corriga su \verb|PATH|).
+Esto generar\'a un ejecutable \verb|lpmd| en \verb|/usr/local/bin/lpmd|, que puede ser ejecutado desde cualquier sitio (si se presenta alg\'un problema, corriga su \verb|PATH|).
 
-puede correr lpmd con
+Puede correr lpmd con
 
 \begin{verbatim}
 username@machine:~$ lpmd
@@ -200,7 +204,7 @@ Usage: lpmd [--systemfile <file.sys> | -s <file.sys>] [--version | v]
 username@machine:~$
 \end{verbatim}
 
-Para los detalles de el fichero de sistema revise el cap\'itulo~\ref{chap:input}.
+Para los detalles del fichero de sistema revise el cap\'itulo~\ref{chap:input}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -214,9 +218,9 @@ Para los detalles de el fichero de sistema revise el cap\'itulo~\ref{chap:input}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Actualizando lpmd}
 
-\lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro que versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
+\lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
 
-Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrara una linea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
+Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
 
 Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
 
@@ -229,13 +233,13 @@ Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la 
 \chapter{El fichero de Entrada}
 \label{chap:input}
 
-Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de sistema, este fichero espec\'ifica casi el 100\% de los requerimientos de la simulaci\'on y en ocaciones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar revisaremos los arhicovs de posiciones at\'omicas antes de revisar el fichero de sistema.
+Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de sistema, este fichero espec\'ifica casi el 100\% de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar revisaremos los archivos de posiciones at\'omicas antes de revisar el fichero de sistema.
 
-\section{Fichero Con Posiciones Atomicas}
+\section{Fichero con Posiciones At\'omicas}
 
 Actualmente \lpmd soporta dos formatos de ficheros para especificar las posiciones at\'omicas, uno es \textbf{xyz} y el otro \textbf{lpmd}, que son archivos ASCII manejables en cualquier editor.
 
-\cajatx{Sin embargo, la version de prueba 0.4.X presentaba problemas con tabulaciones en un fichero de entrada, por lo que se recomienda evitarlo o bien chequear que la salida entregue las posiciones correctas.}
+\cajatx{Sin embargo, la versi\'on de prueba 0.4.X presentaba problemas con tabulaciones en un fichero de entrada, por lo que se recomienda evitarlo o bien chequear que la salida entregue las posiciones correctas.}
 
 Veamos a continuaci\'on cada uno de estos formatos.
 
@@ -243,12 +247,12 @@ Veamos a continuaci\'on cada uno de estos formatos.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fichero .xyz}
 
-Es el estandar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulacion computacional, es un archivo simple que cuenta con la informaci\'on de las posiciones at\'omicas del sistema. La estructura de un fichero es :
+Es el estandar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulaci\'on computacional, es un archivo simple que cuenta con la informaci\'on de las posiciones at\'omicas del sistema. La estructura de un fichero es :
 \begin{center}
 \begin{tabular}{l|l}
- \verb|N| & Especif\'ica el n\'umero de \'atomos en la celda \\
- \verb|comment| & Una l\'inea adicional de comentario, titulo etc. \\
- \verb|Sym X Y Z| & S\'imbolo at\'omico y las posiciones en cordenadas cartesianas. \\
+ \verb|N| & Especifica el n\'umero de \'atomos en la celda \\
+ \verb|comment| & Una l\'inea adicional de comentario, t\'itulo etc. \\
+ \verb|Sym X Y Z| & S\'imbolo at\'omico y las posiciones en coordenadas cartesianas. \\
 \end{tabular}
 \end{center}
 
@@ -256,13 +260,13 @@ Es el estandar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulacio
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fichero .lpmd}
 
-Es un fichero con las posiciones escalas de los \'atomos que forman la celda. el fichero es de tipo ASCCI y su estructura principal esta dada por:
+Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. Es de tipo ASCII y su estructura principal est\'a dada por:
 
 \begin{center}
  \begin{tabular}{l|l}
- \verb|LPMD VERSION X.X | & Especif\'ica la version del fichero \verb|.lpmd| \\
- \verb|cell propoerties | & Propiedades de la celda, pueden ser 3 vectores o largos y angulos. \\
- \verb|Sym sx sy sz| & S\'imbolo at\'omico y las posiciones escalads en cada eje.\\
+ \verb|LPMD VERSION X.X | & Especifica la versi\'on del fichero \verb|.lpmd| \\
+ \verb|cell properties | & Propiedades de la celda, pueden ser 3 vectores o largos y \'angulos. \\
+ \verb|Sym sx sy sz| & S\'imbolo at\'omico y las posiciones escaladas en cada eje.\\
 \end{tabular}
 \end{center}
 
@@ -274,21 +278,30 @@ Es el fichero principal para realizar la simulaci\'on computacional. Es por eso 
 Entre las cosas a considerar en un fichero de sistema, est\'an:
 
 \begin{itemize}
- \item \# Es una linea de comentario.
+ \item \# Es una l\'inea de comentario.
  \item Evite los \verb|\tab| dentro del c\'odigo (se corregir\'a).
- \item Pese a que puede ser aleatorio el orden de los flaggs, se recomienda un orden.
- \item siempre defina los modulos antes de utilizarlos.
+ \item Pese a que puede ser aleatorio el orden de los flaggs, se recomienda llevar un orden.
+ \item Siempre defina los m\'odulos antes de utilizarlos.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Celda de Simulaci\'on.}
 
-Son todas las propiedades que describen la celda de simulaci\'on. La mayor\'ia de las opciones del c\'odigo en esta parte estan descripas en \textbf{Propiedades Generales}. Sin embargo hay un par de opciones que siempre deben tenerse en cuenta en la primera l\'inea de nuestro archivo de sistema.
+Son todas las propiedades que describen la celda de simulaci\'on. La mayor\'ia de las opciones del c\'odigo en esta parte est\'an descritas en \textbf{Propiedades Generales}. A continuaci\'on se describir\'a la propiedad que siempre debe estar presente en el fichero .control y va al comienzo de \'este.
 
 \subsubsection{cell}
 
-El flag cell es utilizado para describir la celda de simulaci\'on y asignar las propiedades de \'esta. Generalmente una celda de simulaci\'on puede venir descrita ya en el formato del fichero de entrada, sin embargo hay formatos, como el \textbf{xyz}, que no poseen la descripci\'on de la celda, es por eso que es necesario utilizar siempre esta opci\'on. Si despues de dar la opci\'on \textbf{cell} se utiliza un formato de entrada descriptivo, como \textbf{lpmd}, \'este \'ultimo es el valor que toma la celda.
+El flag cell es utilizado para describir la celda de simulaci\'on y asignar las propiedades de \'esta. Generalmente una celda de simulaci\'on puede venir descrita ya en el formato del fichero de entrada, sin embargo hay formatos, como el \textbf{xyz}, que no poseen la descripci\'on de la celda, es por eso que es necesario utilizar siempre esta opci\'on. Si despu\'es de dar la opci\'on \textbf{cell} se utiliza un formato de entrada descriptivo, como \textbf{lpmd}, este \'ultimo es el valor que toma la celda.
+
+\begin{itemize} 
+\item{Forma 1}
+
+Se utilizan los largos y \'angulos de la celda, como sigue a continuaci\'on
+
+\control{cell a=10 b=5 c=5 alpha=45 beta=90 gamma=90}
+
+donde,
 
 \cajatx{ 
 \begin{tabular}{lcl}
@@ -301,34 +314,54 @@ El flag cell es utilizado para describir la celda de simulaci\'on y asignar las 
 \end{tabular}
 }
 
-Formas de uso :
+\item{Forma 2}
 
-\control{cell a=10 b=5 c=5 alpha=45 beta=90 gamma=90}
+Se utilizan los 3 vectores bases, poni\'endolos de la siguiente manera en el fichero
+
+\control{cell ax=1.0 ay=0.0 az=0.0 bx=0.0 by=1.0 bz=0.0 cx=0.0 cy=0.0 cz=1.0}
+donde,
+\cajatx{ 
+ a{i}, b{i} y c{i} con i={x,y,z} son las coordenadas $x, y$ y $z$ de los vectores bases.
+}
+
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Entrada Salida}
+\subsection{Entrada - Salida}
 
 \subsubsection{input}
-Existen distintas formas de ingresas un fichero de configuraci\'on inicial, el fichero cuenta con las posiciones atomicas de los \'atomos que hay en la simulaci\'on, donde se debe indicar el m\'odulo que indica el tipo de fichero que lo carga. Adem\'as existe la posibilidad de cargar distintos m\'odulos de entrada como generadores de celda.
+
+\begin{itemize}
+ \item{Con Fichero}
+
+Como ya se especific\'o, existen dos tipos de ficheros con posiciones at\'omicas, uno en coordenadas cartesianas (\textbf{.xyz}) y el otro en coordenadas fraccionarias (\textbf{.lpmd}). Para ingresarlos en el fichero de configuraci\'on se debe especificar el m\'odulo del fichero con posiciones at\'omicas que utilizaremos y el nivel que tiene.
 
 \cajatx{ 
 \begin{tabular}{lcl}
- module & = & indica el m\'odulo para cargar la celda.\\
- file & = & indica el fichero que carga la celda.\\
- level & = & indica el nivel del fichero.\\
+ module & = & indica el m\'odulo para cargar la celda,\\ 
+&&\textbf{xyz} y \textbf{lpmd}.\\
+ file & = & indica el fichero con posiciones at\'omicas,\\
+&& \textbf{.xyz} y \textbf{.lpmd}.\\
+ level & = & indica el nivel del fichero,\\ 
+&&\textbf{0}=posiciones; \textbf{1}=posiciones y velocidad; \\
+&& \textbf{2}=posiciones, velocidades y aceleraciones.\\
 \end{tabular}
 }
 
 Formas de uso
 
 \begin{itemize}
- \item Carga desde un fichero XYZ.
+\item Carga desde un fichero XYZ.
 \control{input module=xyz file=fichero.xyz level=0}
- \item Inicializa una celda del tipo fcc
+\item Inicializa una celda del tipo fcc
 \control{input module=fcc a=1 nx=3 ny=3 nz=3}
- \item Inicializa con metodo skewstart
+\item Inicializa con metodo skewstart
 \control{input module=skewstart atoms=108 symbol=Ar}
+\end{itemize}
+
+\item{Generadores de Celda}
+
 \end{itemize}
 
 \subsubsection{output}
