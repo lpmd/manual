@@ -51,35 +51,74 @@
 
 El c\'odigo \lpmd comenz\'o a desarrollarse durante junio del a\~no 2007 como una idea de desarrollar e implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el dise\~no de plugins y de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \textit{Grupo de NanoMateriales} (\textbf{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo (v\'ease \textbf{gente}).
 
-Pruebas de Texto y comandos.
+Las versiones que se han lanzado en formato estable son:
 
-\begin{center}
-\texttt{cellmanager minimumimage}
-\end{center}
-
-\control{cellmanager minimumimage \\ other line \\ another line more}
-
-
-\begin{minipage}[c]{10cm}
- \texttt{cellmanager minimumimage}
-\end{minipage}
-
-\begin{center}
- \begin{minipage}[c]{5cm}
- \texttt{cellmanager minimumimage \\ other line \\ another line more}
-\end{minipage}
-\end{center}
-
-
-\section{Caracter\'isticas Globales.}
-
-Dentro de las caracter\'isticas principales de \lpmd tenemos:
 \begin{itemize}
- \item Modularidad
- \item Plugins simples
- \item Easy input file.
+ \item Version 0.5 : Lanzada 4 de Abril 2008.
+ \item Version 0.4 : Lanzada Julio 2007.
 \end{itemize}
 
+El sistema de actualizaci\'on va siendo administrado compleamente por los desarrolladores. A partir de la versi\'on 0.5 de \lpmd se cuenta con tres paqeutes principales de desarrollo.
+
+\begin{itemize}
+ \item liblpmd \\
+\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la m\'edula de todas las caracter\'isticas que presenta \lpmd. Por favor refierase a mas caracter\'isticas en el ap\'endice ~\ref{ap:API}
+ \item lpmd-plugins \\
+Es un set de plugins que han sido implementados, que cuentan con caracter\'isticas provenientes de la \textbf{API}, son en genral potenciales intert\'omicos, integradores, analizadores de celdas de simulaci\'on, as\'i como tambi\'en manejadores de archivos de din\'amica molecular.
+ \item lpmd \\
+\lpmd es un software de din\'amica molecular que utiliza plugins implementados por usuarios para realizar todo el trabajo de simulaci\'on, tambi\'en incluye herramientas como \textbf{lpmd-analyzer} \textbf{lpmd-converter}.
+\end{itemize}
+
+\section{Idea Principal}
+
+El esquema principal de \lpmd, es la utilizaci\'on de un archivo de control (\verb|fichero.control|) el c\'ual es cargado directamente por el ejecutable \verb|lpmd|.
+
+Por ejemplo consideremos un sistema de din\'amica molecular, en el cual todas las opciones, tales como temperatura inicial, pasos de tiempo a simular, integrador, potencial interat\'omico, posiciones at\'omicas, etc. est\'an especificadas en un fichero llamado \verb|simulacion.control|, entonces lpmd puede ejecutarse simplemente con,
+
+\begin{center}
+ \texttt{lpmd simulacion.control > simulacion.output}
+\end{center}
+
+o bien, tambien podemos utilizar,
+
+\begin{center}
+ \texttt{lpmd < simulacion.control > simulacion.output}
+\end{center}
+
+De esta forma, \lpmd carga toda la informaci\'on necesaria ubicada en el fichero \verb|simulacion.control| y toda la informaci\'on de salida es guardada en el fichero \verb|simulacion.output|.
+
+\section{Otras Caracter\'isticas}
+
+Otras peque\'as caracter\'isticas de \lpmd es que cuenta con flags para el manejo de variables internas en un fichero de control, por ejemplo supongamos que queremos correr muchos sistemas con distintas temperaturas iniciales. De eta forma entonces consideremos, un fichero de control con una sintaxis como esta,
+
+\begin{verbatim}
+ ...
+ prepare temperature t=TEMP
+ ...
+\end{verbatim}
+
+entonces, podemos ejecutar \lpmd de la siguiente forma para asignar a \verb|TEMP| un valor real, dado directamente por linea de comandos, por ejemplo :
+
+\begin{center}
+ \texttt{lpmd -o TEMP=500 simulacion.control > simulacion.output}
+\end{center}
+
+de esta forma el sistema comienza su simulaci\'on con una temperatura inicial de 500K. Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la dificultad de implementar scripts para distintas simulaci\'ones o simulaciones consecutivas de din\'amica molecular. Por ejemplo con un solo comando podemos correr un set de simulaciones con un valor distinto asociado a una variable del archivo de control,
+
+\begin{center}
+ \texttt{for i in 300 400 500 ; \\do lpmd -o TEMP=\$i simulacion.control > simulacion-\$i.output ; done}
+\end{center}
+
+es decir tres simulaciones seguidas con diferentes temperaturas iniciales con un solo fichero de control.
+
+
+Otro de los flags importantes de \lpmd es \verb|-p| que brinda informaci\'on acerca de los plugins que se encuentran instalados en el sistema y que identifica directamente \lpmd. Prueb por ejemplo algo como :
+
+\begin{center}
+ \texttt{lpmd -p ang}
+\end{center}
+
+donde \verb|ang| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %CAPITULO 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,13 +152,6 @@ La \'ultima versi\'on estable de los paquetes es :
  \item lpmd    : ver. 0.5
 \end{itemize}
 
-\begin{description}
- \item [liblpmd] Version 0.1.0
- \item [plugins] Version 0.5.1
- \item [lpmd] Version 0.5
-\end{description}
-
-
 Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,17 +171,19 @@ Para los interesados en el desarrollo actual de lpmd y sus dependencias principa
 \section{Instalaci\'on}
 Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}, a continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
 
-\cajatx{Nota : Los que poseen la versi\'on inestable cuentan con el fichero \textbf{autogen.sh} para poder generar los Makefiles.}
+\cajatx{Nota : Los que poseen la versi\'on inestable cuentan con el fichero \textbf{autogen.sh} para poder generar los Makefiles. \\ Se necesita instalar automake y libtool para poder ejecutar \textbf{autogen.sh}.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando liblpmd}
 
-En primer lugar debe tener instalado automake y libtool, si no lo tiene puede hacerlo como administrador de la siguiente manera:
+% \cajatx{Nota : La versi\'on inestable requiere que tenga instalando autmake y libtool. Para ejecutar autogen.sh}
+% 
+% En primer lugar debe tener instalado automake y libtool, si no lo tiene puede hacerlo como administrador de la siguiente manera:
+% 
+% \control{apt-get install automake libtool}
 
-\control{apt-get install automake libtool}
-
-Ahora descomprima el fichero
+En primer lugar descomprima el pqeute de la \textbf{liblpmd},
 
 \control{tar -xvzf liblpmd-X.X.X.tar.gz}
 
@@ -171,9 +205,9 @@ En caso de cualquier error envie un mail a alguno de los desarrolladores princip
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando plugins}
 
-Uno de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse con:
+Uno de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
 
-\control{./configure --with-lpmd=/usr/local \\ make}
+\control{./configure  \\ make}
 
 y proceder la instalaci\'on como administrador:
 
@@ -193,26 +227,47 @@ y proceder a instalar como administrador:
 
 \control{make install}
 
-Esto generar\'a un ejecutable \verb|lpmd| en \verb|/usr/local/bin/lpmd|, que puede ser ejecutado desde cualquier sitio (si se presenta alg\'un problema, corriga su \verb|PATH|).
+Esto generar\'a un set de ejecutables \verb|lpmd|, \verb|lpmd-analyzer| y \verb|lpmd-converter| en \verb|/usr/local/bin/|, que puede ser ejecutado desde cualquier sitio (si se presenta alg\'un problema, corriga su \verb|PATH|).
 
 Puede correr lpmd con
 
 \begin{verbatim}
 username@machine:~$ lpmd
-Usage: lpmd [--systemfile <file.sys> | -s <file.sys>] [--version | v]
-       lpmd [--help | -h ]
+...
+LPMD version 0.5.0
+Using liblpmd version 1.0.0
+
+Usage:lpmd [--verbose|-v] [--option|-o <option=value,option=value,...>] <file.control>
+      lpmd [--pluginhelp | -p <pluginname>]
+      lpmd [--help | -h ]
 username@machine:~$
 \end{verbatim}
 
 Para los detalles del fichero de sistema revise el cap\'itulo~\ref{chap:input}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instalaci\'on de la API liblpmd en directorio personal}
+\subsection{Problemas t\'ipicos post-instalaci\'on}
+
+\subsubsection{Error cargando librer\'ia}
+
+Es uno de los errores m\'as comunes luego de la instlaci\'on de \lpmd. Ocurre que al ejecutar \lpmd no muestra nada m\'as que un error referencial a la librer\'ia liblpmd que no puede ser encontrada.
+
+La forma de corregir el problema es,
+
+\begin{itemize}
+ \item Editar /etc/ld.so.conf
+ \item A\~nadir al archivo la linea /usr/local/lib (o donde se haya instalado liblpmd)
+ \item Ejecutar como admininistrador el comando : ldconfig
+\end{itemize}
+
+Ahora deber\'ia ejecutar el comando sin problemas.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instalaci\'on de lpmd en directorio personal}
+%\subsection{Instalaci\'on de la API liblpmd en directorio personal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Instalaci\'on de lpmd en directorio personal}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -237,11 +292,11 @@ Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on mol
 
 \section{Fichero con Posiciones At\'omicas}
 
-Actualmente \lpmd soporta dos formatos de ficheros para especificar las posiciones at\'omicas, uno es \textbf{xyz} y el otro \textbf{lpmd}, que son archivos ASCII manejables en cualquier editor.
+\lpmd puede manejar los tipos de fichero de posiciones at\'omicas, seg\'un los m\'odulos que dispongamos, actualmente \textbf{lpmd-plugins} cuenta con dos formatos de ficheros para especificar las posiciones at\'omicas, uno es \textbf{xyz} y el otro \textbf{lpmd}, que son archivos ASCII manejables en cualquier editor.
 
-\cajatx{Sin embargo, la versi\'on de prueba 0.4.X presentaba problemas con tabulaciones en un fichero de entrada, por lo que se recomienda evitarlo o bien chequear que la salida entregue las posiciones correctas.}
+%\cajatx{Sin embargo, la versi\'on de prueba 0.4.X presentaba problemas con tabulaciones en un fichero de entrada, por lo que se recomienda evitarlo o bien chequear que la salida entregue las posiciones correctas.}
 
-Veamos a continuaci\'on cada uno de estos formatos.
+Esperamos que los usuarios, seg\'un la necesidad, ayuden en implementar o requerir tipos espec\'ificos de sistemas de posici\'ones at\'omicas para din\'amica molecular. De todas formas vamos brevemente los dos formatos con los que cuenta actual y oficialmente a la fecha \textbf{lpmd-plugins}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -279,9 +334,9 @@ Entre las cosas a considerar en un fichero de sistema, est\'an:
 
 \begin{itemize}
  \item \# Es una l\'inea de comentario.
- \item Evite los \verb|\tab| dentro del c\'odigo (se corregir\'a).
- \item Pese a que puede ser aleatorio el orden de los flaggs, se recomienda llevar un orden.
- \item Siempre defina los m\'odulos antes de utilizarlos.
+ \item Pese a que puede ser aleatorio el orden de los flags, se recomienda llevar un orden.
+ \item Recomendamos definir los m\'odulos antes de utilizarlos. Tampoco es obligaci\'on.
+ \item Existen secciones que \textbf{no} pueden ser omitidas, como por ejemplo, un \textbf{cellmanager}.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -318,10 +373,10 @@ donde,
 
 Se utilizan los 3 vectores bases, poni\'endolos de la siguiente manera en el fichero
 
-\control{cell ax=1.0 ay=0.0 az=0.0 bx=0.0 by=1.0 bz=0.0 cx=0.0 cy=0.0 cz=1.0}
+\control{cell ax=1.0 ay=0.0 az=0.0 bx=0.0 by=1.0 bz=0.0 \\cx=0.0 cy=0.0 cz=1.0}
 donde,
 \cajatx{ 
- a{i}, b{i} y c{i} con i={x,y,z} son las coordenadas $x, y$ y $z$ de los vectores bases.
+ a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
 }
 
 \end{itemize}
@@ -332,24 +387,31 @@ donde,
 
 \subsubsection{input}
 
+Existen actualmente dos formas de ingreso de un sistema de entrada para la configuraci\'on at\'omica que se requiere simular, estas son, el ingreso de las posiciones at\'omicas de la celda a trav\'es de un archivo (por ejemplo \verb|.xyz| o \verb|.lpmd|) y el otro es mediante m\'odulos que generan automaticamente celdas at\'omicas con ciertas propiedades, por ejemplo celdas \textbf{bcc}, \textbf{fcc}, etc.
+
+Veamos a continuaci\'on brevemente cada uno de ellos,
+
 \begin{itemize}
  \item{Con Fichero}
 
-Como ya se especific\'o, existen dos tipos de ficheros con posiciones at\'omicas, uno en coordenadas cartesianas (\textbf{.xyz}) y el otro en coordenadas fraccionarias (\textbf{.lpmd}). Para ingresarlos en el fichero de configuraci\'on se debe especificar el m\'odulo del fichero con posiciones at\'omicas que utilizaremos y el nivel que tiene.
+Para cargar un fichero con configuraciones at\'omicas, es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargarun fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
+  \item{Generadores de celda}
+
+A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con atomos, segun los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para genrar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc} y el m\'etodo \textbf{skewstart}.
+
+\end{itemize}
+
+Las forma general de la orden \verb|input| requiere de los siguientes argumentos para un funcionamiento adecuado. Para ver m\'as informaci\'on sobre el m\'odulo revise la secci\'on 3.
 
 \cajatx{ 
 \begin{tabular}{lcl}
- module & = & indica el m\'odulo para cargar la celda,\\ 
-&&\textbf{xyz} y \textbf{lpmd}.\\
- file & = & indica el fichero con posiciones at\'omicas,\\
-&& \textbf{.xyz} y \textbf{.lpmd}.\\
- level & = & indica el nivel del fichero,\\ 
-&&\textbf{0}=posiciones; \textbf{1}=posiciones y velocidad; \\
-&& \textbf{2}=posiciones, velocidades y aceleraciones.\\
+ module & = & indica el m\'odulo para cargar la celda.\\ 
+ file & = & indica el fichero con posiciones at\'omicas.\\
+ level & = & indica el nivel del fichero.\\ 
 \end{tabular}
 }
 
-Formas de uso
+Veamos algunas formas de uso para la orden \verb|input| :
 
 \begin{itemize}
 \item Carga desde un fichero XYZ.
@@ -358,10 +420,6 @@ Formas de uso
 \control{input module=fcc a=1 nx=3 ny=3 nz=3}
 \item Inicializa con metodo skewstart
 \control{input module=skewstart atoms=108 symbol=Ar}
-\end{itemize}
-
-\item{Generadores de Celda}
-
 \end{itemize}
 
 \subsubsection{output}
@@ -483,7 +541,7 @@ Especifica el manejador de celda, actualmente hay dos m\'odulos manejadores de c
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Potenciales Interat\'omicos}
+\subsection{M\'odulos : Potenciales Interat\'omicos de pares}
 \subsubsection{lennardjones}
 El m\'odulo \textbf{lennardjones} hace referencia al potencial de Lennard-Jones, que es de la forma,
 $$U(r_{ij}) = 4\epsilon\left(\left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^6\right)$$
@@ -529,16 +587,91 @@ Las palbras reservadas por el plugin \textbf{lennardjones}, son :
 
 Las unidades en que deben ser ingresados, las constantes, deben ser basadas en que las distancias estan en [\AA] y la energ\'ia debe ser adquirida en [eV].
 
+\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+
 \subsubsection{fastlj}
-Utiliza Potencial de LJ tabulado.
+Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
+
 \subsubsection{morse}
-Utiliza Potencial de Morse para la interacci\'on de las especis at\'omicas.
+Utiliza Potencial de Morse para la interacci\'on de las especies at\'omicas. La energ\'ia que siente una part\'icula $i$ a causa de la precensia de otra part\'icula $j$, si ambas interactuan con un potencial de este estilo, esta dada por :
+
+$$E(\vec{r}_{ij}) = D_e\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)^2$$
+
+en donde $D_e$ es la profundidad del pozo, $a$ es el ancho del pozi y $r_e$ es la distancia en equilibrio. Y entonces, la fuerza que siente un \'atomo $i$ producto de otro \'atomo $j$ est\'a dada por,
+
+$$\vec{F}_{ij} ( \vec{r}_{ij}) = 2aD_e\exp(-a(\vec{r}_{ij}-\vec{r}_e))\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)\frac{\vec{r}}{|\vec{r}|}$$
+
+Las palabras reservadas por el plugin \textbf{morse}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ depth & = & indica el valor de profundidad del pozo.\\
+ a & = & indica el valor del ancho del pozo.\\
+ re & = & indica el largo de enlaze en equilibrio.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+
 \subsubsection{constantforce}
-Mantiene una fuerza constante.
+Mantiene una fuerza constante sobre atomos de cierta especie, se utiliza principalmente para aplicarles fuerzas a especies at\'omicas o bien a atomos seleccionados de alguna forma en especial. Este \textit{potencial}, no retorna una energ\'ia (cero) y solo tiene capacidad de asginar una fuerza constante a un set de atomos.
+
+Por ejemplo si queremos que algunos \'atomos se vean afectados por la gravedad, podr\'iamos tener algo como :
+
+\control{use constantforce as CF \\   forcevector 0.0 0.0 -9.8 \\enduse}
+
+Las palabras reservadas por el plugin \textbf{constantforce}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ forcevector & = & indica de la fuerza constante a aplicarse.\\
+\end{tabular}
+}
+
 \subsubsection{harmonic}
-Potencial arm\'onico entre especies at\'omicas.
+Potencial arm\'onico entre especies at\'omicas. De manera similar a un potencial de morse, tenemos que la energ\'ia que sienten las part\'iculas $i$ y $j$ a causa de la interacci\'on a trav\'es de \'este potencial es,
+
+$$E(\vec{r}_{ij}) = \frac{1}{2}k\left(|\vec{r}_{ij}|-a\right)^2$$
+
+En donde $k$ es la constante de elasticidad y $a$ la separaci\'on de equilibrio. Con esto la fuerza para el potencial arm\'onico esta dada por,
+
+$$\vec{F}(\vec{r}_{ij}) = \frac{k}{|\vec{r}_{ij}|}\left(|\vec{r}_{ij}|-a\right)$$
+
+Las palabras reservadas por el plugin \textbf{harmonic}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ k & = & indica el valor de la constante de elasticidad.\\
+ a & = & indica el valor de el largo de equilibrio.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
 \subsubsection{buckingham}
-Potencial de Buckingham IMPORANTE, no incluye parte coulombiana.
+\cajatx{Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.}
+
+Est\'e m\'odulo especif\'ica la interacci\'on de buckingham entre los \'atomos, de esta forma, la energ\'ia producida por la interacci\'on de dos part\'iculas $i$ y $j$, queda
+
+$$E(\vec{r}_{ij}) = B1 \exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right) - \frac{B2}{(|\vec{r}_{ij}|)^6}$$
+
+y la fuerza,
+
+$$\vec{F}(\vec{r}_{ij}) = -\frac{B1\exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right)}{|\vec{r}_{ij}|\rho}\vec{r}_{ij} + \frac{6B2}{|\vec{r}_{ij}|^8}\vec{r}_{ij}$$
+
+Las palabras reservadas por el plugin \textbf{buckingham}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ B1 & = & indica el valor de la constante B1.\\
+ B2 & = & indica el valor de la constante B2.\\
+ Ro & = & el valor de rho para el potencial.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{M\'odulos : Potenciales Interat\'omicos Met\'alicos}
 \subsubsection{suttonchen}
 Este potencial, se utiliza para interacciones de atomos met\'alicos, es por eso que el plugin \textbf{suttonchen} implementa los m\'etodos virtuales de \verb|metalpotential|, que cuentan con una parte de pares y otro t\'ermino de muchos cuerpos. La parte asociada al t\'ermino de pares, est\'a dado por,
 
@@ -596,11 +729,43 @@ double SuttonChen::deltaU1(const double &rhobar, const int &N) const
 }
 \end{verbatim}
 
+y la fuerza asociada al potencial de suttonchen que aplica para un par de atomos $i$ y $j$ est\'a dada por,
 
+$$\vec{F}(\vec{r}_{ij}) = -\epsilon\left[n\left(\frac{a}{\vec{r}_{ij}}\right)^n - \frac{Cm}{2}(\rho_j^{(-1/2)}+\rho_i^{(-1/2)})\left(\frac{a}{\vec{r}_{ij}}\right)^m\right]\left(\frac{1}{\vec{r}_{ij}^2}\right)\vec{r}_{ij}$$
+
+Donde la implementaci\'on de la fuerza como m\'etodo virtual de los potenciales met\'alicos queda de la forma,
+
+\begin{verbatim}
+ Vector SuttonChen::PairForce(const Vector &rij) const
+{
+ Vector norm = rij;
+ double rmod = rij.Mod();
+ norm.Norm();
+ return -n*e*pow(a/rmod,n)*(norm/rmod);
+}
+
+Vector SuttonChen::ManyBodies(const Vector &rij, const double &rhoi, \\
+const double &rhoj) const
+{
+ double tmp;
+ double rmod = rij.Mod();
+ tmp=(m/2)*c*e*((1/sqrt(rhoi))+(1/sqrt(rhoj)))*pow(a/rmod,m)*(1.0/rmod);
+ Vector ff = rij;
+ ff.Norm();
+ return tmp*ff;
+}
+\end{verbatim}
+
+
+\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{M\'odulos : Potenciales Interat\'omicos Nulos}
 \subsubsection{nullpairpotential}
-Potencial de pares nulo entre especies.
+Potencial de pares nulo entre especies. Se utiliza en caso de que se desea imponer una interaccion nula entre un par de especies especies at\'omicas. 
 \subsubsection{nullpotential}
-Potencial nulo entre especies.
+Potencial nulo entre especies. Utilizado para anular la interacion entre especies, retorna inmediatamente \verb|NULL| sin necesidad de verificar paridad.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -809,12 +974,6 @@ Ac\'a encontrar\'a algunos ejemplos de simulaciones realizadas con lpmd, en su u
 
 \section{Ejemplos B\'asicos}
 
-\subsection{Dimero 1D}
-Muestra un dimero 
-
-\subsection{Mallas 2D}
-Una red Triangular.
-
 \subsection{Sistemas Cristalinos 3D}
 
 \subsubsection{Arg\'on}
@@ -917,7 +1076,7 @@ visualize povray2 start=1 end=50000 each=100
 
 
 \subsection{Ejemplos m\'as Complejos}
-Pared fija bajo presion, o una caja que suelta un gas.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -968,5 +1127,160 @@ Colaboradores :
  \item ... : ...
 \end{itemize}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Ap\'endice}
+
+\section{API - liblpmd}
+\label{ap:API}
+La \textbf{API} (Ap. Programming Interface) es una herramienta de programaci\'on que puede ser utilizada por cualquier usuario/programador que se vea beneficiado por sus caracter\'isticas.
+
+Consideramos que la mejor forma de comprender el funcionamiento de esta \textbf{API}, es directamente con c\'odigos de ejemplo que pueden escribir los desarrolladores. A continuaci\'on se muestran 3 ejemplos de utilizaci\'on de la \textbf{API}, el primero se enmarca en un ``nano-programa'' de \textbf{DM}, el segundo es la evaluaci\'on de una propiedad est\'atica de una celda del tipo \texttt{.xyz} y la \'ultima una propiedad din\'amica de una celda.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Din\'amica Molecular B\'asica}
+
+A continuaci\'on un c\'odigo que utilza todas las caracter\'isticas de la \textbf{API}, para realizar din\'amica molecular.
+
+\begin{verbatim}
+ /*
+ * Ejemplo simple de dinamica molecular usando el API de liblpmd
+ */
+
+#include <lpmd/api.h>
+#include <iostream>
+
+using namespace lpmd;
+
+int main()
+{
+ MD md;            // define md como un objeto de dinamica molecular
+ PluginManager pm; // define pm como un manejador de plugins
+
+ SimulationCell cell(1, 1, 1, true, true, true); // cell es la celda de simulacion
+ cell.SetVector(0, Vector(17.1191, 0.0, 0.0));   // define los vectores de la celda
+ cell.SetVector(1, Vector(0.0, 17.1191, 0.0));
+ cell.SetVector(2, Vector(0.0, 0.0, 17.1191));
+ md.SetCell(cell);                    // asigna la celda de simulacion al objeto MD 
+
+ // Carga de plugins con sus parametros
+ pm.LoadPlugin("minimumimage", "");
+ pm.LoadPlugin("crystalfcc", "symbol Ar nx 3 ny 3 nz 3");
+ pm.LoadPlugin("lennardjones", "sigma 3.41 epsilon 0.0138");
+ pm.LoadPlugin("velocityverlet", "dt 1.0");
+ pm.LoadPlugin("temperature", "t 600.0");
+ pm.LoadPlugin("energy", "");
+
+ CellManager & cm = CastModule<CellManager>(pm["minimumimage"]);
+ cell.SetCellManager(cm);            // asigna el manejador de celda
+
+ CellGenerator & cg = CastModule<CellGenerator>(pm["crystalfcc"]);
+ cg.Generate(cell);
+
+ Potential & pot = CastModule<Potential>(pm["lennardjones"]);
+ PotentialArray & potarray = md.GetPotentialArray();
+ potarray.Set("Ar", "Ar", pot); // asigna lennardjones al arreglo de potenciales de MD
+
+ Integrator & integ = CastModule<Integrator>(pm["velocityverlet"]);
+ md.SetIntegrator(integ);
+
+ InstantProperty & energ = CastModule<InstantProperty>(pm["energy"]);
+ 
+ SystemModifier & therm = CastModule<SystemModifier>(pm["temperature"]);
+ therm.Apply(cell);  // aplica el termalizador "temperature" a la celda de simulacion
+
+ // Loop principal de la simulacion, hace 500 pasos
+ md.Initialize(); 
+ std::cout << "# Pasos   Temperatura" << '\n';
+ for (long i=0;i<500;++i)
+ {
+  md.DoStep();                       // avanza el sistema un paso de simulacion
+  energ.Evaluate(cell, pot);         // evalua las propiedades en el plugin energy
+  double T;
+  T = pm["energy"].GetProperty("temperature"); // pide valor de temp al plugin energy
+  std::cout << i << "         " << T << '\n';
+ }
+ return 0;
+}
+\end{verbatim}
+
+Para generar el ejecutable,
+
+\control{g++ -o nanodm main.cc -llpmd -ldl -lm}
+
+y listo, tendremos entonces un ejecutable llamado \verb|nanodm| que realizar\'a una simple corrida de din\'amica molecular.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Calculo de Propiedad est\'atica}
+
+Consideremos que tenemos una celda de simulaci\'on y queremos utiliar las ventajas de la \textbf{API} para calcular una propiedad, que sabemos existe en un m\'odulo, por ejemplo \textbf{gdr}. El c\'odigo para el c\'alculo de \textbf{gdr} de la celda nos quea as\'i,
+
+\begin{verbatim}
+ /*
+ *
+ *
+ *
+ */
+
+#include <lpmd/api.h>
+
+using namespace lpmd;
+
+int main(int argc, char *argv[])
+{
+ if (argc < 2) 
+ {
+  std::cerr << "testgdr <file.xyz>" << '\n';
+  exit(1);
+ }
+ PluginManager pm;
+ pm.LoadPlugin("xyz", "file="+std::string(argv[1]));
+ pm.LoadPlugin("gdr", "rcut 8.0 bins 300 average true");
+ pm.LoadPlugin("nullpotential", "");
+ pm.LoadPlugin("linkedcell", "nx 7 ny 7 nz 7 cutoff 8.0");
+
+ CellReader & cread = dynamic_cast<CellReader &>(pm["xyz"]);
+ InstantProperty & gdr = dynamic_cast<InstantProperty &>(pm["gdr"]); 
+ ScalarTable & gdrvalue = dynamic_cast<ScalarTable &>(pm["gdr"]);
+ CellManager & cm = dynamic_cast<CellManager &>(pm["linkedcell"]);
+ Potential & dummy = dynamic_cast<Potential &>(pm["nullpotential"]);
+
+ pm["gdr"].Show();
+
+ std::vector<SimulationCell> configs;
+ cread.ReadMany(std::string(argv[1]), configs);
+
+ Cell cell(13.16, 13.16, 21.39, M_PI/2, M_PI/2, M_PI*120.0/180.0);
+ Vector v1 = cell.GetVector(0);
+ v1 = Vector(v1.Get(1), v1.Get(0), v1.Get(2));
+ Vector v2 = cell.GetVector(1);
+ v2 = Vector(v2.Get(1), v2.Get(0), v2.Get(2));
+ cell.SetVector(0, v2);
+ cell.SetVector(1, v1);
+ for (int i=0;i<3;++i) std::cerr << cell.GetVector(i) << std::endl;
+
+ std::cerr << "Read " << configs.size() << " configurations." << '\n';
+ std::cerr << "Configuration 0 has " << configs[0].Size() << " atoms\n";
+
+ for (unsigned long i=0;i<configs.size();++i)
+ {
+  configs[i].SetCell(cell);
+  configs[i].SetCellManager(cm);
+  gdr.Evaluate(configs[i], dummy);
+  gdrvalue.AddToAverage();
+ }
+
+ std::cout << gdrvalue << '\n';
+
+ return 0;
+}
+\end{verbatim}
+
+Esto, lo compilamos de manera similar al caso anterior, obteniendo un ejecutable para calcular una propiedad est\'atica, en este caso \verb|gdr| para la celda de simulaci\'on.
 
 \end{document}
