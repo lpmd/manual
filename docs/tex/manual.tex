@@ -54,8 +54,9 @@ El c\'odigo \lpmd comenz\'o a desarrollarse durante junio del a\~no 2007 como un
 Las versiones que se han lanzado en formato estable son:
 
 \begin{itemize}
- \item Version 0.5 : Lanzada 4 de Abril 2008.
- \item Version 0.4 : Lanzada Julio 2007.
+ \item Version 0.5.1 : Lanzada 30 de Abril 2008.
+ \item Version 0.5.0 : Lanzada 4 de Abril 2008.
+ \item Version 0.4.0 : Lanzada Julio 2007.
 \end{itemize}
 
 El sistema de actualizaci\'on va siendo administrado compleamente por los desarrolladores. A partir de la versi\'on 0.5 de \lpmd se cuenta con tres paqeutes principales de desarrollo.
@@ -121,7 +122,7 @@ Otro de los flags importantes de \lpmd es \verb|-p| que brinda informaci\'on ace
 donde \verb|ang| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Instalaci\'on}
@@ -149,7 +150,7 @@ La \'ultima versi\'on estable de los paquetes es :
 \begin{itemize}
  \item liblpmd : ver. 0.1.0
  \item plugins : ver. 0.5.1
- \item lpmd    : ver. 0.5
+ \item lpmd    : ver. 0.5.1
 \end{itemize}
 
 Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
@@ -162,9 +163,9 @@ Para los interesados en el desarrollo actual de lpmd y sus dependencias principa
 
 \begin{center}
  \begin{verbatim}
-  svn co svn://www.gnm.cl/lpmd/liblpmd/unstable liblpmd-uns
-  svn co svn://www.gnm.cl/lpmd/plugins/unstable plugins-uns
-  svn co svn://www.gnm.cl/lpmd/lpmd/unstable lpmd-uns
+  svn co svn://www.gnm.cl/lpmd/liblpmd/testing liblpmd-uns
+  svn co svn://www.gnm.cl/lpmd/plugins/testing plugins-uns
+  svn co svn://www.gnm.cl/lpmd/lpmd/testing lpmd-uns
  \end{verbatim}
 \end{center}
 
@@ -261,28 +262,49 @@ La forma de corregir el problema es,
 
 Ahora deber\'ia ejecutar el comando sin problemas.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Instalaci\'on de la API liblpmd en directorio personal}
+\subsection{Instalaci\'on de lpmd en directorio personal}
+
+Podemos istalar cada uno de los paquetes (\textbf{liblpmd}, \textbf{plugins} y \textbf{lpmd}) en un directorio personal, para eso consideremos un ejemplo, en el cu\'al deseamos instalar estos paquetes en el directorio \verb|loca| ubicado dentro de el \textit{home} del usuario, el procedimiento ser\'ia.
+
+\begin{itemize}
+ \item Para liblpmd
+ \begin{verbatim}
+ ./configure --prefix=/home/user/local
+ make
+ make install
+ \end{verbatim}
+ \item Para plugins
+ \begin{verbatim}
+ ./configure --prefix=/home/user/local --with-lpmd=/home/user/local
+ make
+ make install
+ \end{verbatim}
+ \item Para lpmd, es necesario indicar con variables de ambiente para la compilaci\'on, note que \verb|\\| indica que es una sola l\'inea que contin\'ua.
+ \begin{verbatim}
+ LDFLAGS="-Wl,--rpath -Wl,/home/user/local/lib" \\
+ ./configure --prefix=/home/user/local --with-lpmd=/home/user/local
+ make
+ make install
+ \end{verbatim}
+\end{itemize}
+
+De esta forma se generaran los esqueletos en \verb|/home/user/local| con \verb|bin|, \verb|lib|, etc.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Instalaci\'on de lpmd en directorio personal}
+%\subsection{Actualizando lpmd}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Actualizando lpmd}
-
-\lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
-
-Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
-
-Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
+% \lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
+% 
+% Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
+% 
+% Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{El fichero de Entrada}
@@ -293,8 +315,6 @@ Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on mol
 \section{Fichero con Posiciones At\'omicas}
 
 \lpmd puede manejar los tipos de fichero de posiciones at\'omicas, seg\'un los m\'odulos que dispongamos, actualmente \textbf{lpmd-plugins} cuenta con dos formatos de ficheros para especificar las posiciones at\'omicas, uno es \textbf{xyz} y el otro \textbf{lpmd}, que son archivos ASCII manejables en cualquier editor.
-
-%\cajatx{Sin embargo, la versi\'on de prueba 0.4.X presentaba problemas con tabulaciones en un fichero de entrada, por lo que se recomienda evitarlo o bien chequear que la salida entregue las posiciones correctas.}
 
 Esperamos que los usuarios, seg\'un la necesidad, ayuden en implementar o requerir tipos espec\'ificos de sistemas de posici\'ones at\'omicas para din\'amica molecular. De todas formas vamos brevemente los dos formatos con los que cuenta actual y oficialmente a la fecha \textbf{lpmd-plugins}.
 
@@ -324,6 +344,24 @@ Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. 
  \verb|Sym sx sy sz| & S\'imbolo at\'omico y las posiciones escaladas en cada eje.\\
 \end{tabular}
 \end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fichero .zlp}
+
+Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. A diferencia del formato \verb|lpmd| este formato es comprimido, utilizando zlib. Recomendamos lo utilize para obtenci\'on de datos muy largas o bien que cuentan con una cantidad de \'atomos muy grande.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Otros Formatos Soportados}
+
+Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados para lectura/escritura de configuraciones at\'omicas, algunos de ellos son:
+
+\begin{tabular}{lcl}\\
+ mol2 &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{mol2} \\
+ pdb  &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{pdb} \\
+\end{tabular}
+
 
 
 \section{El Fichero de configuraci\'on .control}
@@ -379,6 +417,8 @@ donde,
  a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
 }
 
+Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de \lpmd y no necesitan estar necesariamente dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de scrtips.
+
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -397,15 +437,15 @@ Veamos a continuaci\'on brevemente cada uno de ellos,
 Para cargar un fichero con configuraciones at\'omicas, es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargarun fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
   \item{Generadores de celda}
 
-A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con atomos, segun los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para genrar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc} y el m\'etodo \textbf{skewstart}.
+A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con atomos, seg\'un los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para genrar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc} y el m\'etodo \textbf{skewstart}.
 
 \end{itemize}
 
-Las forma general de la orden \verb|input| requiere de los siguientes argumentos para un funcionamiento adecuado. Para ver m\'as informaci\'on sobre el m\'odulo revise la secci\'on 3.
+La forma general de la orden \verb|input| requiere de argumentos para un funcionamiento adecuado. Para ver m\'as informaci\'on sobre el m\'odulo revise la secci\'on ~\ref{chap:modulos}. Estos son ejemplos de algunos argumentos:
 
 \cajatx{ 
 \begin{tabular}{lcl}
- module & = & indica el m\'odulo para cargar la celda.\\ 
+ module & = & indica el m\'odulo con el que cargar la celda.\\ 
  file & = & indica el fichero con posiciones at\'omicas.\\
  level & = & indica el nivel del fichero.\\ 
 \end{tabular}
@@ -422,9 +462,21 @@ Veamos algunas formas de uso para la orden \verb|input| :
 \control{input module=skewstart atoms=108 symbol=Ar}
 \end{itemize}
 
+Esta es una lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de configuraciones,
+
+\begin{enumerate}
+ \item \verb|xyz|
+ \item \verb|lpmd|
+ \item \verb|zlp|
+ \item \verb|hcp| - \verb|fcc| - \verb|bcc| - \verb|sc|
+ \item \verb|skewstart|
+ \item \verb|mol2|
+\end{enumerate}
+
+
 \subsubsection{output}
 
-Con el par\'ametro \verb|control| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo en la version 0.1 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles los m\'odulos \textbf{xy} y \textbf{lpmd}. Los argumentos requeridos por el par\'ametro son:
+Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo en la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, sin embargo es \textit{importante} notar que cada m\'odulo posee configuraciones independientes, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos}. Los argumentos requeridos por el par\'ametro son:
 
 \cajatx{ 
 \begin{tabular}{lcl}
@@ -446,28 +498,56 @@ Formas de uso
 \control{output module=lpmd file=fichero.xyz level=1 each=1}
 \end{itemize}
 
+Esta es una lista de los m\'odulos soportados a la fecha para escritura de configuraciones,
+
+\begin{enumerate}
+ \item \verb|xyz|
+ \item \verb|lpmd|
+ \item \verb|zlp|
+ \item \verb|mol2|
+\end{enumerate}
+
 
 \subsubsection{restore}
 
-Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de luz o cualquier otro tipo de falla. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping''.
+Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de luz o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping''.
 
-Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, porfavor si encuentra un bug, reportelo.
+Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, porfavor si encuentra alg\'un bug, reportelo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Propiedades Generales}
-\subsubsection{repeat}
-Indica el nivel de repeticion de la celda en cada eje, no utilize esto en celdas para las cuales las condiciones de borde no sean peri\'odicas, podr\'ia conseguir resultados no deseados, recomendamos esto encarecidamente.
+\subsubsection{prepare}
+Esta opci\'on es utilizada para \textit{setear} valores y caracter\'isticas de la simulaci\'on, que son brindadas a trav\'es de plugins, tenemos por ejemplo :
+
+\begin{itemize}
+ \item \textbf{temperature}
+Para dar una temperatura inicial al sistema, se prepara la celda con :
+\control{prepare temperature T=300}
+de esta forma el sistema asigna velocidades iniciales a las part\'iculas para que la temperatura de nuestro sistema corresponda a 300K.
+ \item \textbf{replicate}
+Para replicar nuestra celda en las distintas direcciones de los vectores bases, la forma de \textbf{replicar} una celda antes de comenzar la simulaci\'on es:
+\control{prepare replicate nx=2 ny=2 nz=2}
+De esta froma, la celda que se ley\'o en \verb|input| es replicada 2 veces por cada eje, alcanzando 8 veces el n\'umero inicial de part\'iculas.
+\end{itemize}
+
+\subsubsection{set}
+Utilizado para setear valores de la simulaci\'on, utilizado principalmente para algunas variables globales del sistema
 
 Forma de uso
 
 \begin{itemize}
- \item Replicando una celda 2 veces en \verb|x| e \verb|y| pero ninguna en \verb|z|
-\control{repeat 2 2 1}
+ \item Evitando que aparezca la celda inicial en pantalla
+\control{set showcoords false}
+ \item Evitando que se muestren los modulos no utilizados durante la salida.
+\control{set showunused false}
+ \item Utilizando el cache de distancias en la simulaci\'on
+\control{set distancecache true}
 \end{itemize}
 
 \subsubsection{charge}
 Set de las cargas en eV para las especies at\'omicas. Estos valores de las cargas, son seteados principalmente para utilizaci\'on de potenciales interatomicos en los cuales se utilizan las cargas de los atomos involucrados.
+
 
 Forma de uso
 
@@ -479,70 +559,176 @@ Forma de uso
 \subsubsection{periodic}
 Indica la periodicidad de la celda, en cada eje. Al bloquear la periodicidad en un eje, este se ve ``modificado'' en ambos lados de la celda, revise con cuidado estas opciones.
 
+\control{periodic false false true}
+
+En \'este aso solo tenemos periodicidad en el eje \verb|z|.
+
 \subsubsection{steps}
 N\'umero de pasos de la simulaci\'on de DM.
 
-\subsubsection{distcache}
-Utiliza cache de distancias, puede ahorrar tiempo en algunas simulaciones, recomendamos que siempre se utilize.
+\control{steps 10000}
 
-Forma de uso
-
-\begin{itemize}
- \item Aplicando el usao de distance-cache para la simulaci\'on.
-\control{distcache}
-\end{itemize}
+Ac\'a se realizar\'a una simulaci\'on de 10000 pasos.
 
 \subsubsection{dumping}
 Genera una salida global del sistema para poder restaurar a partir de ese punto.
 
+\control{dumping file=rescue.dump each=10000}
+
+Generamos un fichero de volcado cada 10000 pasos de la simulaci\'on, en el se graba toda la informaci\'on necesaria, para reiniciar una corrida.
+
 \subsubsection{monitor}
-Cada cuantos pasos la simulacion muestra las propiedades globales.
+Cada cuantos pasos la simulaci\'on muestra las propiedades globales. Estas propiedades, pueden ser asignadas por el mismo usuario, haciendo la salida lo m\'as configurables seg\'un los requrimientos propios.
 
-\subsubsection{temperature}
-Indica la temperatura inicial del sistema. \'Este es el m\'etodo m\'as utilizado por los progamas de \textbf{DM} para ingresar las velocidades iniciales de los \'atomos del sistema.
+Entre las opciones de monitor, cuentan :
 
-\subsubsection{startinfo}
-Muestra ono ifnormacion inicial del sistema, celda y modulos no usados.
+\cajatx{
+\begin{tabular}{lcl}
+ start & = & indica el valor de epsilon.\\
+ end & = & indica el valor de sigma.\\
+ each & = & indica el cutoff del potencial.\\
+ properties & = & indica que valores se desea monitorear. \\
+ output & = & archivo de salida para guardar los valores, \\
+ & & si no, el \textit{standard output} es utilziado.\\
+\end{tabular}
+}
 
-Forma de uso
+Si queremos ir chequeando, los valores de la energ\'ia durante la simulacion, cada 10 pasos, utilizamos la l\'inea,
+
+\begin{verbatim}
+monitor start=0 end=1000 each=10 properties=kinetik-energy, \\
+        potential-energy,total-energy output=salida.out
+\end{verbatim}
+
+en \'este caso, no es necesario cargar los modulos \verb|energy| y \verb|cell| ya que son cargados por \textit{default}, sin embargo para cuando necesitemos ver la presi\'on durante la simulaci\'on, es necesario ingresar en el fichero de control el uso del m\'odulo \verb|pressure| ya que \'el es el encargado de calcular la presi\'on.
+
+\begin{verbatim}
+use pressure
+enduse
+monitor start=0 end=1000 each=10 properties=kinetik-energy, \\
+        potential-energy,total-energy,total-pressure output=salida.out
+\end{verbatim}
+
+Algunas de las opciones soportadas por \textbf{properties} son:
 
 \begin{itemize}
- \item Mostrando en el inicio las posiciones at\'omicas y los m\'odulos no usados.
-\control{startinfo coords=true unused=true}
- \item Ocultando la informaci\'on de las posiciones at\'omicas iniciales y los modulos no usados.
-\control{startinfo coords=false unused=false}
+ \item kinetic-energy : Muestra la energ\'ia cin\'etica.
+ \item potential-energy : Muestra la energ\'ia potencial.
+ \item total-energy : Muestra la energ\'ia total.
+ \item temperature : Muestra la temperatura del sistema.
+ \item virial-pressure : Aporte del t\'ermino del virial a la presi\'on.
+ \item kinetic-pressure : T\'ermino de la presi\'on asociado.
+ \item pressure : Presi\'on total del sistema.
+ \item volume : Volumen de la celda de simulaci\'on.
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Propiedades del sistema}
-\subsubsection{tempscaling}
-Escalamiento de velocidades cl\'asico, seg\'un la temperatura indicada.
-\subsubsection{berendsen}
-Termostato de berendsen, mucho m\'as suave que tempscaling.
+Para revisar todas las opciones de salida, refirase a la secci\'on~\ref{chapter:module}.
+
+\section{Ficheros de Salida}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Propiedades de Celda}
-\subsubsection{cellscaling}
+\subsection{Ficheros de salida}
+\lpmd Tiene dos tipos de fichero de salida, uno que es generado usualmente por la opci\'on \verb|output| dentro del fichero de control y otro es la salida standard, que por defecto va a \verb|cout|, pero que nosotros recomendamos enviar (o redireccionar) a un fichero.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Salida standard}
+Esta es la salida que muestra en pantalla lpmd, la forma de enviar esta salida a un fichero, durante la ejecuci\'on de lpmd, es
+
+\control{lpmd fichero.control > salida.out}
+
+o si desea verla en pantalla y enviar a un fichero:
+
+\control{lpmd fichero.control | tee salida.out}
+
+tambi\'en puede redireccionar una salida standard y los mensajes de error de forma independiente utilizando:
+
+\control{lpmd fichero.control 1\&> salida.out 2\&> salida.err}
+
+el fichero \verb|salida.out| tiene toda la informaci\'on que deb\'ia salir a pantalla utilizando lpmd, entre ella se encuentran,
+
+\begin{itemize}
+ \item Descripci\'on completa de la celda
+ \item Informacion de \verb|startinfo|
+ \item Infomraci\'on de m\'odulos utilizados y variables de c/u.
+ \item Energias, Temperatura, Presion y Volumen, seg\'un \verb|monitor|. En caso de que monitor no utilize \verb|output| propio.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Fichero generado por output}
+Este fichero se gener\'o con el nombre entregado en el fichero de control a la linea \textbf{output}, en \'el se encuentran las configuraciones atomicas de la \textbf{DM} y suelen ser los ficheros a partir de los cuales suelen crearse animaciones y an\'alisis detallados de la simulaci\'on.
+
+Muchos an\'alisis pueden llevarse a cabo durante la simulaci\'on misma, sin embargo \lpmd tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utils}
+
+Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Salida de errores}
+La versi\'on actual no redrecciona informacion a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de \lpmd.
+
+Para aislar estos errores, ejecute \lpmd como ya se indico:
+
+\control{lpmd fichero.control 1\&> salida.out 2\&> salida.err}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{M\'odulos}
+\label{chap:modulos}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propiedades del sistema}
+Estos m\'odulos corresponden principalmente a informaci\'on del set de part\'iculas con el cu\'al se esta trabajando, as\'i como tambi\'en a aquellos m\'odulos que tienen la capacidad de modificar este set, o alguna propiedad de ellas.
+\subsection{cell}
+Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| para entregar esta informaci\'on.
+
+\cajatx{
+\begin{tabular}{lcl}
+ volume & = & Retorna el volumen de la celda.\\
+ density & = & Retorna la densidad de la celda.\\
+ cell-n & = & n=a,b,c Retorna el largo de cada eje.\\
+ particledensity & = & Retorna la densidad por particula. \\
+ volumeperatom & = & Retornael volumen por \'atomo. \\
+\end{tabular}
+}
+
+\subsection{energy}
+\subsection{pressure}
+\subsection{tempscaling}
+Escalamiento de velocidades cl\'asico, seg\'un la temperatura indicada.
+\subsection{berendsen}
+Termostato de berendsen, mucho m\'as suave que tempscaling.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propiedades de Celda}
+\subsection{cellscaling}
 Escala la celda cierto porcentaje, puede ser por eje o total.
-\subsubsection{crystalfcc}
+\subsection{crystalfcc}
 Genera una celda cristalina del tipo fcc.
-\subsubsection{crystalsc}
+\subsection{crystalsc}
 Genera una celda cstalino del tipo sc.
-\subsubsection{lpmd}
+\subsection{lpmd}
 M\'odulo lectura/escritura de formato lpmd.
-\subsubsection{xyz}
+\subsection{xyz}
 M\'odulo lectura/escrtura de formato xyz.
-\subsubsection{skewstart}
+\subsection{skewstart}
 Genera una celda con m\'etodo SkewStart (Refson).
-\subsubsection{cellmanager}
+\subsection{cellmanager}
 Especifica el manejador de celda, actualmente hay dos m\'odulos manejadores de celda, minima imagen y listas linkeadas. cada m\'odulo debe declararse previemente con los parametros requeridos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Potenciales Interat\'omicos de pares}
-\subsubsection{lennardjones}
+\section{Potenciales Interat\'omicos de pares}
+\subsection{lennardjones}
 El m\'odulo \textbf{lennardjones} hace referencia al potencial de Lennard-Jones, que es de la forma,
 $$U(r_{ij}) = 4\epsilon\left(\left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^6\right)$$
 En donde $r_{ij}$ es la distancia interat\'omica de los \'atomos $i$ y $j$. La implementaci\'on del m\'etodo virtual, queda entonces como :
@@ -589,10 +775,10 @@ Las unidades en que deben ser ingresados, las constantes, deben ser basadas en q
 
 \cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
 
-\subsubsection{fastlj}
+\subsection{fastlj}
 Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
 
-\subsubsection{morse}
+\subsection{morse}
 Utiliza Potencial de Morse para la interacci\'on de las especies at\'omicas. La energ\'ia que siente una part\'icula $i$ a causa de la precensia de otra part\'icula $j$, si ambas interactuan con un potencial de este estilo, esta dada por :
 
 $$E(\vec{r}_{ij}) = D_e\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)^2$$
@@ -613,7 +799,7 @@ Las palabras reservadas por el plugin \textbf{morse}, son :
 }
 
 
-\subsubsection{constantforce}
+\subsection{constantforce}
 Mantiene una fuerza constante sobre atomos de cierta especie, se utiliza principalmente para aplicarles fuerzas a especies at\'omicas o bien a atomos seleccionados de alguna forma en especial. Este \textit{potencial}, no retorna una energ\'ia (cero) y solo tiene capacidad de asginar una fuerza constante a un set de atomos.
 
 Por ejemplo si queremos que algunos \'atomos se vean afectados por la gravedad, podr\'iamos tener algo como :
@@ -628,7 +814,7 @@ Las palabras reservadas por el plugin \textbf{constantforce}, son :
 \end{tabular}
 }
 
-\subsubsection{harmonic}
+\subsection{harmonic}
 Potencial arm\'onico entre especies at\'omicas. De manera similar a un potencial de morse, tenemos que la energ\'ia que sienten las part\'iculas $i$ y $j$ a causa de la interacci\'on a trav\'es de \'este potencial es,
 
 $$E(\vec{r}_{ij}) = \frac{1}{2}k\left(|\vec{r}_{ij}|-a\right)^2$$
@@ -647,7 +833,7 @@ Las palabras reservadas por el plugin \textbf{harmonic}, son :
 \end{tabular}
 }
 
-\subsubsection{buckingham}
+\subsection{buckingham}
 \cajatx{Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.}
 
 Est\'e m\'odulo especif\'ica la interacci\'on de buckingham entre los \'atomos, de esta forma, la energ\'ia producida por la interacci\'on de dos part\'iculas $i$ y $j$, queda
@@ -671,8 +857,8 @@ Las palabras reservadas por el plugin \textbf{buckingham}, son :
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Potenciales Interat\'omicos Met\'alicos}
-\subsubsection{suttonchen}
+\section{Potenciales Interat\'omicos Met\'alicos}
+\subsection{suttonchen}
 Este potencial, se utiliza para interacciones de atomos met\'alicos, es por eso que el plugin \textbf{suttonchen} implementa los m\'etodos virtuales de \verb|metalpotential|, que cuentan con una parte de pares y otro t\'ermino de muchos cuerpos. La parte asociada al t\'ermino de pares, est\'a dado por,
 
 $$U(r_{ij}) = \left(\frac{a}{r_{ij}}\right)^n$$
@@ -761,41 +947,41 @@ const double &rhoj) const
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Potenciales Interat\'omicos Nulos}
-\subsubsection{nullpairpotential}
+\section{Potenciales Interat\'omicos Nulos}
+\subsection{nullpairpotential}
 Potencial de pares nulo entre especies. Se utiliza en caso de que se desea imponer una interaccion nula entre un par de especies especies at\'omicas. 
-\subsubsection{nullpotential}
+\subsection{nullpotential}
 Potencial nulo entre especies. Utilizado para anular la interacion entre especies, retorna inmediatamente \verb|NULL| sin necesidad de verificar paridad.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Integradores}
-\subsubsection{beeman}
+\section{Integradores}
+\subsection{beeman}
 Integrador de beeman.
-\subsubsection{euler}
+\subsection{euler}
 Integrador de Euler.
-\subsubsection{nullintegrator}
+\subsection{nullintegrator}
 Integrador nulo.
-\subsubsection{velocityverlet}
+\subsection{velocityverlet}
 Utiliza metodo velocity verlet para integrar.
-\subsubsection{verlet}
+\subsection{verlet}
 Utiliza metodo verlet para integrar.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : CellManager}
+\section{CellManager}
 Estos m\'odulos son los encargados de generar las \textbf{lista inteligentes} para poder realizar simulaciones o calculos de Din\'amica Molecular, los dos plugins implementados a la fecha son:
 
-\subsubsection{minimumimage}
+\subsection{minimumimage}
 Uiliza el m\'etodo de m\'inima imagen para realizar los procesos.
 
-\subsubsection{linkedcell}
+\subsection{linkedcell}
 Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido que el m\'etodo de m\'inima imagen, y de por s\'i es el m\'as utilizado en la mayor\'ia de los c\'odigos de \textbf{DM}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Visualizadores}
-\subsubsection{povray}
+\section{Visualizadores}
+\subsection{povray}
 Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on.
 
 Los argumentos requeridos (no todos) por el m\'odulo povray, son los siguientes,
@@ -842,129 +1028,38 @@ Luego de que los archivos son creados en el directorio ``movie'', es importante 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Propiedades Est\'aticas}
-\subsubsection{angdist}
+\section{Propiedades Est\'aticas}
+\subsection{angdist}
 Calcula la distribucion angular de la celda
-\subsubsection{cordnum}
+\subsection{cordnum}
 Calcula el n\'umero de cordinaci\'on de la celda.
-\subsubsection{cordnumfunc}
+\subsection{cordnumfunc}
 Calcula el n\'umero de cordinaci\'on de la celda.
-\subsubsection{gdr}
+\subsection{gdr}
 Caulcula la funcion de distribucion de pares de la celda.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{M\'odulos : Propiedades Din\'amicas}
-\subsubsection{vacf}
+\section{Propiedades Din\'amicas}
+\subsection{vacf}
 Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda.
-\subsubsection{msd}
+\subsection{msd}
 Calcula el desplazamiento cuadratico medio del sistema.
 
-\section{Ficheros de Salida}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Tipos de fichero de salida}
-\lpmd Tiene dos tipos de fichero de salida, uno que es generado usualmente por la opci\'on \verb|output| dentro del fichero de control y otro es la salida standard, que por defecto va a \verb|cout|, pero que nosotros recomendamos enviar a un fichero.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Salida standard}
-Esta es la salida que muestra en pantalla lpmd, la forma de enviar esta salida a un fichero, durante la ejecuci\'on de lpmd, es
-
-\control{lpmd -s fichero.control > salida.out}
-
-el fichero \verb|salida.out| tiene toda la informaci\'on que deb\'ia salir a pantalla utilizando lpmd, entre ella se encuentran,
-
-\begin{itemize}
- \item Descripci\'on completa de la celda
- \item Informacion de \verb|startinfo|
- \item Infomraci\'on de m\'odulos utilizados y variables de c/u.
- \item Energias, Temperatura, Presion y Volumen, seg\'un \verb|monitor|.
-\end{itemize}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fichero generado por output}
-Este fichero se gener\'o con el nombre entregado en el fichero de control a la linea \textbf{output}, en \'el se encuentran las configuraciones atomicas de la \textbf{DM} y suelen ser los ficheros a partir de los cuales suelen crearse animaciones y an\'alisis detallados de la simulaci\'on.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Salida de errores}
-La versi\'on actual no redrecciona informacion a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de \lpmd.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Utilidades Derivadas de lpmd}
+\label{chap:utilidades}
+\section{lpmd-analyzer}
+\section{lpmd-convert}
+\section{lpmd-mixer}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Desarrollando M\'odulos}
-\label{chap:own}
-
-\section{Idea Principal}
-
-Una de las caracter\'isticas princpales de \lpmd con respecto a otros c\'odigos de Din\'amica Molecular es su gran \textit{modularidad} lo que hace que muchas propiedades de un ciclo regular de din\'amica molecular sean modificables facilmentes, por ejemplo un cilco de din\'amica molecular consta de muchas \textbf{piezas} constantes, tales como los potenciales, integradores o bien una propiedad que puede ser calculada de forma instantanea o que requiere una correlaci\'on temporal del sistema.
-
-Consideremos por ejemplo :
-
-Se puede observar claramente que existen \textbf{bloques} en donde la caracter\'istica principal de cada uno de ellos en \lpmd es que son modificables por diferentes tipos de \textbf{m\'odulos} que \textit{encajan} perfectamente en estos bloques, estos m\'odulos pueden ser din\'amicos lo que da una ventaja significativa a la hora de desarrollar el c\'odigo necesario para trabajar con \'el.
-
-En este cap\'itulo se exponen las distintas piezas \textbf{modificables} de \lpmd que har\'an de este un c\'odigo mucho m\'as \'util para el desarrollo de distintas investigaciones con una misma herramienta.
-
-\section{Desarrollando un Potencial}
-
-Una de las piezas fundamentales en la din\'amica molecular, es la integraci\'on de un potencial interat\'omico entre las particulas que componen el sistema, es por eso que \lpmd facilita 
-
-\section{Desarrollando una Propiedad}
-
-Durante una simulaci\'on de din\'amica molecular una de las herramientas m\'as utilizadas  son las propiedades f\'isicas del sistema, las que son, een ocaciones, comparables con resultados experimentales provenientes del laboratorio. Sin embargo estas propiedades, no siempre pueden ser evaluadas ya que los programas no cuentan con ellas, o bien deben implementarse para resolver este problema, aprendiendo a tomar configuraciones de salida de otros programas, para nuestros fines.
-
-Para resolver esta situaci\'on \lpmd calcula propiedades de un sistema atomico, de forma modular, es decir cada uno de nosotros puede \textbf{programar} la propidad que necesesita para su evaluacion, instantanea, o en ocaciones temporal.
-
-\lpmd separa las propiedades de una celda de simulaci\'on en 2 tipos :
-
-\begin{itemize}
- \item Propiedades Instantaneas.
- \item Propiedades Temporales.
-\end{itemize}
-
-En donde, las instantaneas corresponden a las propiedades que pueden calcularse en un instante de tiempo y no dependen de configuraciones previas del sistema (como funci\'on de distribuci\'on de pares), en cambio las temporales son aquellas que dependen de configuraciones previas del sistema, por ejemplo la funci\'on de autocorrelaci\'on de velocidades.
-
-A continuaci\'on se mostrar\'a la estructura b\'asica necesaria para implementar propiedades instantaneas y temporales en el programa \lpmd y as\'i utilizarlas durante la ejecuci\'on de \lpmd o bien para trabajar con nuevas utilidades.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instant\'anea}
-
-Las propiedades m\'as simples para comenzar a implementar son las instantaneas, dentro de este tipo de propiedades tenemos aquellas que retornan por valor un solo n\'umero real (energ\'ia, temperatura, etc.) y otras que retornan una matriz de numeros reales (como g(r) o distribuci\'on angular, etc.), para esto es necesario ubicarse dentro del directorio \verb|lib| de \lpmd y generar dos nuevos archivos que constan con informacion b\'asica de la propiedad.
-
-Consideremos por ejemplo la funci\'on de distribuci\'on de pares (\verb|g(r)|) (\textbf{nota : esto ya existe en el directorio, ac\'a se muestra a modo de ejemplo.}), para ello generamos dos nuevos ficheros dentro de \verb|lib| :
-
-\begin{center}
- \verb|touch gdr.cc gdr.h|
-\end{center}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Temporal}
-
-Las propiedades temporales n est\'an dise\~nadas para ser evaluadas duratne a siulaci\'on, sin embargo es facil su implementacion en la API, lo que puede llevar a utilziarlas en otros c\'odigos, tales como fumody.
-
-La idea es utilizar los archivos de configuraci\'on de salida de lpmd.
-
-\section{Desarrollando Integrador}
-
-Un integrador cumple la funcion de ...
-
-\section{Desarrollando Utilidades}
-
-La API (liblpmd) es la principal herramienta que deja lpmd, que puede ser utilizada no solo por \'el sino que por utilidades que nosotros deseamos dise\~nar.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 6%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Ejemplos.}
@@ -1080,7 +1175,75 @@ visualize povray2 start=1 end=50000 each=100
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 5%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Desarrollando M\'odulos}
+\label{chap:own}
+
+\section{Idea Principal}
+
+Una de las caracter\'isticas princpales de \lpmd con respecto a otros c\'odigos de Din\'amica Molecular es su gran \textit{modularidad} lo que hace que muchas propiedades de un ciclo regular de din\'amica molecular sean modificables facilmentes, por ejemplo un cilco de din\'amica molecular consta de muchas \textbf{piezas} constantes, tales como los potenciales, integradores o bien una propiedad que puede ser calculada de forma instantanea o que requiere una correlaci\'on temporal del sistema.
+
+Consideremos por ejemplo :
+
+Se puede observar claramente que existen \textbf{bloques} en donde la caracter\'istica principal de cada uno de ellos en \lpmd es que son modificables por diferentes tipos de \textbf{m\'odulos} que \textit{encajan} perfectamente en estos bloques, estos m\'odulos pueden ser din\'amicos lo que da una ventaja significativa a la hora de desarrollar el c\'odigo necesario para trabajar con \'el.
+
+En este cap\'itulo se exponen las distintas piezas \textbf{modificables} de \lpmd que har\'an de este un c\'odigo mucho m\'as \'util para el desarrollo de distintas investigaciones con una misma herramienta.
+
+\section{Desarrollando un Potencial}
+
+Una de las piezas fundamentales en la din\'amica molecular, es la integraci\'on de un potencial interat\'omico entre las particulas que componen el sistema, es por eso que \lpmd facilita 
+
+\section{Desarrollando una Propiedad}
+
+Durante una simulaci\'on de din\'amica molecular una de las herramientas m\'as utilizadas  son las propiedades f\'isicas del sistema, las que son, een ocaciones, comparables con resultados experimentales provenientes del laboratorio. Sin embargo estas propiedades, no siempre pueden ser evaluadas ya que los programas no cuentan con ellas, o bien deben implementarse para resolver este problema, aprendiendo a tomar configuraciones de salida de otros programas, para nuestros fines.
+
+Para resolver esta situaci\'on \lpmd calcula propiedades de un sistema atomico, de forma modular, es decir cada uno de nosotros puede \textbf{programar} la propidad que necesesita para su evaluacion, instantanea, o en ocaciones temporal.
+
+\lpmd separa las propiedades de una celda de simulaci\'on en 2 tipos :
+
+\begin{itemize}
+ \item Propiedades Instantaneas.
+ \item Propiedades Temporales.
+\end{itemize}
+
+En donde, las instantaneas corresponden a las propiedades que pueden calcularse en un instante de tiempo y no dependen de configuraciones previas del sistema (como funci\'on de distribuci\'on de pares), en cambio las temporales son aquellas que dependen de configuraciones previas del sistema, por ejemplo la funci\'on de autocorrelaci\'on de velocidades.
+
+A continuaci\'on se mostrar\'a la estructura b\'asica necesaria para implementar propiedades instantaneas y temporales en el programa \lpmd y as\'i utilizarlas durante la ejecuci\'on de \lpmd o bien para trabajar con nuevas utilidades.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Instant\'anea}
+
+Las propiedades m\'as simples para comenzar a implementar son las instantaneas, dentro de este tipo de propiedades tenemos aquellas que retornan por valor un solo n\'umero real (energ\'ia, temperatura, etc.) y otras que retornan una matriz de numeros reales (como g(r) o distribuci\'on angular, etc.), para esto es necesario ubicarse dentro del directorio \verb|lib| de \lpmd y generar dos nuevos archivos que constan con informacion b\'asica de la propiedad.
+
+Consideremos por ejemplo la funci\'on de distribuci\'on de pares (\verb|g(r)|) (\textbf{nota : esto ya existe en el directorio, ac\'a se muestra a modo de ejemplo.}), para ello generamos dos nuevos ficheros dentro de \verb|lib| :
+
+\begin{center}
+ \verb|touch gdr.cc gdr.h|
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Temporal}
+
+Las propiedades temporales n est\'an dise\~nadas para ser evaluadas duratne a siulaci\'on, sin embargo es facil su implementacion en la API, lo que puede llevar a utilziarlas en otros c\'odigos, tales como fumody.
+
+La idea es utilizar los archivos de configuraci\'on de salida de lpmd.
+
+\section{Desarrollando Integrador}
+
+Un integrador cumple la funcion de ...
+
+\section{Desarrollando Utilidades}
+
+La API (liblpmd) es la principal herramienta que deja lpmd, que puede ser utilizada no solo por \'el sino que por utilidades que nosotros deseamos dise\~nar.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 8%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Paralelizaci\'on}
@@ -1090,7 +1253,7 @@ Por qu\'e paralelizar, desde donde comenzar. Actualmente, se espera una versi\'o
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 6%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 9%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Gente}
@@ -1129,7 +1292,7 @@ Colaboradores :
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%CAPITULO 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%CAPITULO 10%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Ap\'endice}
