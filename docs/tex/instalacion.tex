@@ -1,0 +1,177 @@
+\chapter{Instalaci\'on}
+\label{chap:inst}
+
+\lpmd ha sido probado en distintas arquitecturas, y compiladores, hasta ahora podemos \textbf{dar fe} que se ha logrado compilar el c\'odigo fuente en las siguientes arquitecturas.
+
+\begin{itemize}
+ \item Linux I686/AMD64
+ \item OS/X
+ \item Solaris
+ \item Inclusive en Windows
+\end{itemize}
+
+\section{Descarga}
+
+Para el correcto funcionamiento de \lpmd es necesario instalar previamente una librer\'ia y un set de plugins. Por lo que se requieren descargar 3 paquetes principales. La divisi\'on del c\'odigo en este set de paquetes se debe a la reutilizaci\'on de la \textbf{API} y los \textbf{plugins} para nuevos programas de utilidades o bien para un propio usuario interesado en la programaci\'on. Lo que adem\'as lleva una simplificaci\'on a aquellas personas que desean programar sus propios \textbf{plugins}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Descarga de versi\'on estable}
+
+La \'ultima versi\'on estable de los paquetes es :
+
+\begin{itemize}
+ \item liblpmd : ver. 0.1.2
+ \item plugins : ver. 0.5.2
+ \item lpmd    : ver. 0.5.2
+\end{itemize}
+
+Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Descarga de versi\'on en desarrollo}
+
+Para los interesados en el desarrollo actual de \lpmd y sus dependencias principales, las pueden descargar con:
+
+\begin{center}
+ \begin{verbatim}
+  svn co svn://www.gnm.cl/lpmd/liblpmd/testing liblpmd-uns
+  svn co svn://www.gnm.cl/lpmd/plugins/testing plugins-uns
+  svn co svn://www.gnm.cl/lpmd/lpmd/testing lpmd-uns
+ \end{verbatim}
+\end{center}
+
+Est\'a disponible adem\'as una rama \verb|unstable|, sin embargo no recomendamos utilizarla para c\'alculos de Din\'amica Molecular, s\'olo para investigaci\'on y pruebas en c\'odigos.
+
+\section{Instalaci\'on}
+Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}, a continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
+
+\cajatx{Nota : Los que poseen la versi\'on testing/unstable cuentan con el fichero \textbf{autogen.sh} para poder generar los Makefiles. \\ Se necesita instalar automake y libtool para poder ejecutar \textbf{autogen.sh}.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Instalando liblpmd}
+
+% \cajatx{Nota : La versi\'on inestable requiere que tenga instalando autmake y libtool. Para ejecutar autogen.sh}
+% 
+% En primer lugar debe tener instalado automake y libtool, si no lo tiene puede hacerlo como administrador de la siguiente manera:
+% 
+% \control{apt-get install automake libtool}
+
+En primer lugar descomprima el paquete de la \textbf{liblpmd},
+
+\control{tar -xvzf liblpmd-X.X.X.tar.gz}
+
+lo que le generar\'a un nuevo directorio, para instalar esta librer\'ia con todos los m\'etodos necesarios para el funcionamiento de \lpmd y la implementaci\'on de plugins ejecute :
+
+\control{./configure \\ make}
+
+y como administrador,
+
+
+\control{make install}
+
+
+Por \textit{default} el directorio de instalaci\'on de la API programa es \verb|/usr/local/|, en caso de requerir una ubicaci\'on distinta revise las opciones con \verb|./configure --help|. Y si desea instalarlo en un directorio personal refierase a la secci\'on~\cite{subsub:personaldir}.
+
+En caso de cualquier error env\'ie un e-mail a alguno de los desarrolladores principales o en su defecto a \verb|gnm@gnm.cl|.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Instalando plugins}
+
+Uno de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
+
+\control{./configure  \\ make}
+
+y proceder la instalaci\'on como administrador:
+
+\control{make install}
+
+Esto ubicar\'a todos los plugins incluidos en el paquete \verb|plugins| en el directorio \verb|/usr/local/lib/lpmd|. De esta forma ya estamos listos para comenzar la instalaci\'on de lpmd y realizar las primeras pruebas.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Instalando lpmd}
+
+Es uno de los paquetes m\'as peque\~nos y r\'apidos de instalar, para proceder, se hace de manera similar que los anteriores, ejecutando :
+
+\control{./configure \\ make}
+
+y proceder a instalar como administrador:
+
+\control{make install}
+
+Esto generar\'a un set de ejecutables \verb|lpmd|, \verb|lpmd-analyzer| y \verb|lpmd-converter| en \verb|/usr/local/bin/|, que puede ser ejecutado desde cualquier sitio (si se presenta alg\'un problema, corriga su \verb|PATH|).
+
+Puede correr lpmd con
+
+\begin{verbatim}
+username@machine:~$ lpmd
+...
+LPMD version 0.5.0
+Using liblpmd version 1.0.0
+
+Usage:lpmd [--verbose|-v] [--option|-o <option=value,option=value,...>] <file.control>
+      lpmd [--pluginhelp | -p <pluginname>]
+      lpmd [--help | -h ]
+username@machine:~$
+\end{verbatim}
+
+\subsection{Problemas t\'ipicos post-instalaci\'on}
+
+\subsubsection{Error cargando librer\'ia}
+
+Es uno de los errores m\'as comunes luego de la instlaci\'on de \lpmd. Ocurre que al ejecutar \lpmd no muestra nada m\'as que un error referencial a la librer\'ia liblpmd que no puede ser encontrada.
+
+La forma de corregir el problema es,
+
+\begin{itemize}
+ \item Editar /etc/ld.so.conf
+ \item A\~nadir al archivo la linea /usr/local/lib (o donde se haya instalado liblpmd)
+ \item Ejecutar como admininistrador el comando : ldconfig
+\end{itemize}
+
+Ahora deber\'ia ejecutar el comando sin problemas.
+
+\subsection{Instalaci\'on de lpmd en directorio personal}
+\label{subsub:personaldir}
+
+Podemos istalar cada uno de los paquetes (\textbf{liblpmd}, \textbf{plugins} y \textbf{lpmd}) en un directorio personal, para eso consideremos un ejemplo, en el cu\'al deseamos instalar estos paquetes en el directorio \verb|loca;| ubicado dentro de el \textit{home} del usuario, el procedimiento ser\'ia.
+
+\begin{itemize}
+ \item Para liblpmd
+ \begin{verbatim}
+ ./configure --prefix=/home/user/local
+ make
+ make install
+ \end{verbatim}
+ \item Para plugins
+ \begin{verbatim}
+ ./configure --prefix=/home/user/local --with-lpmd=/home/user/local
+ make
+ make install
+ \end{verbatim}
+ \item Para lpmd, es necesario indicar con variables de ambiente para la compilaci\'on, note que \verb|\\| indica que es una sola l\'inea que contin\'ua.
+ \begin{verbatim}
+ LDFLAGS="-Wl,--rpath -Wl,/home/user/local/lib" \\
+ ./configure --prefix=/home/user/local --with-lpmd=/home/user/local
+ make
+ make install
+ \end{verbatim}
+\end{itemize}
+
+De esta forma se generaran los esqueletos en \verb|/home/user/local| con \verb|bin|, \verb|lib|, etc.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Actualizando lpmd}
+
+% \lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
+% 
+% Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
+% 
+% Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
+

@@ -1,0 +1,126 @@
+\chapter{Ejemplos.}
+\label{chap:exa}
+
+Ac\'a encontrar\'a algunos ejemplos de simulaciones realizadas con lpmd, en su ultima versi\'on estable.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ejemplos para LPMD}
+
+Existen algunas l\'ineas dentro de cada ejemplo que al final poseen \verb|//|, lo que significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea.
+
+\subsection{Celda de Ar de 108 \'atomos.}
+
+A continuaci\'on una simulaci\'on de Ar con 108 \'atomos, en la cu\'al se realizan distintos escalamientos de temperatura. El ejemplo puede descargarlo completamente de,
+
+\cajatx{http://wwww.gnm.cl/software/lpmd/examples/ar108-1.tgz}
+
+Veamos algunas partes fundamentales del fichero de control.
+
+% \texttt{
+% \# System file of Ar gas
+% \# using lpmd
+% 
+% \#CELL
+% 
+% cell crystal a\=17.1191 b\=17.1191 c\=17.1191 alpha\=90.0 beta\=90.0 gamma\=90.0
+% 
+% }
+
+% \texttt{
+% \# System file of Ar gas 
+% \# using LPMD
+% \#
+% 
+% \#
+% \#CELL and IN/OUT
+% \#
+% cell crystal a=17.1191 b=17.1191 c=17.1191 alpha=90.0 beta=90.0 gamma=90.0
+% 
+% input module=lpmd file=argon108.lpmd level=0
+% output module=xyz file=output.xyz each=20 level=0
+% 
+% \#
+% \#GENERAL
+% \#
+% prepare repeat 1 1 1
+% prepare temperature 84
+% charge Ar 0.0
+% steps 5000
+% dumping file=ljargon.dump each=10000
+% periodic true true true
+% 
+% \#Cargamos inmediatamente pressure
+% \#para poder visualizar con monitor
+% 
+% use pressure
+% enduse
+% 
+% monitor start=0 end=5000 each=10 properties=kinetic-energy,potential-energy, \/\/
+% total-energy,pressure,volume output=monitor.dat
+% 
+% \#
+% \#MODULES DEF
+% \#
+% use lennardjones as lj\_Ar
+%     sigma 3.41
+%     epsilon 0.0103408
+%     cutoff 8.5
+% enduse
+% 
+% use beeman
+%     dt 10.0
+% enduse
+% \#
+% \#MOD APPLICATION
+% \#
+% potential lj\_Ar Ar Ar
+% integrator beeman
+% }
+
+Corremos la simulaci\'on con 
+\begin{verbatim}
+  lpmd ljargon.control > salida.out
+\end{verbatim}
+
+Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conservaci\'on de la energ\'ia a partir del fichero \verb|monitor.dat| que fue generado. Como se observa en la figura a continuaci\'on.
+
+\subsection{Escalamiento de Temperatura.}
+
+\subsection{Escalamiento de Celda.}
+
+\subsection{Calculando Propiedades durante la Simulaci\'on.}
+
+\subsection{Multiples corridas con bash.}
+
+\subsection{Generando ficheros pov para crear pel\'iculas.}
+
+\subsection{Cambiando el integrador durante la simulaci\'on.}
+
+\subsection{Multiples Monitor}
+
+\subsection{Multiples Output}
+
+\subsection{Calculo de Modulo de Bulk}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ejemplos LPMD-ANALYZER}
+
+\subsection{Calculando funci\'on radial de distribuci\'on.}
+
+\subsection{Calculando distribucion angular}
+
+\subsection{Dos tipos de N\'umero de Coordinaci\'on}
+
+\subsection{Distribuci\'on de velocidades}
+
+\subsection{Autocorrelaci\'ond e velocidades}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ejemplos LPMD-CONVERTER}
+
+\subsection{De un formato a otro}
+
+\subsection{Formatos \'utiles}

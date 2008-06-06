@@ -1,0 +1,506 @@
+\chapter{M\'odulos}
+\label{chap:modulos}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propiedades del sistema}
+Estos m\'odulos corresponden principalmente a \textbf{informaci\'on} del set de part\'iculas con el cu\'al se esta trabajando, as\'i como tambi\'en a aquellos m\'odulos que tienen la capacidad de \textbf{modificar} y \textbf{manejar} este set, o alguna propiedad de ellas.
+\subsection{cell}
+Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| para entregar esta informaci\'on. \textbf{NO} es necesario cargar este m\'odulo ya que se carga por \textit{default} al correr \lpmd.
+
+\cajatx{
+\begin{tabular}{lcl}
+ volume & = & Retorna el volumen de la celda.\\
+ density & = & Retorna la densidad de la celda.\\
+ cell-n & = & n=a,b,c Retorna el largo de cada eje.\\
+ particledensity & = & Retorna la densidad por particula. \\
+ volumeperatom & = & Retornael volumen por \'atomo. \\
+\end{tabular}
+}
+
+\subsection{energy}
+Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargao autom\'aticamente al correr \lpmd. La informaci\'on que entregua el m\'odulo a trav\'es de \verb|monitor| es:
+
+\cajatx{
+\begin{tabular}{lcl}
+ kinetic-energy & = & Retorna el valor de la Energ\'ia \\
+                   && cin\'etica [eV].\\
+ potential-energy & = & Retorna la energ\'ia potencial [eV].\\
+ total-energy & = & Retorna la energ\'ia total [eV].\\
+ momentum & = & Retorna el momentum [?]. \\
+ p-n & = & n=x,y,z Retorna el momentum por eje. \\
+ temperature & = & Retorna el valor de la temperatura [K]
+\end{tabular}
+}
+
+\subsection{pressure}
+
+Entrega informaci\'on sobre la presi\'on en el sistema y el stress. Este m\'odulo \textbf{SI} es necesario cargarlo antes de llamar a la informaci\'on requerida. Basta llamarlo con,
+
+\control{use pressure \\enduse}
+
+para luego utilizar en \verb|monitor| los llamados posibles de pressure. Es recomendable que primero ``cargue'' el m\'odulo \verb|pressure| y luego especif\'ique el monitor que har\'a menci\'on a alguna de sus propiedades.
+
+\cajatx{
+\begin{tabular}{lcl}
+ pressure & = & Retorna el valor de la Presi\'on [MPa].\\
+ virial-pressure & = & Retorna la contribuci\'on \\
+                     &&virial a la presi\'on [MPa].\\
+ kinetic-pressure & = & Retorna la contribuci\'on \\
+                     &&cin\'etica a la presi\'on [MPa].\\
+ sij & = & i,j=x,y,z Retorna los valores del tensor \\
+                     &&de stress[?]. \\
+\end{tabular}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{M\'odulos Entrada/Salida}
+\label{chap:modulos:entradasalida}
+Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que los argumentos necesitan ser entregados en esta misma linea. Es decir la instrucci\'on sera siempre de la forma :
+
+\control{input module=nombre opc1=.. opc2=.. ...  opcN=...}
+
+en donde \verb|opcX| son las opciones de cada m\'odulo en paticular. Y de igual forma para \verb|output|.
+
+\subsection{xyz}
+\'Este es el m\'odulo que se utiliza para cargar/escribir archivos de configuraci\'on en formato \verb|xyz|, las opciones actuales de este m\'odulo son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ file & = & archivo de entrada/salida.\\
+ level & = & indica el nivel del fichero, estos pueden ser \\
+           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
+ coords & = & utilizado para ``posicionar'' una celda que \\
+           &&ha sido leida, sus valores pueden ser \\
+           &&centered/uncentered.\\
+ inside & = & Puede ser true/false, indica si los \'atomos. \\
+          &&que est\'an fuera de una celda se deben reubicar.\\
+ external & = & ignore/consider. Espec\'ifica si se deben \\
+          &&ignorar o considerar los atomos fuera de la celda.
+\end{tabular}
+}
+
+Muchas de estas opciones no son utilizadas en una corrida con \lpmd, sin embargo pueden ser utiles a la hora de trabajar con utilidades tales como \verb|lpmd-analyzer| u otras. En general la forma de utilizar el m\'odulo es,
+
+\begin{itemize}
+ \item \textbf{Cargando un fichero xyz}
+       \control{input module=xyz file=archivo.xyz}
+ \item \textbf{Escribiendo la salida en un fichero xyz con velocidades}
+       \control{output module=xyz file=salida.xyz level=1}
+\end{itemize}
+
+No todas las opciones son necesarias, muchas de ellas ya tienen valores por defecto, vease \verb|lpmd -p xyz| para m\'as informaci\'on.
+
+\subsection{lpmd}
+
+Es un formato propio de \lpmd, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios.
+
+\cajatx{
+\begin{tabular}{lcl}
+ file & = & archivo de entrada/salida.\\
+ level & = & indica el nivel del fichero, estos pueden ser \\
+           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
+\end{tabular}
+}
+
+La forma com\'un de uso en lpmd es,
+
+\begin{itemize}
+ \item \textbf{Cargando un fichero lpmd}
+       \control{input module=lpmd file=archivo.lpmd}
+ \item \textbf{Escribiendo la salida en un fichero lpmd con velocidades}
+       \control{output module=lpmd file=salida.lpmd level=1}
+\end{itemize}
+
+\subsection{zlp}
+
+Es un formato similar a \verb|lpmd| sin embargo, este formato utiliza las librerias \textbf{zlib} (para su compilaci\'on), por lo que es un formato binario que utiliza, a diferencia de lpmd, una cantidad de espacio muy reducida en comparaci\'on a los archivos de entrada de tipo \verb|ASCII|.
+
+Las opciones y el uso es similar al formato \verb|lpmd|, salvo algunas opciones de compresi\'on, 
+
+\cajatx{
+\begin{tabular}{lcl}
+ file & = & archivo de entrada/salida.\\
+ level & = & indica el nivel del fichero, estos pueden ser \\
+           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
+ blocksize & = & Tamano del buffer interno de compresi\'on\\
+ level & = & Nivel de compresion, 1..6. \\
+\end{tabular}
+}
+
+La forma de uso, es similar a \verb|lpmd|.
+
+\subsection{crystalfcc}
+Genera una celda cristalina del tipo fcc. Este m\'odulo se utiliza en lugar de un fichero de entrada, las opciones de \'este m\'odulo son entregadas directamente en
+\subsection{crystalsc}
+Genera una celda cstalino del tipo sc.
+\subsection{crystalbcc}
+\subsection{crystalhcp}
+\subsection{crystal2d}
+\subsection{skewstart}
+\subsection{dlpoly}
+\subsection{vasp}
+Genera una celda con m\'etodo SkewStart (Refson).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modificadores}
+\subsection{tempscaling}
+
+Utilizado para escalar la temperatura de la muestra, utilizando rescalamiento de velocidades en las part\'iculas, 
+
+\subsection{berendsen}
+Termostato de berendsen, mucho m\'as suave que tempscaling.
+\subsection{cellscaling}
+Escala la celda cierto porcentaje, puede ser por eje o total.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Manejadores de Celda}
+Estos m\'odulos son los encargados de generar las \textbf{lista inteligentes} para poder realizar simulaciones o c\'alculos de Din\'amica Molecular, los dos plugins implementados a la fecha son:
+
+\subsection{minimumimage}
+Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que el m'etodo linkedcell, pero en el s'olo se necesita ingresar el radio de corte del sistema. Est\'e m\'etodo no es bueno cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
+
+\begin{itemize}
+ \item \textbf{Cargando el M\'odulo}
+       \control{use minimumimage \\ cutoff 2.0 \\enduse}
+ \item \textbf{Aplicando el M\'odulo}
+       \control{cellmanager minimumimage}
+\end{itemize}
+
+Con \'esto nuestra simulaci\'on utilizar\'a el m\'etodo de m\'inima imagen para un \verb|cutoff| de 2.0 \AA.
+
+\subsection{linkedcell}
+Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido que el m\'etodo de m\'inima imagen, y de por s\'i es el m\'as utilizado en la mayor\'ia de los c\'odigos de \textbf{DM}, se puede subdividir la celda a voluntad, sin embargo es recomendable que el tama\~no de subdivisi\'on de la celda no sea menor que la distancia m\'inima de interacci\'on entre las part\'iculas, con algun potencial.
+
+\begin{itemize}
+ \item \textbf{Cargando el M\'odulo}
+       \control{use linkedcell \\ cutoff 2.0 \\ nx 10\\ ny 10\\ nz 10\\enduse}
+ \item \textbf{Aplicando el M\'odulo}
+       \control{cellmanager linkedcell}
+\end{itemize}
+
+As\'i subdividimos la celda en una grilla de 10x10x10. Para generar las listas de vecinos de cada \'atomo.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Potenciales Interat\'omicos de pares}
+\subsection{lennardjones}
+El m\'odulo \textbf{lennardjones} hace referencia al potencial de Lennard-Jones, que es de la forma,
+$$U(r_{ij}) = 4\epsilon\left(\left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^6\right)$$
+En donde $r_{ij}$ es la distancia interat\'omica de los \'atomos $i$ y $j$. La implementaci\'on del m\'etodo virtual, queda entonces como :
+\begin{verbatim}
+double LennardJones::pairEnergy(const double & r) const
+{
+ double rtmp=sigma/r;
+ double r6 = rtmp*rtmp*rtmp*rtmp*rtmp*rtmp;
+ double r12 = r6*r6;
+ return 4.0e0*epsilon*(r12 - r6);
+}
+\end{verbatim}
+
+Para el c\'alculo de Fuerzas, la forma del potencial que nos interesa, es aquella fuerza que siente el \'atomo $i$ producida por el \'atomo $j$, la que debe ser implementada en el plugin, para potentiales de pares, para el caso del potencial de Lennard Jones, la fuerza esta dada por,
+
+$$F_{ij} = \frac{-48.0\epsilon}{r_{ij}^2}\left( \left(\frac{\sigma}{r_{ij}}\right)^{12} + \frac{1}{2}\left(\frac{\sigma}{r_{ij}}\right)^6 \right) \vec{r_{ij}}$$
+
+en donde $\vec{r_{ij}}$ es el vector distancia entre los \'atomos $i$ y $j$, y $r_{ij}$ es la distancia entre ellos. La implementaci\'on de la fuerza de pares requerida por la API es :
+
+\begin{verbatim}
+Vector LennardJones::pairForce(const Vector & r) const
+{
+ double rr2 = r.Mod2();
+ double r6 = pow(sigma*sigma / rr2, 3.0e0);
+ double r12 = r6*r6;
+ double ff = -48.0e0*(epsilon/rr2)*(r12 - 0.50e0*r6);
+ Vector fv = r;
+ fv.Scale(ff);
+ return fv;
+}
+\end{verbatim}
+
+Las palbras reservadas por el plugin \textbf{lennardjones}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ epsilon & = & indica el valor de epsilon.\\
+ sigma & = & indica el valor de sigma.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+Las unidades en que deben ser ingresados, las constantes, deben ser basadas en que las distancias estan en [\AA] y la energ\'ia debe ser adquirida en [eV].
+
+\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+
+\subsection{fastlj}
+Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
+
+\subsection{morse}
+Utiliza Potencial de Morse para la interacci\'on de las especies at\'omicas. La energ\'ia que siente una part\'icula $i$ a causa de la precensia de otra part\'icula $j$, si ambas interactuan con un potencial de este estilo, esta dada por :
+
+$$E(\vec{r}_{ij}) = D_e\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)^2$$
+
+en donde $D_e$ es la profundidad del pozo, $a$ es el ancho del pozi y $r_e$ es la distancia en equilibrio. Y entonces, la fuerza que siente un \'atomo $i$ producto de otro \'atomo $j$ est\'a dada por,
+
+$$\vec{F}_{ij} ( \vec{r}_{ij}) = 2aD_e\exp(-a(\vec{r}_{ij}-\vec{r}_e))\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)\frac{\vec{r}}{|\vec{r}|}$$
+
+Las palabras reservadas por el plugin \textbf{morse}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ depth & = & indica el valor de profundidad del pozo.\\
+ a & = & indica el valor del ancho del pozo.\\
+ re & = & indica el largo de enlaze en equilibrio.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+
+\subsection{constantforce}
+Mantiene una fuerza constante sobre atomos de cierta especie, se utiliza principalmente para aplicarles fuerzas a especies at\'omicas o bien a atomos seleccionados de alguna forma en especial. Este \textit{potencial}, no retorna una energ\'ia (cero) y solo tiene capacidad de asginar una fuerza constante a un set de atomos.
+
+Por ejemplo si queremos que algunos \'atomos se vean afectados por la gravedad, podr\'iamos tener algo como :
+
+\control{use constantforce as CF \\   forcevector 0.0 0.0 -9.8 \\enduse}
+
+Las palabras reservadas por el plugin \textbf{constantforce}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ forcevector & = & indica de la fuerza constante a aplicarse.\\
+\end{tabular}
+}
+
+\subsection{harmonic}
+Potencial arm\'onico entre especies at\'omicas. De manera similar a un potencial de morse, tenemos que la energ\'ia que sienten las part\'iculas $i$ y $j$ a causa de la interacci\'on a trav\'es de \'este potencial es,
+
+$$E(\vec{r}_{ij}) = \frac{1}{2}k\left(|\vec{r}_{ij}|-a\right)^2$$
+
+En donde $k$ es la constante de elasticidad y $a$ la separaci\'on de equilibrio. Con esto la fuerza para el potencial arm\'onico esta dada por,
+
+$$\vec{F}(\vec{r}_{ij}) = \frac{k}{|\vec{r}_{ij}|}\left(|\vec{r}_{ij}|-a\right)$$
+
+Las palabras reservadas por el plugin \textbf{harmonic}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ k & = & indica el valor de la constante de elasticidad.\\
+ a & = & indica el valor de el largo de equilibrio.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+\subsection{buckingham}
+\cajatx{Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.}
+
+Est\'e m\'odulo especif\'ica la interacci\'on de buckingham entre los \'atomos, de esta forma, la energ\'ia producida por la interacci\'on de dos part\'iculas $i$ y $j$, queda
+
+$$E(\vec{r}_{ij}) = B1 \exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right) - \frac{B2}{(|\vec{r}_{ij}|)^6}$$
+
+y la fuerza,
+
+$$\vec{F}(\vec{r}_{ij}) = -\frac{B1\exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right)}{|\vec{r}_{ij}|\rho}\vec{r}_{ij} + \frac{6B2}{|\vec{r}_{ij}|^8}\vec{r}_{ij}$$
+
+Las palabras reservadas por el plugin \textbf{buckingham}, son :
+
+\cajatx{
+\begin{tabular}{lcl}
+ B1 & = & indica el valor de la constante B1.\\
+ B2 & = & indica el valor de la constante B2.\\
+ Ro & = & el valor de rho para el potencial.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Potenciales Interat\'omicos Met\'alicos}
+\subsection{suttonchen}
+Este potencial, se utiliza para interacciones de atomos met\'alicos, es por eso que el plugin \textbf{suttonchen} implementa los m\'etodos virtuales de \verb|metalpotential|, que cuentan con una parte de pares y otro t\'ermino de muchos cuerpos. La parte asociada al t\'ermino de pares, est\'a dado por,
+
+$$U(r_{ij}) = \left(\frac{a}{r_{ij}}\right)^n$$
+
+en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de mcuhos cuerpos esta dado por
+
+$$F(\rho_{i}) = -c\epsilon\sqrt{\rho_i}$$
+
+en donde,
+
+$$\rho_i = \sum_{j\neq i} \left(\frac{a}{r_{ij}}\right)^m$$
+
+lo que corresponde a una densidad local del atomo $i$, que depende de todos los atomos $j$ cercanos a \'el, \'esta densidad local sin embargo, debe ser corregida para el caso de suttonchen (note que no todos los potenciales asociados a los metales requieren de esta correcci\'on, pero \verb|metalpotential| lo requiere, as\'i que en ocaciones debe ser cero).
+
+Para el potencial de SuttonChen, la correcci\'on de la densidad esta dada por,
+
+$$\delta\rho_i=\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{(m-3)}$$
+
+Esta correcci\'on de la densidad debe ser aplicada inmediatamente luego de ser calculada la densidad local. La correcci\'on de la energ\'ia para Sutton Chen, se obtiene de esta forma con :
+
+$$\delta U_1 = \frac{2\pi N\overline{\rho}\epsilon a^3}{n-3}\left(\frac{a}{r_{met}}\right)^{n-3}$$
+
+Hay que notar que $\delta U_2$ no es requerido si $\rho_i$ ya fue corregido, con $\delta U_2$ de la forma
+
+$$\delta U_2 = -\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{n-3}\left<\frac{Nc\epsilon}{2\sqrt{\rho_i^0}}\right>$$
+
+La implementaci\'on de esta energ\'ia para el potencial met\'alico, 
+
+\begin{verbatim}
+double SuttonChen::pairEnergy(const double &r) const
+{
+ return e*pow((a/r),n);
+}
+
+double SuttonChen::rhoij(const double &r) const
+{
+ return pow((a/r),m);
+}
+
+double SuttonChen::F(const double &rhoi) const
+{
+ return -c*e*sqrt(rhoi);
+}
+
+double SuttonChen::deltarhoi(const double &rhobar) const
+{
+ return (4*M_PI*rhobar*a*a*a/(m-3))*pow(a/rcut,m-3);
+}
+
+double SuttonChen::deltaU1(const double &rhobar, const int &N) const
+{
+ double f = 2*M_PI*N*rhobar*e*a*a*a/(n-3);
+ return f*pow(a/rcut,n-3);
+}
+\end{verbatim}
+
+y la fuerza asociada al potencial de suttonchen que aplica para un par de atomos $i$ y $j$ est\'a dada por,
+
+$$\vec{F}(\vec{r}_{ij}) = -\epsilon\left[n\left(\frac{a}{\vec{r}_{ij}}\right)^n - \frac{Cm}{2}(\rho_j^{(-1/2)}+\rho_i^{(-1/2)})\left(\frac{a}{\vec{r}_{ij}}\right)^m\right]\left(\frac{1}{\vec{r}_{ij}^2}\right)\vec{r}_{ij}$$
+
+Donde la implementaci\'on de la fuerza como m\'etodo virtual de los potenciales met\'alicos queda de la forma,
+
+\begin{verbatim}
+ Vector SuttonChen::PairForce(const Vector &rij) const
+{
+ Vector norm = rij;
+ double rmod = rij.Mod();
+ norm.Norm();
+ return -n*e*pow(a/rmod,n)*(norm/rmod);
+}
+
+Vector SuttonChen::ManyBodies(const Vector &rij, const double &rhoi, \\
+const double &rhoj) const
+{
+ double tmp;
+ double rmod = rij.Mod();
+ tmp=(m/2)*c*e*((1/sqrt(rhoi))+(1/sqrt(rhoj)))*pow(a/rmod,m)*(1.0/rmod);
+ Vector ff = rij;
+ ff.Norm();
+ return tmp*ff;
+}
+\end{verbatim}
+
+
+\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+
+\subsection{Gupta}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Potenciales Interat\'omicos Nulos}
+\subsection{nullpairpotential}
+Potencial de pares nulo entre especies. Se utiliza en caso de que se desea imponer una interaccion nula entre un par de especies especies at\'omicas. 
+\subsection{nullpotential}
+Potencial nulo entre especies. Utilizado para anular la interacion entre especies, retorna inmediatamente \verb|NULL| sin necesidad de verificar paridad.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Integradores}
+\subsection{beeman}
+Integrador de beeman.
+\subsection{euler}
+Integrador de Euler.
+\subsection{leapfrog}
+Salto de la rana.
+\subsection{nullintegrator}
+Integrador nulo.
+\subsection{velocityverlet}
+Utiliza metodo velocity verlet para integrar.
+\subsection{verlet}
+Utiliza metodo verlet para integrar.
+\subsection{nosehoover}
+Para sistemas NVT
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Visualizadores}
+\subsection{povray}
+Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on.
+
+Los argumentos requeridos (no todos) por el m\'odulo povray, son los siguientes,
+
+\cajatx{
+\begin{tabular}{lcl}
+ header & = & Es un nombre previo al nombre \\
+&&de los ficheros \textbf{pov} que ser\'an generados.\\
+ direct & = & Nombre del directorio que se crear\'a.\\
+ text & = & Orden para poner texto en \\
+&&diferentes posiciones.\\
+ background & = & Color del fondo de la imagen. \\
+ rotate & = & Orientaci\'on de la c\'amara.\\
+ logo   & = & Si desea anadir una imagen. \\
+ box  & = & Muestra o no la \textbf{celda} (True/False).\\
+ camera & = & Posici\'on de la c\'amara \\
+ &&(recomendamos default).\\
+\end{tabular}
+}
+
+Dentro de cada uno de \'estos argumentos, el que m\'as cabe detallar es \textbf{text}, el formato de ingreso de textos para la vsualizaci\'on, es el siguiente,
+
+\control{text "Titulo" <pos> <color> [size] (extra)}
+
+Ac\'a las opciones son en el orden requerido. El t\'itulo puede ser cualquier texto, si se utiliza el s\'imbolo ``\% '' entonces el valor de \verb|extra| ser\'a reemplazado (Actualmente : Temp, Step). Las opciones \verb|<pos>| y \verb|<color>| son vectores que deben ingresarse en el formato \verb|<x,y,z>| y corresponden a la posici\'on del texto y los colores, exiten valores por defecto, tales como \verb|<green>|, \verb|<red>| o posiciones como \verb|<dl>| (abajo a la izquierda) que pueden ser utilizadas. Finalmente [size] es el tama\~no escalado del texto.
+
+A continuaci\'on un ejemplo t\'ipico de uso de \verb|povray| en una simulaci\'on.
+
+\begin{verbatim}
+use povray
+    header shoot-
+    direct movie
+    text "Modelacion de Ar" <dl> <green> [1] ()
+    text "Step = %" <3,3,3> <red> [1] (Step)
+    text "Temperatura : % [K]" <uc> <blue> [1] (Temp)
+    text "http://www.gnm.cl/" <dr> <green> [0.5] ()
+    background <0.2,0.1,0.4>
+    rotate <0,0,0>
+    logo "logo-v2.gif" 1.5 <cr>
+enduse
+\end{verbatim}
+
+Luego de que los archivos son creados en el directorio ``movie'', es importante que coloque en ese directorio el logo al que los archivos hacen referencia \verb|logo-v2.gif|.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propiedades Est\'aticas}
+\subsection{angdist}
+Calcula la distribucion angular de la celda
+\subsection{cordnum}
+Calcula el n\'umero de cordinaci\'on de la celda.
+\subsection{cordnumfunc}
+Calcula el n\'umero de cordinaci\'on de la celda.
+\subsection{gdr}
+Caulcula la funcion de distribucion de pares de la celda.
+\subsection{densprofile}
+Calc\'ula un perfil de densidades bidimensional.
+\subsection{tempprofile}
+Calc\'ula un perfil de temperaturas bidimensional.
+\subsection{veldist}
+Distribucion de velocidades.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propiedades Din\'amicas}
+\subsection{vacf}
+Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda.
+\subsection{msd}
+Calcula el desplazamiento cuadratico medio del sistema.

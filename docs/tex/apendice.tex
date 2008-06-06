@@ -1,0 +1,150 @@
+\chapter{Ap\'endice}
+
+\section{API - liblpmd}
+\label{ap:API}
+La \textbf{API} (Ap. Programming Interface) es una herramienta de programaci\'on que puede ser utilizada por cualquier usuario/programador que se vea beneficiado por sus caracter\'isticas.
+
+Consideramos que la mejor forma de comprender el funcionamiento de esta \textbf{API}, es directamente con c\'odigos de ejemplo que pueden escribir los desarrolladores. A continuaci\'on se muestran 3 ejemplos de utilizaci\'on de la \textbf{API}, el primero se enmarca en un ``nano-programa'' de \textbf{DM}, el segundo es la evaluaci\'on de una propiedad est\'atica de una celda del tipo \texttt{.xyz} y la \'ultima una propiedad din\'amica de una celda.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Din\'amica Molecular B\'asica}
+
+A continuaci\'on un c\'odigo que utilza todas las caracter\'isticas de la \textbf{API}, para realizar din\'amica molecular.
+
+\begin{verbatim}
+ /*
+ * Ejemplo simple de dinamica molecular usando el API de liblpmd
+ */
+
+#include <lpmd/api.h>
+#include <iostream>
+
+using namespace lpmd;
+
+int main()
+{
+ MD md;            // define md como un objeto de dinamica molecular
+ PluginManager pm; // define pm como un manejador de plugins
+
+ SimulationCell cell(1, 1, 1, true, true, true); // cell es la celda de simulacion
+ cell.SetVector(0, Vector(17.1191, 0.0, 0.0));   // define los vectores de la celda
+ cell.SetVector(1, Vector(0.0, 17.1191, 0.0));
+ cell.SetVector(2, Vector(0.0, 0.0, 17.1191));
+ md.SetCell(cell);                    // asigna la celda de simulacion al objeto MD 
+
+ // Carga de plugins con sus parametros
+ pm.LoadPlugin("minimumimage", "");
+ pm.LoadPlugin("crystalfcc", "symbol Ar nx 3 ny 3 nz 3");
+ pm.LoadPlugin("lennardjones", "sigma 3.41 epsilon 0.0138");
+ pm.LoadPlugin("velocityverlet", "dt 1.0");
+ pm.LoadPlugin("temperature", "t 600.0");
+ pm.LoadPlugin("energy", "");
+
+ CellManager & cm = CastModule<CellManager>(pm["minimumimage"]);
+ cell.SetCellManager(cm);            // asigna el manejador de celda
+
+ CellGenerator & cg = CastModule<CellGenerator>(pm["crystalfcc"]);
+ cg.Generate(cell);
+
+ Potential & pot = CastModule<Potential>(pm["lennardjones"]);
+ PotentialArray & potarray = md.GetPotentialArray();
+ potarray.Set("Ar", "Ar", pot); // asigna lennardjones al arreglo de potenciales de MD
+
+ Integrator & integ = CastModule<Integrator>(pm["velocityverlet"]);
+ md.SetIntegrator(integ);
+
+ InstantProperty & energ = CastModule<InstantProperty>(pm["energy"]);
+ 
+ SystemModifier & therm = CastModule<SystemModifier>(pm["temperature"]);
+ therm.Apply(cell);  // aplica el termalizador "temperature" a la celda de simulacion
+
+ // Loop principal de la simulacion, hace 500 pasos
+ md.Initialize(); 
+ std::cout << "# Pasos   Temperatura" << '\n';
+ for (long i=0;i<500;++i)
+ {
+  md.DoStep();                       // avanza el sistema un paso de simulacion
+  energ.Evaluate(cell, pot);         // evalua las propiedades en el plugin energy
+  double T;
+  T = pm["energy"].GetProperty("temperature"); // pide valor de temp al plugin energy
+  std::cout << i << "         " << T << '\n';
+ }
+ return 0;
+}
+\end{verbatim}
+
+Para generar el ejecutable,
+
+\control{g++ -o nanodm main.cc -llpmd -ldl -lm}
+
+y listo, tendremos entonces un ejecutable llamado \verb|nanodm| que realizar\'a una simple corrida de din\'amica molecular.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Calculo de Propiedad est\'atica}
+
+Consideremos que tenemos una celda de simulaci\'on y queremos utiliar las ventajas de la \textbf{API} para calcular una propiedad, que sabemos existe en un m\'odulo, por ejemplo \textbf{gdr}. El c\'odigo para el c\'alculo de \textbf{gdr} de la celda nos quea as\'i,
+
+\begin{verbatim}
+ /*
+ *
+ *
+ *
+ */
+
+#include <lpmd/api.h>
+
+using namespace lpmd;
+
+int main(int argc, char *argv[])
+{
+ if (argc < 2) 
+ {
+  std::cerr << "testgdr <file.xyz>" << '\n';
+  exit(1);
+ }
+ PluginManager pm;
+ pm.LoadPlugin("xyz", "file="+std::string(argv[1]));
+ pm.LoadPlugin("gdr", "rcut 8.0 bins 300 average true");
+ pm.LoadPlugin("nullpotential", "");
+ pm.LoadPlugin("linkedcell", "nx 7 ny 7 nz 7 cutoff 8.0");
+
+ CellReader & cread = dynamic_cast<CellReader &>(pm["xyz"]);
+ InstantProperty & gdr = dynamic_cast<InstantProperty &>(pm["gdr"]); 
+ ScalarTable & gdrvalue = dynamic_cast<ScalarTable &>(pm["gdr"]);
+ CellManager & cm = dynamic_cast<CellManager &>(pm["linkedcell"]);
+ Potential & dummy = dynamic_cast<Potential &>(pm["nullpotential"]);
+
+ pm["gdr"].Show();
+
+ std::vector<SimulationCell> configs;
+ cread.ReadMany(std::string(argv[1]), configs);
+
+ Cell cell(13.16, 13.16, 21.39, M_PI/2, M_PI/2, M_PI*120.0/180.0);
+ Vector v1 = cell.GetVector(0);
+ v1 = Vector(v1.Get(1), v1.Get(0), v1.Get(2));
+ Vector v2 = cell.GetVector(1);
+ v2 = Vector(v2.Get(1), v2.Get(0), v2.Get(2));
+ cell.SetVector(0, v2);
+ cell.SetVector(1, v1);
+ for (int i=0;i<3;++i) std::cerr << cell.GetVector(i) << std::endl;
+
+ std::cerr << "Read " << configs.size() << " configurations." << '\n';
+ std::cerr << "Configuration 0 has " << configs[0].Size() << " atoms\n";
+
+ for (unsigned long i=0;i<configs.size();++i)
+ {
+  configs[i].SetCell(cell);
+  configs[i].SetCellManager(cm);
+  gdr.Evaluate(configs[i], dummy);
+  gdrvalue.AddToAverage();
+ }
+
+ std::cout << gdrvalue << '\n';
+
+ return 0;
+}
+\end{verbatim}
+
+Esto, lo compilamos de manera similar al caso anterior, obteniendo un ejecutable para calcular una propiedad est\'atica, en este caso \verb|gdr| para la celda de simulaci\'on.
