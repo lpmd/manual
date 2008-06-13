@@ -5,18 +5,20 @@
 DOCUMENT=manual
 SRCDIR=tex
 
-all: $(DOCUMENT).dvi $(DOCUMENT).pdf
+all: $(DOCUMENT).pdf
 
-$(DOCUMENT).dvi: $(SRCDIR)/$(DOCUMENT).tex
-	latex $(SRCDIR)/$(DOCUMENT).tex
-	
+#$(DOCUMENT).dvi: $(SRCDIR)/$(DOCUMENT).tex
+#	latex $(SRCDIR)/$(DOCUMENT).tex
+#	
 
 $(DOCUMENT).pdf: $(SRCDIR)/$(DOCUMENT).tex
-	pdflatex $(SRCDIR)/$(DOCUMENT).tex
+	cd $(SRCDIR);make;cd ../;
+	cp $(SRCDIR)/$(DOCUMENT).pdf .;
 
 
 .PHONY: clean
 
 clean:
-	rm -f $(DOCUMENT).dvi $(DOCUMENT).pdf *.log *.toc *.aux
+	cd $(SRCDIR);make clean;cd ../;
+	rm -f $(DOCUMENT).pdf
 

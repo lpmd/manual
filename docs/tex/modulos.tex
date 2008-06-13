@@ -484,6 +484,7 @@ Luego de que los archivos son creados en el directorio ``movie'', es importante 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Propiedades Est\'aticas}
+Las propiedades est\'aticas, son aquellas que se pueden evaluar en cualquier instante de tiempo, las que se listan a continuaci\'on, son las que se han implementado a la fecha.
 \subsection{angdist}
 Calcula la distribucion angular de la celda
 \subsection{cordnum}
@@ -502,6 +503,7 @@ Distribucion de velocidades.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Propiedades Din\'amicas}
+Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para \lpmd. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
 \subsection{vacf}
 Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda.
 \subsection{msd}

@@ -292,49 +292,245 @@ Podemos ver entonces, como cambia la presi\'on y el volumen durante la simulaci\
 \end{figure}
 
 
-
 \subsection{Calculando Propiedades durante la Simulaci\'on.}
 
-A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades, durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}, un ejemplo de esto se puede encontrar en:
+A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades, durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}. Adem\'as la informaci\'on en \lpmd puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, y presiones, en dos ficheros \verb|monitor| distintos, para un an\'alisis mucho mas simple. El ejemplo se puede encontrar en:
 
 \cajatx{http://wwww.gnm.cl/software/lpmd/examples/au-prop.tgz}
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
 \begin{verbatim}
+cell crystal a=16.320 b=16.320 //
+ c=16.320 alpha=90.0 beta=90.0 //
+ gamma=90.0
 
-#Ejemplo de Oro!.
+input module=xyz file=au-input.xyz//
+      level=1
+output module=xyz //
+      file=au-output.xyz each=30 //
+      level=1
 
+# Periodicity in x, y, z 
+periodic true true true
+
+# Molecular dynamics settings
+steps 20000
+
+use pressure
+enduse
+
+dumping 5000 au.dump
+monitor start=0 end=20000 each=1 //
+      properties=kinetic-energy,//
+      potential-energy,//
+      total-energy,temperature //
+      output=monitor-cell.out
+monitor start=0 end=20000 each=1 //
+      properties=virial-pressure,//
+      kinetic-pressure,pressure,//
+      volume,sxx,syy,szz //
+      output=monitor-pres.out
+
+# Using LSC parameters for gold
+use suttonchen as sc
+    e 0.013
+    n 10
+    a 4.08
+    m 8
+    c 34.408
+    cutoff 4
+enduse
+
+use velocityverlet
+    dt 1.0
+enduse
+
+use linkedcell
+	nx 2
+	ny 2
+	nz 2
+	cutoff 8
+enduse
+
+use gdr
+ rcut 10.0
+ bins 200
+ output gdr.dat
+ average true
+enduse
+
+use angdist
+ bins 200
+ atoms 1 Au
+ rcut Au Au 3.4
+ output angdist.dat
+ average true
+enduse
+
+use cordnumfunc
+ bins 200
+ atoms 1 Au
+ rcut 10
+ output cordnumfunc.dat
+ average true
+enduse
+
+potential sc Au Au
+cellmanager linkedcell
+integrator velocityverlet
+property gdr start=10000 //
+         end=15000 each=50
+property angdist start=10000//
+         end=15000 each=50
+property cordnumfunc start=10000//
+         end=15000 each=50
 \end{verbatim}
 \end{multicols}
 
-en una maquina standard, no deber\'ia tardar mas de  ....  minutos. Las propiedades calculadas se pueden observar en la figura.
+en una maquina standard, no deber\'ia tardar mas de  60  minutos. Las propiedades calculadas se pueden observar en las figuras ~\ref{fig:augdr}, ~\ref{fig:aunang} y ~\ref{fig:aucnf}.
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Funci\'on $g(r)$ para celda de Au.]
+{
+ \includegraphics[scale=.25]{augdr.pdf}
+ \label{fig:augdr}
+}
+\subfigure[Funci\'on de distribuci\'on angular.]
+{
+ \includegraphics[scale=.25]{aunang.pdf}
+ \label{fig:aunang}
+}
+\subfigure[N\'umero de coordinaci\'on.]
+{
+ \includegraphics[scale=.25]{aucnf.pdf}
+ \label{fig:aucnf}
+}
+\caption{Propiedades calculadas durante una simulaci\'on de una celda de Au.}
+\label{fig:auprop}
+\end{figure}
 
 \subsection{Multiples corridas con bash.}
 
 Haremos a continuaci\'on un peque\~no estudio de un gas de Ar a distintas temperaturas, para ello nos respaldaremos de los flags del comando \lpmd para poder modificar variables a partir de un fichero de control, relizaremos un estudio de la \textit{funci\'on de distribuci\'on de pares} para argon bajo distintas temperaturas.
 
+Las temperaturas iniciales que se utilizar\'an son de 5, 100 y 200 Kelvin, estas tres simulaciones podemos realizarlas a partir de un s\'olo fichero de control, como el que se ve a contianuaci\'on:
+
+\begin{multicols}{2}
+\setlength{\columnseprule}{.5pt}
+\begin{verbatim}
+# System file of Ar gas 
+# using LPMD
+#
+###################
+#CELL and IN/OUT###
+###################
+cell crystal a=17.1191 b=17.1191 //
+     c=17.1191 alpha=90.0 //
+     beta=90.0 gamma=90.0
+
+input module=lpmd file=Ar108.lpmd
+output module=xyz //
+     file=output-$(INITIALTEMP).xyz //
+     each=20 level=0
+###################
+#GENERAL###########
+###################
+prepare replicate 1 1 1
+prepare temperature $(INITIALTEMP)
+charge Ar 0.0
+steps 15000
+dumping file=ljargon.dump each=10000
+periodic true true true
+
+#Cargamos inmediatamente pressure
+#para poder visualizar con monitor
+
+use pressure
+enduse
+
+monitor start=0 end=15000 each=10 //
+  properties=kinetic-energy, //
+  potential-energy,total-energy, //
+  temperature,pressure,volume //
+  output=monitor-$(INITIALTEMP).dat
+###################
+#MODULES DEF#######
+###################
+use lennardjones as lj_Ar
+    sigma 3.41
+    epsilon 0.0103408
+    cutoff 8.5
+enduse
+
+use beeman
+    dt 10.0
+enduse
+
+use minimumimage
+    cutoff 8.5
+enduse
+
+use gdr
+ bins 200
+ rcut 20
+ output gdr-$(INITIALTEMP).dat
+ average true
+enduse
+###################
+#MOD APPLICATION###
+###################
+potential lj_Ar Ar Ar
+integrator beeman
+cellmanager minimumimage
+property gdr start=10000 \\
+   end=15000 each=30
+\end{verbatim}
+\end{multicols}
+
+Esta configuraci\'on generara archivos \verb|monitor|, \verb|output| y \verb|gdr| de forma independiente para cada una de las temperaturas, para correrlo basta con :
+
+\begin{center}
+ \texttt{for i in 5 100 200 ; \\do lpmd -o TEMP=\$i opcion-o.control > simulacion-\$i.info ; done}
+\end{center}
+
+Los resultados de la funcion radial de distribuci\'on de pares, pueden observarse en las figuras ~\ref{fig:opogdr5}, ~\ref{fig:opogdr100} y ~\ref{fig:opogdr200}, donde se ve claramente que la condici\'on de temperatura inicial es un factor importante en el desarrollo de la din\'amica molecular ya que son las condiciones iniciales con las que comienza el sistema su evoluci\'on.
+
+\begin{figure}[!ht]
+\centering
+\subfigure[Funci\'on $g(r)$ para 5K.]
+{
+ \includegraphics[scale=.25]{opogdr5.pdf}
+ \label{fig:opogdr5}
+}
+\subfigure[Funci\'on $g(r)$ para 100K.]
+{
+ \includegraphics[scale=.25]{opogdr100.pdf}
+ \label{fig:opogdr100}
+}
+\subfigure[Funci\'on $g(r)$ para 200K.]
+{
+ \includegraphics[scale=.25]{opogdr200.pdf}
+ \label{fig:opogdr200}
+}
+\caption{Funci\'on $g(r)$ para distintas temperaturas iniciales del sistema.}
+\label{fig:opogdr}
+\end{figure}
+
+
 \subsection{Generando ficheros pov para crear pel\'iculas.}
 
-Fue uno de los primeros \textit{approach} a lo que a m\'odulos de visualizaci\'on se refiere, su intenci\'on es generar, a partir de la simulaci\'on, un set de ficheros \verb|pov| para un posterior renderizado y creaci\'on de peliculas, animaciones o simplemente imagnes de alta calidad.
+Fue uno de los primeros \textit{approach} a lo que a m\'odulos de visualizaci\'on se refiere, su intenci\'on es generar, a partir de la simulaci\'on, un set de ficheros \verb|pov| para un posterior renderizado y creaci\'on de peliculas, animaciones o simplemente imagnes de alta calidad. Adem\'as se puden guardar m\'as de un tipo de formato de salida, lo que da distintas funcionalidades, sin la necesidad de convertir ntre los formatos, por ejemplo, los \verb|xyz| son mas utilizados para analizar, en cambio los \verb|lpmd| son m\'as portables por su caracter\'isticas de ser posiciones fraccionarias. En esto ejemplo, adem\'as de generar un set de ficheros \verb|pov| generaremos m\'as de un formato de salida. El ejemplo puede descargarse en:
+
+\cajatx{http://wwww.gnm.cl/software/lpmd/examples/arpovmul.tgz}
+
 
 \subsection{Cambiando el integrador durante la simulaci\'on.}
 
 Una caracter\'istica de \lpmd es poder cambiar el integrador, durante la simulaci\'on, esto es utilizado en un ejemplo a continuaci\'on que puede descagar en:
 
 \cajatx{http://wwww.gnm.cl/software/lpmd/examples/int-change.tgz}
-
-\subsection{Multiples Monitor}
-
-La informaci\'on en \lpmd puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, la celda y presiones, en tres ficheros distintos, para un an\'alisis mucho mas simple.
-
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/multimon.tgz}
-
-\subsection{Multiples Output}
-
-Se puden guardar m\'as de un tipo de formato de dalida, lo que da distintas funcionalidades, sin la necesidad de convertir ntre los formatos, por ejemplo, los \verb|xyz| son mas utilizados para analizar, en cambio los \verb|lpmd| son m\'as portables por su caracter\'isticas de ser posiciones fraccionarias.
-
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/multiout.tgz}
 
 \subsection{Calculo de Modulo de Bulk}
 
@@ -344,15 +540,45 @@ En este ejemplo, se calcula el m\'odulo de Bulk para Au modificando el tama\~no 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos LPMD-ANALYZER}
 
+La funci\'on principal de \textbf{lpmd-analyzer} es poder cargar configuraciones de distinto tipo, tales como \verb|xyz| o \verb|lpmd| para poder obtener an\'alisis de estas configuraciones.
+
 \subsection{Calculando funci\'on radial de distribuci\'on.}
 
-\subsection{Calculando distribucion angular}
+Tomamos un fichero \verb|xyz| y obtenemos la funci\'on de distribuci\'on radial del sistema, este fichero consta de 50 configuraciones, para obtener gdr utilizamos un fichero de \verb|control|, pero a diferencia de los ficheros de control de \lpmd, este fichero cuenta solo con lo necesario para evaluar una propiedad, como se ve a continuaci\'on:
 
-\subsection{Dos tipos de N\'umero de Coordinaci\'on}
+\begin{multicols}{2}
+\setlength{\columnseprule}{.5pt}
+\begin{verbatim}
 
-\subsection{Distribuci\'on de velocidades}
+#Fichero que calcula g(r)
+#para un fichero xyz con 100 
+#configuraciones
 
-\subsection{Autocorrelaci\'ond e velocidades}
+cell crystal a= b= c=  \\
+   alpha=90 beta=90 gamma=90
+
+use gdr as propgdr
+   bins 200
+   rcut 15
+   output gdr.dat
+   average true
+enduse
+
+property start=1 end=100 each=1
+\end{verbatim}
+\end{multicols}
+
+De esta forma calculamos la funcion radial de distribuci\'on ejecutando \verb|lpmd-analyzer gdr.control| lo que guardara la informaci\'on de la $g(r)$ en el fichero \verb|gdr.dat| promediando cada uno de los c\'alculos realizados. l resultado final del calculo de $g(r)$ se puede ver en la figura.
+
+\subsection{Desplazamiento Cuadr\'atico Medio.}
+
+\subsection{Calculando distribucion angular.}
+
+\subsection{Dos tipos de N\'umero de Coordinaci\'on.}
+
+\subsection{Distribuci\'on de velocidades.}
+
+\subsection{Autocorrelaci\'ond e velocidades.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
