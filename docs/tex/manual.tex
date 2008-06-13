@@ -2,6 +2,7 @@
 
 \usepackage{graphicx,fancybox,wrapfig}
 \usepackage{fullpage,multicol}
+\usepackage{subfigure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%NEWCOMMANDS DEFINITIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -19,7 +20,8 @@
 \newcommand{\cajatx}[1]{\begin{center}\setlength{\fboxsep}{0.2cm}\fbox{\parbox[l]{10cm}{#1}}\end{center}}
 %\newcommand{\cvb}[1]{\begin{center}\begin{verbatim} #1 \end{verbatim}\end{center}}
 \newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
-\newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[totalheight=2in]{#1}\caption{#2}\label{fig:#3}\end{minipage}}\end{figure}}
+%\newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[scale=.3]{#1}\caption{#2}\label{fig:#3}\end{minipage}}\end{figure}}
+\newcommand{\cajafi}[3]{\begin{figure}[!ht]\centering\includegraphics[scale=.35]{#1}\caption{#2}\label{fig:#3}\end{figure}}
 \newcommand{\control}[1]{\begin{center}\begin{minipage}{10cm}\texttt{#1}\end{minipage}\end{center}}
 
 \newcommand {\foto}[4]{\begin{figure}
