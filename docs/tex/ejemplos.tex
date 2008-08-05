@@ -525,6 +525,84 @@ Fue uno de los primeros \textit{approach} a lo que a m\'odulos de visualizaci\'o
 
 \cajatx{http://wwww.gnm.cl/software/lpmd/examples/arpovmul.tgz}
 
+Veamos a continuacion el c\'odigo utilizado para la simulaci\'on:
+
+\begin{multicols}{2}
+\setlength{\columnseprule}{.5pt}
+\begin{verbatim}
+# System file of Ar gas 
+# using LPMD
+#
+###################
+#CELL and IN/OUT###
+###################
+cell crystal a=17.1191 b=17.1191 /
+   c=17.1191 alpha=90.0 beta=90.0 /
+   gamma=90.0
+
+input module=lpmd file=Ar108.lpmd
+output module=xyz file=output.xyz /
+   each=20 level=0
+output module=zlp file=output.zlp /
+   each=20 level=2
+###################
+#GENERAL###########
+###################
+prepare replicate 2 2 2
+prepare temperature 84
+charge Ar 0.0
+steps 5000
+dumping file=ljargon.dump each=10000
+periodic true true true
+
+#Cargamos inmediatamente pressure
+#para poder visualizar con monitor
+
+use pressure
+enduse
+
+monitor start=0 end=5000 each=10 /
+  properties=kinetic-energy, /
+  potential-energy,total-energy, /
+  pressure,volume output=monitor.dat
+###################
+#MODULES DEF#######
+###################
+use lennardjones as lj_Ar
+    sigma 3.41
+    epsilon 0.0103408
+    cutoff 8.5
+enduse
+
+use beeman
+    dt 10.0
+enduse
+
+use minimumimage
+    cutoff 8.5
+enduse
+
+use povray
+    header shoot-
+    direct movie
+    text "Modelacion de Ar" <dl> \
+      <green> [1] ()
+    text "Step=%" <ur> <red> [1] \
+      (Step)
+    rotate <45,0,0>
+enduse
+
+###################
+#MOD APPLICATION###
+###################
+potential lj_Ar Ar Ar
+integrator beeman
+cellmanager minimumimage
+visualize povray start=0 \
+   end=5000 each=10
+\end{verbatim}
+\end{multicols}
+
 
 \subsection{Cambiando el integrador durante la simulaci\'on.}
 

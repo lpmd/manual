@@ -1,13 +1,13 @@
 \chapter{Instalaci\'on}
 \label{chap:inst}
 
-\lpmd ha sido probado en distintas arquitecturas, y compiladores, hasta ahora podemos \textbf{dar fe} que se ha logrado compilar el c\'odigo fuente en las siguientes arquitecturas.
+\lpmd ha sido probado en distintas arquitecturas y compiladores. Hasta ahora podemos \textbf{dar fe} que se ha logrado compilar el c\'odigo fuente en las siguientes arquitecturas:
 
 \begin{itemize}
  \item Linux I686/AMD64
  \item OS/X
  \item Solaris
- \item Inclusive en Windows
+ \item Windows XP
 \end{itemize}
 
 \section{Descarga}
@@ -26,13 +26,15 @@ La \'ultima versi\'on estable de los paquetes es :
  \item lpmd    : ver. 0.5.2
 \end{itemize}
 
-Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
+%Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
+
+Estos pueden ser descargados directamente en la pagina web, o bien solicitados por e-mail.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Descarga de versi\'on en desarrollo}
 
-Para los interesados en el desarrollo actual de \lpmd y sus dependencias principales, las pueden descargar con:
+Para los interesados en el desarrollo de \lpmd y sus dependencias principales, la version de pruebas ``\textit{testing}'' se puede pueden descargar con subversion:
 
 \begin{center}
  \begin{verbatim}
@@ -42,10 +44,10 @@ Para los interesados en el desarrollo actual de \lpmd y sus dependencias princip
  \end{verbatim}
 \end{center}
 
-Est\'a disponible adem\'as una rama \verb|unstable|, sin embargo no recomendamos utilizarla para c\'alculos de Din\'amica Molecular, s\'olo para investigaci\'on y pruebas en c\'odigos.
+Est\'a disponible adem\'as una rama \verb|unstable|; sin embargo, no recomendamos utilizarla para c\'alculos de Din\'amica Molecular. S\'olo utilizable para investigaci\'on y prueba de c\'odigos.
 
 \section{Instalaci\'on}
-Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar los 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}, a continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
+Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}. A continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
 
 \cajatx{Nota : Los que poseen la versi\'on testing/unstable cuentan con el fichero \textbf{autogen.sh} para poder generar los Makefiles. \\ Se necesita instalar automake y libtool para poder ejecutar \textbf{autogen.sh}.}
 
@@ -63,7 +65,7 @@ En primer lugar descomprima el paquete de la \textbf{liblpmd},
 
 \control{tar -xvzf liblpmd-X.X.X.tar.gz}
 
-lo que le generar\'a un nuevo directorio, para instalar esta librer\'ia con todos los m\'etodos necesarios para el funcionamiento de \lpmd y la implementaci\'on de plugins ejecute :
+lo que le generar\'a un nuevo directorio; para instalar esta librer\'ia con todos los requerimientos necesarios para el funcionamiento de \lpmd y la implementaci\'on de plugins ejecute :
 
 \control{./configure \\ make}
 
@@ -73,15 +75,15 @@ y como administrador,
 \control{make install}
 
 
-Por \textit{default} el directorio de instalaci\'on de la API programa es \verb|/usr/local/|, en caso de requerir una ubicaci\'on distinta revise las opciones con \verb|./configure --help|. Y si desea instalarlo en un directorio personal refierase a la secci\'on~\ref{subsub:personaldir}.
+Por \textit{default} el directorio de instalaci\'on de la API programa es \verb|/usr/local/|, en caso de requerir una ubicaci\'on distinta revise las opciones con \verb|./configure --help|. Y si desea instalarlo en un directorio personal refi\'erase a la secci\'on~\ref{subsub:personaldir}.
 
-En caso de cualquier error env\'ie un e-mail a alguno de los desarrolladores principales o en su defecto a \verb|gnm@gnm.cl|.
+En caso de cualquier error en el proceso de instalaci\'on env\'ie un e-mail a alguno de los desarrolladores principales o en su defecto a \verb|gnm@gnm.cl|.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando plugins}
 
-Uno de los requerimientos b\'asicos de \lpmd es tener bien configurada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe utilizar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Usualmente deber\'ia correrse sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
+Uno de los requerimientos b\'asicos de \lpmd es tener bien especificada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe indicar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Normalmente deber\'ia correr sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
 
 \control{./configure  \\ make}
 
@@ -95,7 +97,7 @@ Esto ubicar\'a todos los plugins incluidos en el paquete \verb|plugins| en el di
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando lpmd}
 
-Es uno de los paquetes m\'as peque\~nos y r\'apidos de instalar, para proceder, se hace de manera similar que los anteriores, ejecutando :
+Es uno de los paquetes m\'as peque\~nos y r\'apidos de instalar; para proceder, se hace de manera similar que los anteriores, ejecutando:
 
 \control{./configure \\ make}
 
@@ -129,8 +131,8 @@ La forma de corregir el problema es,
 
 \begin{itemize}
  \item Editar /etc/ld.so.conf
- \item A\~nadir al archivo la linea /usr/local/lib (o donde se haya instalado liblpmd)
- \item Ejecutar como admininistrador el comando : ldconfig
+ \item A\~nadir al archivo la l\'inea /usr/local/lib (o donde se haya instalado liblpmd)
+ \item Ejecutar como admininistrador el comando: ldconfig
 \end{itemize}
 
 Ahora deber\'ia ejecutar el comando sin problemas.
@@ -138,7 +140,7 @@ Ahora deber\'ia ejecutar el comando sin problemas.
 \subsection{Instalaci\'on de lpmd en directorio personal}
 \label{subsub:personaldir}
 
-Podemos istalar cada uno de los paquetes (\textbf{liblpmd}, \textbf{plugins} y \textbf{lpmd}) en un directorio personal, para eso consideremos un ejemplo, en el cu\'al deseamos instalar estos paquetes en el directorio \verb|loca;| ubicado dentro de el \textit{home} del usuario, el procedimiento ser\'ia.
+Podemos instalar cada uno de los paquetes (\textbf{liblpmd}, \textbf{plugins} y \textbf{lpmd}) en un directorio personal, para eso consideremos un ejemplo, en el cual deseamos instalar estos paquetes en el directorio \verb|local| ubicado en el \textit{home} del usuario, el procedimiento ser\'ia:
 
 \begin{itemize}
  \item Para liblpmd
@@ -162,7 +164,7 @@ Podemos istalar cada uno de los paquetes (\textbf{liblpmd}, \textbf{plugins} y \
  \end{verbatim}
 \end{itemize}
 
-De esta forma se generaran los esqueletos en \verb|/home/user/local| con \verb|bin|, \verb|lib|, etc.
+De esta forma se generar\'an los esqueletos en \verb|/home/user/local| con \verb|bin|, \verb|lib|, etc.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

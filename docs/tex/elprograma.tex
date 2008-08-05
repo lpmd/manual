@@ -1,9 +1,9 @@
 \chapter{El Programa}
 \label{chap:lpmd}
 
-\section{Origenes.}
+\section{Or\'igenes.}
 
-El c\'odigo \lpmd comenz\'o a desarrollarse durante junio del a\~no 2007 como una idea de desarrollar e implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el dise\~no de plugins y de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \textit{Grupo de NanoMateriales} (\textbf{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo (v\'ease \textbf{gente}).
+El c\'odigo \lpmd comenz\'o su desarrollo durante junio del a\~no 2007 como una idea de implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el usuario en el dise\~no de plugins e implementaci\'on de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \textit{Grupo de NanoMateriales} (\textbf{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo~\ref{chap:auth}.
 
 Las versiones que se han lanzado en formato estable son:
 
@@ -14,28 +14,28 @@ Las versiones que se han lanzado en formato estable son:
  \item Version 0.4.0 : Lanzada Julio 2007.
 \end{itemize}
 
-El sistema de actualizaci\'on va siendo administrado compleamente por los desarrolladores. A partir de la versi\'on 0.5 de \lpmd se cuenta con tres paquetes principales de desarrollo.
+El sistema de actualizaci\'on va siendo administrado completamente por los desarrolladores. A partir de la versi\'on 0.5 de \lpmd se cuenta con tres paquetes principales de desarrollo.
 
 \begin{itemize}
  \item liblpmd \\
-\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la m\'edula de todas las caracter\'isticas que presenta \lpmd. Por favor refierase a m\'as caracter\'isticas en el ap\'endice ~\ref{ap:API}
+\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la columna vertebral de todas las caracter\'isticas que presenta \lpmd. Por favor refi\'erase a m\'as caracter\'isticas en el ap\'endice ~\ref{ap:API}
  \item lpmd-plugins \\
-Es un set de plugins que han sido implementados, que cuentan con caracter\'isticas provenientes de la \textbf{API}, son en general potenciales intert\'omicos, integradores, analizadores de celdas de simulaci\'on, as\'i como tambi\'en manejadores de archivos de din\'amica molecular.
+Es un set de plugins que han sido implementados, que cuentan con caracter\'isticas provenientes de la \textbf{API}, son en general potenciales interat\'omicos, integradores, analizadores de celdas de simulaci\'on, as\'i como tambi\'en manejadores de archivos de din\'amica molecular.
  \item lpmd \\
-\lpmd es un software de din\'amica molecular que utiliza plugins implementados por usuarios para realizar todo el trabajo de simulaci\'on, tambi\'en incluye herramientas como \textbf{lpmd-analyzer} y \textbf{lpmd-converter} que son utilizados para la generaci\'on de configuraciones as\'i como tambi\'en el an\'alisis a partir de ficheros de simulaci\'on de din\'amica molecular.
+\lpmd es un software de din\'amica molecular que utiliza plugins implementados por usuarios para realizar todo el trabajo de simulaci\'on. Tambi\'en incluye herramientas como \textbf{lpmd-analyzer} y \textbf{lpmd-converter} que son utilizados para la generaci\'on de configuraciones, as\'i como tambi\'en el an\'alisis a partir de ficheros de simulaci\'on de din\'amica molecular.
 \end{itemize}
 
 \section{Idea Principal}
 
-El esquema principal de \lpmd, es la utilizaci\'on de un archivo de control (\verb|fichero.control|) el c\'ual es cargado directamente por el ejecutable \verb|lpmd|.
+El esquema principal de \lpmd, es la utilizaci\'on de un archivo de control (\verb|fichero.control|) el cual es cargado directamente por el ejecutable \verb|lpmd|.
 
-Por ejemplo consideremos un sistema de din\'amica molecular, en el cual todas las opciones, tales como temperatura inicial, pasos de tiempo a simular, integrador, potencial interat\'omico, posiciones at\'omicas, etc. est\'an especificadas en un fichero llamado \verb|simulacion.control|, entonces lpmd puede ejecutarse simplemente con,
+Por ejemplo, consideremos un sistema de din\'amica molecular en el cual todas las opciones, tales como temperatura inicial, pasos de tiempo a simular, integrador, potencial interat\'omico, posiciones at\'omicas, etc. est\'an especificadas en un fichero llamado ``\verb|simulacion.control|'', entonces lpmd puede ejecutarse simplemente con,
 
 \begin{center}
  \texttt{lpmd simulacion.control > simulacion.output}
 \end{center}
 
-o bien, tambien podemos utilizar,
+o tambi\'en podemos utilizar,
 
 \begin{center}
  \texttt{lpmd < simulacion.control > simulacion.output}
@@ -45,7 +45,7 @@ De esta forma, \lpmd carga toda la informaci\'on necesaria ubicada en el fichero
 
 \section{Otras Caracter\'isticas}
 
-Otras caracter\'isticas de \lpmd es que cuenta con flags para el manejo de variables internas en un fichero de control, por ejemplo supongamos que queremos correr muchos sistemas con distintas temperaturas iniciales. De eta forma entonces consideremos, un fichero de control con una sintaxis como esta,
+Otras caracter\'isticas de \lpmd es que cuenta con flags para el manejo de variables internas en un fichero de control, por ejemplo, se pueden correr muchos sistemas con distintas temperaturas iniciales. Para ello consideremos, un fichero de control con una sintaxis del tipo,
 
 \begin{verbatim}
  ...
@@ -53,19 +53,21 @@ Otras caracter\'isticas de \lpmd es que cuenta con flags para el manejo de varia
  ...
 \end{verbatim}
 
-entonces, podemos ejecutar \lpmd de la siguiente forma para asignar a \verb|TEMP| un valor real, dado directamente por linea de comandos, por ejemplo :
+entonces, podemos ejecutar \lpmd de la siguiente forma para asignar a \verb|TEMP| un \'unico valor real, dado directamente por l\'inea de comandos, por ejemplo:
 
 \begin{center}
  \texttt{lpmd -o TEMP=500 simulacion.control > simulacion.output}
 \end{center}
 
-de esta forma el sistema comienza su simulaci\'on con una temperatura inicial de 500K. Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la dificultad de implementar scripts para distintas simulaci\'ones o simulaciones consecutivas de din\'amica molecular. Por ejemplo con un solo comando podemos correr un set de simulaciones con un valor distinto asociado a una variable del archivo de control,
+de esta forma el programa comienza la simulaci\'on del sistema con una temperatura inicial de 500K. 
+
+Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la dificultad de implementar scripts para distintas simulaciones o simulaciones consecutivas de din\'amica molecular. Por ejemplo con un solo comando podemos correr un set de simulaciones con un valor distinto asociado a una variable del archivo de control. Para el caso de la temperatura:
 
 \begin{center}
  \texttt{for i in 300 400 500 ; \\do lpmd -o TEMP=\$i simulacion.control > simulacion-\$i.output ; done}
 \end{center}
 
-es decir tres simulaciones seguidas con diferentes temperaturas iniciales con un solo fichero de control.
+realiza tres simulaciones seguidas con diferentes temperaturas iniciales con un solo fichero de control.
 
 
 Otro de los flags importantes de \lpmd es \verb|-p| que brinda informaci\'on acerca de los plugins que se encuentran instalados en el sistema y que identifica directamente \lpmd. Pruebe por ejemplo algo como :
@@ -74,5 +76,5 @@ Otro de los flags importantes de \lpmd es \verb|-p| que brinda informaci\'on ace
  \texttt{lpmd -p angdist}
 \end{center}
 
-donde \verb|angdist| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on. Para m\'as opciones vea \verb|lpmd -h| o \verb|man lpmd|. En los cap\'itulos siguientes se dar\'a una descripci\'on mucho m\'as detallada de \lpmd y sus funcionalidades.
+donde \verb|angdist| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on. Para m\'as opciones vea \verb|lpmd -h| o \verb|man lpmd|. En los cap\'itulos siguientes se dar\'a una descripci\'on mucho m\'as detallada de otras caracter\'isticas \lpmd y sus funcionalidades.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

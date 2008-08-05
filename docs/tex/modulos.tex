@@ -19,7 +19,7 @@ Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| 
 }
 
 \subsection{energy}
-Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargao autom\'aticamente al correr \lpmd. La informaci\'on que entregua el m\'odulo a trav\'es de \verb|monitor| es:
+Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargo autom\'aticamente al correr \lpmd. La informaci\'on que entrega el m\'odulo a trav\'es de \verb|monitor| es:
 
 \cajatx{
 \begin{tabular}{lcl}
@@ -51,7 +51,7 @@ para luego utilizar en \verb|monitor| los llamados posibles de pressure. Es reco
  kinetic-pressure & = & Retorna la contribuci\'on \\
                      &&cin\'etica a la presi\'on [MPa].\\
  sij & = & i,j=x,y,z Retorna los valores del tensor \\
-                     &&de stress[?]. \\
+                     &&de stress[MPa]. \\
 \end{tabular}
 }
 
@@ -59,7 +59,7 @@ para luego utilizar en \verb|monitor| los llamados posibles de pressure. Es reco
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{M\'odulos Entrada/Salida}
 \label{chap:modulos:entradasalida}
-Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que los argumentos necesitan ser entregados en esta misma linea. Es decir la instrucci\'on sera siempre de la forma :
+Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que los argumentos necesitan ser entregados en esta misma linea. Es decir la instrucci\'on ser\'a siempre de la forma:
 
 \control{input module=nombre opc1=.. opc2=.. ...  opcN=...}
 
@@ -134,27 +134,164 @@ Las opciones y el uso es similar al formato \verb|lpmd|, salvo algunas opciones 
 La forma de uso, es similar a \verb|lpmd|.
 
 \subsection{crystalfcc}
-Genera una celda cristalina del tipo fcc. Este m\'odulo se utiliza en lugar de un fichero de entrada, las opciones de \'este m\'odulo son entregadas directamente en
-\subsection{crystalsc}
-Genera una celda cstalino del tipo sc.
-\subsection{crystalbcc}
-\subsection{crystalhcp}
+Genera una celda cristalina del tipo fcc. Este m\'odulo se utiliza en lugar de un fichero de entrada, para entregar las posiciones at\'omicas de la red cristalina, 
+
+\cajatx{
+\begin{tabular}{lcl}
+ symbol & = & S\'imbolo at\'omico de la especie.\\
+ n$\alpha$ & = & $\alpha=x,y,z$ El inverso sobre el largo del cristal.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo una celda c\'ubica de \textbf{Fe} con un tama\~no de 10 \AA por cada lado.
+
+\begin{itemize}
+ \item \textbf{Especificamos el detalle del cristal}
+       \control{cell crystall a=10 b=10 c=10 alpha=90 beta=90 gamma=90}
+ \item \textbf{Generamos una celda  fcc dentro del cristal}
+       \control{input module=crystalfcc symbol=Fe nx=2 ny=2 nz=2}
+\end{itemize}
+
+Esto generar\'a entonces una celda cristalina \verb|fcc| para comenzar la simulaci\'on.
+
+\subsection{Otros tipos de crystal}
+Al igual que el caso de \textbf{crystalfcc}, existen otros crystales que pueden generarse al comenzar la simulaci\'on, o bien para cualquier otro uso, estos son:
+\begin{itemize}
+ \item crystalbcc : Generador de redes \verb|bcc|.
+ \item crystalsc : Generador de redes \verb|sc|.
+ \item crystalhcp : Generador de redes \verb|hcp|.
+\end{itemize}
+
 \subsection{crystal2d}
+A diferencia de los generadores de cristalprevios, este m\'odulo genera cristales simples bidimensionales, los argumentos requeridos para generar son:
+
+\cajatx{
+\begin{tabular}{lcl}
+ symbol & = & S\'imbolo at\'omico de la especie.\\
+ a & = & Longitud del vector base $\vec{a}$.\\
+ b & = & Longitud del vector base $\vec{b}$.\\
+ gamma & = & \'Angulo entre los vectores base.\\
+ n$\alpha$ & = & $\alpha=x,y$ El inverso sobre el largo del cristal.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano del cristal es de 10 \AA.
+
+\begin{itemize}
+ \item \textbf{Especificamos el detalle del cristal}
+       \control{cell crystall a=10 b=10 c=0 alpha=90 beta=90 gamma=90}
+ \item \textbf{Generamos una estructura bidimensional dentro del cristal}
+       \control{input module=crystal2d a=2 b=2 symbol=Fe gamma=60 nx=2 ny=2}
+\end{itemize}
+
 \subsection{skewstart}
+M\'etodo crado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regulr para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
+
+\cajatx{
+\begin{tabular}{lcl}
+ symbol & = & S\'imbolo at\'omico de la especie.\\
+ atoms & = & Especif\'ica el n\'umero de \'atomos dentro de la celda.\\
+\end{tabular}
+}
+
+Al igual que los m\'etodos generadores de celda previos, el detalle general del cristal es entregado con la orden \verb|cell|, y el resto specificadio por el m\'odulo, consideremos una cleda de arg\'on de 108 \'atomos con un tamano de 20 \AA y que inicializacmos las posiciones at\'omicas con el m\'etodo \textit{skewstart}
+
+\begin{itemize}
+ \item \textbf{Especificamos el detalle del cristal}
+       \control{cell crystall a=20 b=20 c=20 alpha=90 beta=90 gamma=90}
+ \item \textbf{Generamos una celda  fcc dentro del cristal}
+       \control{input module=skewstart symbol=Ar}
+\end{itemize}
+
 \subsection{dlpoly}
+Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de entrada que el usuario ya posee en \verb|dlpoly| y que el trabajo de migrar estos archivos a otras configuraciones podria implicar una inversion de tiempo.
+
+Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
+
+\cajatx{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
+ level & = & Nivel del archivo (0,1,2).\\
+ preiodicity & = & Especifica \textit{key} de periodicidad, fichero CONFIG.\\
+\end{tabular}
+}
+
 \subsection{vasp}
-Genera una celda con m\'etodo SkewStart (Refson).
+El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero de configuracion inicial, o bien para otro prop\'osito, entre las opciones del m\'odulo, estan:
+
+\cajatx{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
+ species & = & lista de las especies (en orden) del fichero POSCAR.\\
+ type & = & Tipo de posiciones, direct/cartesian.\\
+\end{tabular}
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modificadores}
 \subsection{tempscaling}
 
-Utilizado para escalar la temperatura de la muestra, utilizando rescalamiento de velocidades en las part\'iculas, 
+Utilizado para controlar y escalar la temperatura de la muestra, utilizando rescalamiento de velocidades en las part\'iculas. \'Este es uno de los m\'etodos m\'as utilizados en muchos c\'odigos de din\'amica molecular.
+
+El escalamiento consiste en modificar las velocidades at\'omicas cada cierto intervalo, en un factor:
+
+$$s=\sqrt{\frac{gk_BT}{2\mathcal{K}}}$$
+
+Es importante tener en cuenta, qu el proceso de control o escalamiento de la temperatura, no entregan promedios termodin\'amicos reales, es necesario que estos sean evaluados luego de haber realizado el escalamiento.
+
+Consideremos ahora un ejemplo de utilizaci\'on del m\'odulo \textbf{tempscaling}, en donde calentamos una muestra de Ar a 300K y luego mantenemos la temperatura fija durante un peri\'odo de tiempo, para finalmente liberar el sistema:
+
+En primer lugar debemos cargar los modulos para cada una de las etapas de la simulaci\'on:
+
+\begin{itemize}
+ \item \textbf{Cargamos el proceso de calentamiento de la muestra.}
+       \control{use cellscaling as uptemp \\   from 84.0\\   to 300.0\\enduse}
+ \item \textbf{Cargamos un proceso para mantener la temperatura fija.}
+       \control{use cellscaling as fixtemp \\   from 300.0\\   to 300.0\\enduse}
+\end{itemize}
+
+Ahora, que el m\'odulo fue cargado, es necesario, en la parte final del archivo de control, especificar entre que intervalos de tiempo van a ser aplicados estos escalamientos:
+
+\begin{itemize}
+ \item \textbf{Aplicamos \textbf{uptemp} desde 1 hasta 10000, cada 50 pasos.}
+       \control{apply uptemp start=1 end=10000 each=50}
+ \item \textbf{Mantenemos la temperatura fija entre 10000 y 15000.}
+       \control{apply fixtemp start=10000 end=15000 each=50}
+\end{itemize}
+
+De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un proceso de \textit{calentamiento} de la celda inicial.
 
 \subsection{berendsen}
-Termostato de berendsen, mucho m\'as suave que tempscaling.
+\'Este m\'odulo controla o escala la temperatura, al igual que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. Los argumentos requeridos por el m\'odulo son:
+
+\cajatx{
+\begin{tabular}{lcl}
+ from & = & Desde que temperatura comenzar a aplicar.\\
+ to & = & Temperatura final a la que se desea llegar.\\
+ tau & = & Intervalo del termostato.\\
+\end{tabular}
+}
+
+\textbf{Berendsen} puede aplicarse de igual forma que \verb|tempscaling|.
+
 \subsection{cellscaling}
-Escala la celda cierto porcentaje, puede ser por eje o total.
+\'Este m\'odulo es un modificador de la celda, en particular, tiene la propiedad de cambiar el tama\~no de la celda durante la simulaci'on, lo que lo hace una herramienta muy util para ver, por ejemplos, comportamiento de materiales bajo distintas densidades durante una sola simulaci\'on. El m\'odulo tiene las siguientes opciones:
+
+\cajatx{
+\begin{tabular}{lcl}
+ percent & = & Especifica el porcentaje en el que se variar\'a el largo de la celda.\\
+ axis & = & Indica, el eje (x,y o z) en el que se comprimira la celda (all=hidrost\'atico).\\
+ constant & = & true/false indica si la modificacion es constante respecto al valor inicial.\\
+\end{tabular}
+}
+
+Para un detalle m\'as acabado en el uso de cellscaling, vea el cap\'itulo~\ref{chap:exa}.
+
+\subsection{displacement}
+
+\subsection{rotate}
+
+\subsection{quenchedmd}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -221,7 +358,7 @@ Vector LennardJones::pairForce(const Vector & r) const
 }
 \end{verbatim}
 
-Las palbras reservadas por el plugin \textbf{lennardjones}, son :
+Las palabras reservadas por el plugin \textbf{lennardjones}, son :
 
 \cajatx{
 \begin{tabular}{lcl}
@@ -323,7 +460,7 @@ Este potencial, se utiliza para interacciones de atomos met\'alicos, es por eso 
 
 $$U(r_{ij}) = \left(\frac{a}{r_{ij}}\right)^n$$
 
-en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de mcuhos cuerpos esta dado por
+en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de muchos cuerpos esta dado por
 
 $$F(\rho_{i}) = -c\epsilon\sqrt{\rho_i}$$
 
@@ -407,6 +544,33 @@ const double &rhoj) const
 
 \subsection{Gupta}
 
+Al igual que \verb|suttonchen|, el potencial de \verb|gupta| es utilizado para \'atomos met\'alicos, donde los valores para los terminos de pares est\'a dada por:
+
+$$U(r_{ij}) = \left(\frac{a}{r_{ij}}\right)^n$$
+
+en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de muchos cuerpos esta dado por
+
+$$F(\rho_{i}) = -c\epsilon\sqrt{\rho_i}$$
+
+en donde,
+
+$$\rho_i = \sum_{j\neq i} \left(\frac{a}{r_{ij}}\right)^m$$
+
+lo que corresponde a una densidad local del atomo $i$, que depende de todos los atomos $j$ cercanos a \'el, \'esta densidad local sin embargo, debe ser corregida para el caso de suttonchen (note que no todos los potenciales asociados a los metales requieren de esta correcci\'on, pero \verb|metalpotential| lo requiere, as\'i que en ocaciones debe ser cero).
+
+Para el potencial de SuttonChen, la correcci\'on de la densidad esta dada por,
+
+$$\delta\rho_i=\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{(m-3)}$$
+
+Esta correcci\'on de la densidad debe ser aplicada inmediatamente luego de ser calculada la densidad local. La correcci\'on de la energ\'ia para Sutton Chen, se obtiene de esta forma con :
+
+$$\delta U_1 = \frac{2\pi N\overline{\rho}\epsilon a^3}{n-3}\left(\frac{a}{r_{met}}\right)^{n-3}$$
+
+Hay que notar que $\delta U_2$ no es requerido si $\rho_i$ ya fue corregido, con $\delta U_2$ de la forma
+
+$$\delta U_2 = -\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{n-3}\left<\frac{Nc\epsilon}{2\sqrt{\rho_i^0}}\right>$$
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Potenciales Interat\'omicos Nulos}
@@ -419,25 +583,46 @@ Potencial nulo entre especies. Utilizado para anular la interacion entre especie
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Integradores}
 \subsection{beeman}
-Integrador de beeman.
+El algoritmo de Beeman es un m\'etodo para integrar num\'ericamente ecuaciones difereciales, para el caso de din\'amica molecular, la posici\'on y velocidad,es similar al m\'etodo de verlet, pero las velocidades son con mejor precisi\'on.
+
+Las f\'ormulas para posici\'on y velocidad estan dadas por:
+
+$$r(t+\Delta t) = r(t) + v(t)\Delta t + \frac{2}{3}a(t)\Delta t^2 - \frac{1}{6}a(t-\Delta t)\Delta t^2 +\mathcal{O}(\Delta t^4)$$
+$$v(t+\Delta t) = v(t) + \frac{1}{3}a(t+\Delta t)\Delta t+\frac{5}{6}a(t)\Delta t-\frac{1}{6}a(t-\Delta t)\Delta t+\mathcal{O}(\Delta t^3$$
+
 \subsection{euler}
-Integrador de Euler.
+El integrador de Euler, es el m\'atodo n\'umerico de primer orden para resolver ecuaciones diferenciales ordinarias. Este es el m\'etodo m\'as b\'asico para la integraci\'on num\'erica de las ecuaciones.
+
+Las f\'ormulas para posici\'on esta dada por:
+
+$$r(t+\Delta t) = r(t) + h\times f(t,r(t))$$
+
 \subsection{leapfrog}
-Salto de la rana.
+Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de forma alternada. Las posiciones y velocidades estan dadas por:
+$$r(t+\Delta t) = r(t) + v(t)\Delta t + a(t)\frac{\Delta t^2}{2}$$
+$$v(t+\Delta t) = v(t) + \frac{a(t)+a(t+\Delta t)}{2}\Delta t$$
 \subsection{nullintegrator}
-Integrador nulo.
-\subsection{velocityverlet}
-Utiliza metodo velocity verlet para integrar.
+Integrador nulo, solo en caso de que no se requiera mover el sistema, es decir las particulas simplemente \textit{congeladas}.
 \subsection{verlet}
-Utiliza metodo verlet para integrar.
+Es un m\'etodo utilizado para integrar las ecuaciones de Newton de movimiento, las posiciones y velocidades del sistema estan dadas por:
+$$r(t+\Delta t) = 2r(t) - r(t-\Delta t) + a(t)\Delta t^2 + \mathcal{O}(\Delta t^4)$$
+$$v(t+\Delta t) = \frac{r(t+\Delta t) - r(t)}{\Delta t} + \mathcal{O}(\Delta t)$$
+\subsection{velocityverlet}
+M\'etodo similar al de verlet, pero con mejoras respecto a la performance en la integraci\'on, incorporando directamente la velocidad en el sistema, las ecuaciones estan dadas por:
+$$r(t+\Delta t) = r(t) - v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2$$
+$$v(t+\Delta t) = v(t) + \frac{a(t) - a(t + \Delta t)}{2}\Delta t$$
 \subsection{nosehoover}
-Para sistemas NVT
+Es utilizado para simulacion de ensambles de tipo NVT, en general el m\'etodo corresponde a una modificaci\'on de las ecuaciones de movimiento, donde aparece una masa ficticia en las ecuaciones a resolver.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visualizadores}
+\subsection{lpvisual}
+Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se enceuntra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura...
+
+Esta completamente basado en OpenGL, y el soporte es completamente independiente, cualqueir duda o consulta respecto al m\'odulo, contacte directamente al autor.
 \subsection{povray}
-Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on.
+Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on. Hasta la fecha el soporte y las caracteristicas del m\'odulo no son muy buenas, sin embargo espera mejorarse en proximas versiones.
 
 Los argumentos requeridos (no todos) por el m\'odulo povray, son los siguientes,
 
@@ -457,7 +642,7 @@ Los argumentos requeridos (no todos) por el m\'odulo povray, son los siguientes,
 \end{tabular}
 }
 
-Dentro de cada uno de \'estos argumentos, el que m\'as cabe detallar es \textbf{text}, el formato de ingreso de textos para la vsualizaci\'on, es el siguiente,
+Dentro de cada uno de \'estos argumentos, el que m\'as cabe detallar es \textbf{text}, el formato de ingreso de textos para la visualizaci\'on, es el siguiente,
 
 \control{text "Titulo" <pos> <color> [size] (extra)}
 
@@ -486,19 +671,145 @@ Luego de que los archivos son creados en el directorio ``movie'', es importante 
 \section{Propiedades Est\'aticas}
 Las propiedades est\'aticas, son aquellas que se pueden evaluar en cualquier instante de tiempo, las que se listan a continuaci\'on, son las que se han implementado a la fecha.
 \subsection{angdist}
-Calcula la distribucion angular de la celda
+Calcula la distribucion angular de la celda de simulaci\'on. Para determinar los \'angulos caracter\'isticos de una celda de simulaci\'on es necesario entender el esquema o preocedimiento:
+\begin{enumerate}
+ \item Se selecciona un \'atomo $i$.
+ \item Se busca un \'atomo $j$ que se encuentre dentro del radio de corte $r_{ij}$
+ \item Se busca un \'atomo $k$ que se enceuntre dentro del radio de corte $r_{ik}$
+ \item Se calcula el \'angulo  $\angle j-i-k$ y se a\~nade en la cuenta
+\end{enumerate}
+
+De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra cuales son los principales angulos de ``enlace'' o ``distancia'' de los \'atomos. Las opciones de uso son:
+
+\cajatx{
+\begin{tabular}{lcl}
+ bins & = & N\'umero de intervalos entre 0 y 180 grados. \\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
+ rcut & = & Se especifican 2 especies at\'omicas y su radio\\
+&&de corte.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
 \subsection{cordnum}
-Calcula el n\'umero de cordinaci\'on de la celda.
+Calcula el n\'umero de cordinaci\'on de la celda, informandonos a modo de histograma, como se han encontrado los n\'umeros de vecinos asociados a la muestra. La manera de calcular este numero de coordinacion es:
+\begin{enumerate}
+ \item Se genera un arreglo entre 0 y el m\'aximo n\'umero de vecinos posibles.
+ \item Para cada \'atomo $i$, se ve cuantos vecinos $j$ tiene dentro de un radio d corte $r_{ij}$.
+ \item Se entrega un valor porcentual del conteo previo.
+\end{enumerate}
+
+\cajatx{
+\begin{tabular}{lcl}
+ maxn & = & N\'umero m\'aximo d vecinos para el histograma.\\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
+ rcut & = & Se especifican 2 especies at\'omicas y su radio\\
+&&de corte.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+
 \subsection{cordnumfunc}
-Calcula el n\'umero de cordinaci\'on de la celda.
+Calcula el n\'umero de cordinaci\'on de la celda, en este caso es la funci\'on m\'as usada n publicaciones, pero en ocaciones puede ser m\'as simple de analizar, el m\'etodo \textbf{cordnum}. Corresponde tambi\'en a la integraci\'on de la funci\'on de distribuci\'on de pares.
+\begin{enumerate}
+ \item Se selecciona una distancia m\'axima y se divide en intervalos.
+ \item Se selecciona un \'atomo $i$.
+ \item Se analiza cuantos atomos $j$ caen en la distancia asociada al intervalo.
+ \item Se continua de forma acumulativa, hasta un valor rasonable.
+\end{enumerate}
+
+La forma de utilizar el m\'etodo esta dada por:
+
+\cajatx{
+\begin{tabular}{lcl}
+ bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
+ rcut & = & Radio de corte m\'aximo para an\'alisis.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
 \subsection{gdr}
-Caulcula la funcion de distribucion de pares de la celda.
-\subsection{densprofile}
-Calc\'ula un perfil de densidades bidimensional.
+Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
+\begin{enumerate}
+ \item Se selecciona un \'atomo $i$.
+ \item Se ve cuantos atomos $j$ estan dentro de un cascar\'on esf\'erico centrado en $i$.
+ \item Se promedia sobre los \'atomos asociados.
+\end{enumerate}
+
+\cajatx{
+\begin{tabular}{lcl}
+ bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
+ rcut & = & Radio de corte m\'aximo para an\'alisis.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{densityprofile}
+Calc\'ula un perfil de densidades bidimensional. Este m\'etodo divide la celda de simulaci\'on en cajas pequenas, en una direccion privilegiada y calcula las densidades en cada una de ellas, da una idea muy clara de la densidad ``por secci\'on'' de la celda de simulaci\'on.
+
+La forma de utilizarla es:
+
+\cajatx{
+\begin{tabular}{lcl}
+ axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
+ bins & = & N\'umero de intervalos para dividir el eje.\\
+ range & = & Rango espacial de cada uno de los ejes, nombre del eje\\
+&&, m\'inimo y m\'aximo.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
 \subsection{tempprofile}
-Calc\'ula un perfil de temperaturas bidimensional.
+Calc\'ula un perfil de temperaturas bidimensional. Al igual que el m\'etodo anterior, se divide la caja en celdas pequenas, en donde calculamos la temperatura de cada una de ellas.
+
+La forma de utilizar esto es:
+
+\cajatx{
+\begin{tabular}{lcl}
+ axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
+ bins & = & N\'umero de intervalos para dividir el eje.\\
+ range & = & Rango espacial de cada uno de los ejes, nombre del eje\\
+&&, m\'inimo y m\'aximo.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
 \subsection{veldist}
-Distribucion de velocidades.
+Muestra como estan distribuidas las velocidades del sistema. La salida es un histograma de velocidades. La forma de uso es:
+
+\cajatx{
+\begin{tabular}{lcl}
+ bins & = & N\'umero de intervalos para dividir el histograma.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{localpressure}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\cajatx{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

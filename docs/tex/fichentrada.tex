@@ -1,13 +1,13 @@
 \chapter{El Fichero de Control}
 \label{chap:input}
 
-Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de sistema, este fichero espec\'ifica casi el 100\% de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar revisaremos los archivos de posiciones at\'omicas antes de revisar el fichero de sistema.
+Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de sistema, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de sistema, revisaremos los archivos de posiciones at\'omicas.
 
 \section{Fichero con Posiciones At\'omicas}
 
-\lpmd puede manejar los tipos de fichero de posiciones at\'omicas, seg\'un los m\'odulos que dispongamos, actualmente \textbf{lpmd-plugins} cuenta con varios formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz} y \textbf{lpmd}.
+\lpmd puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que dispongamos; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz} y \textbf{lpmd}.
 
-Esperamos que los usuarios, seg\'un la necesidad, ayuden en implementar o requerir tipos espec\'ificos de sistemas de posici\'ones at\'omicas para din\'amica molecular. Veamos brevemente en que consisten algunos de ellos. Para informaci\'on espec\'ifica de cada m\'odulo, vea la secci\'on~\ref{chap:modulos:entradasalida}
+Esperamos que los usuarios, seg\'un su necesidad, ayuden a implementar o solicitar a los desarrolladores tipos espec\'ificos de sistemas de posiciones at\'omicas para din\'amica molecular. Veamos brevemente en que consisten algunos de ellos. Para informaci\'on espec\'ifica de cada m\'odulo, vea la secci\'on~\ref{chap:modulos:entradasalida}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,7 +31,7 @@ Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. 
 \begin{center}
  \begin{tabular}{l|l}
  \verb|LPMD VERSION X.X | & Especifica la versi\'on del fichero \verb|.lpmd| \\
- \verb|cell properties | & Propiedades de la celda, pueden ser 3 vectores o largos y \'angulos. \\
+ \verb|cell properties | & Propiedades de la celda, pueden ser 3 vectores o longitudes y \'angulos. \\
  \verb|Sym sx sy sz| & S\'imbolo at\'omico y las posiciones escaladas en cada eje [0,1].\\
 \end{tabular}
 \end{center}
@@ -40,7 +40,7 @@ Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fichero .zlp}
 
-Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. A diferencia del formato \verb|lpmd| este formato es comprimido, utilizando zlib. Recomendamos lo utilize para obtenci\'on de datos muy largas o bien que cuentan con una cantidad de \'atomos muy grande.
+Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. A diferencia del formato \verb|lpmd| este formato es comprimido utilizando zlib. Recomendamos lo utilize para la adquisici\'on de gran n\'umero de datos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,13 +59,13 @@ Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \
 
 Es el fichero principal para realizar la simulaci\'on computacional. Es por eso que en primer lugar se har\'a una descripci\'on general y luego veremos cada una de sus secciones principales.
 
-Entre las cosas a considerar en un fichero de sistema, est\'an:
+Entre las cosas a considerar en un fichero de control, est\'an:
 
 \begin{itemize}
  \item \# Es una l\'inea de comentario.
  \item Pese a que puede ser aleatorio el orden de los flags, se recomienda llevar un orden.
  \item Recomendamos definir los m\'odulos antes de utilizarlos. Tampoco es obligaci\'on.
- \item Existen secciones que \textbf{no} pueden ser omitidas, como por ejemplo, un \textbf{cellmanager}.
+ \item Existen m\'odulos en un fichero de control que \textbf{no} pueden ser omitidos, como por ejemplo, un \textbf{cellmanager}.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -76,12 +76,12 @@ Son todas las propiedades que describen la celda de simulaci\'on. La mayor\'ia d
 
 \subsubsection{cell}
 
-El flag cell es utilizado para describir la celda de simulaci\'on y asignar las propiedades de \'esta. Generalmente una celda de simulaci\'on puede venir descrita ya en el formato del fichero de entrada, sin embargo hay formatos, como el \textbf{xyz}, que no poseen la descripci\'on de la celda, es por eso que es necesario utilizar siempre esta opci\'on. Si despu\'es de dar la opci\'on \textbf{cell} se utiliza un formato de entrada descriptivo, como \textbf{lpmd}, este \'ultimo es el valor que toma la celda.
+El flag cell es utilizado para describir la celda de simulaci\'on y asignar las propiedades de \'esta. Generalmente una celda de simulaci\'on puede venir descrita ya en el formato del fichero de entrada. Sin embargo, hay formatos, como el \textbf{xyz}, que no poseen la descripci\'on de la celda, es por eso que es necesario utilizar siempre esta opci\'on. Si despu\'es de dar la opci\'on \textbf{cell} se utiliza un formato de entrada descriptivo, como \textbf{lpmd}, este \'ultimo es el valor que toma la celda.
 
 \begin{itemize} 
 \item{Forma 1}
 
-Se utilizan los largos y \'angulos de la celda, como sigue a continuaci\'on
+Se utilizan la longitud de los lados y \'angulos de la celda, como sigue:
 
 \control{cell a=10 b=5 c=5 alpha=45 beta=90 gamma=90}
 
@@ -108,7 +108,7 @@ donde,
  a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
 }
 
-Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de \lpmd y no necesitan estar dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de scrtips.
+Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de \lpmd y no necesitan estar dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de \textit{scripts}.
 
 \cajatx{\texttt{lpmd -L a,b,c -A alpha,beta,gamma archivo.control} \\ \texttt{lpmd -V ax,ay,az,bx,by,bz,cx,cy,cz archivo.control}}
 
@@ -120,14 +120,14 @@ Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden
 
 \subsubsection{input}
 
-Existen actualmente dos formas de ingreso de un sistema de entrada para la configuraci\'on at\'omica que se requiere simular, estas son, el ingreso de las posiciones at\'omicas de la celda a trav\'es de un archivo (por ejemplo \verb|.xyz| o \verb|.lpmd|) y el otro es mediante m\'odulos que generan automaticamente celdas at\'omicas con ciertas propiedades, por ejemplo celdas \textbf{bcc}, \textbf{fcc}, etc.
+Existen actualmente dos formas de ingreso de un sistema de entrada para la configuraci\'on at\'omica que se requiere simular; estas son, el ingreso de las posiciones at\'omicas de la celda a trav\'es de un archivo (por ejemplo \verb|.xyz| o \verb|.lpmd|) y el otro es mediante m\'odulos que generan autom\'aticamente celdas at\'omicas con ciertas propiedades, por ejemplo celdas \textbf{bcc}, \textbf{fcc}, etc.
 
 Veamos a continuaci\'on brevemente cada uno de ellos,
 
 \begin{itemize}
  \item{Con Fichero}
 
-Para cargar un fichero con configuraciones at\'omicas, es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargarun fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
+Para cargar un fichero con configuraciones at\'omicas es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargarun fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
   \item{Generadores de celda}
 
 A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con atomos, seg\'un los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para genrar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc} y el m\'etodo \textbf{skewstart}.
@@ -209,9 +209,9 @@ Esta es una lista de los m\'odulos soportados a la fecha para escritura de confi
 
 \subsubsection{restore}
 
-Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de luz o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping''.
+Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de energ\'ia el\'ectrica o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping''.
 
-Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, porfavor si encuentra alg\'un bug, reportelo.
+Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, por favor si encuentra alg\'un bug, reportelo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
