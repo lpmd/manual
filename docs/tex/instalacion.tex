@@ -28,13 +28,13 @@ La \'ultima versi\'on estable de los paquetes es :
 
 %Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
 
-Estos pueden ser descargados directamente en la pagina web, o bien solicitados por e-mail.
+Estos pueden ser descargados directamente en la pagina web \texttt{http://www.gnm.cl/lpmd}, o bien solicitados por e-mail.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Descarga de versi\'on en desarrollo}
 
-Para los interesados en el desarrollo de \lpmd y sus dependencias principales, la version de pruebas ``\textit{testing}'' se puede pueden descargar con subversion:
+Para los interesados en el desarrollo de \lpmd y sus complementos principales(API, plugins, utilitarios, etc.), la version de pruebas ``\textit{testing}'' se puede descargar con subversion:
 
 \begin{center}
  \begin{verbatim}
@@ -83,7 +83,7 @@ En caso de cualquier error en el proceso de instalaci\'on env\'ie un e-mail a al
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando plugins}
 
-Uno de los requerimientos b\'asicos de \lpmd es tener bien especificada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe indicar la ubicaci\'on de la instalaci\'on de la librer\'ia lpmd \textbf{liblpmd}. Normalmente deber\'ia correr sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
+Uno de los requerimientos b\'asicos de \lpmd es tener bien especificada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe indicar la ubicaci\'on de la instalaci\'on de la librer\'ia \textbf{liblpmd}. Normalmente deber\'ia correr sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
 
 \control{./configure  \\ make}
 
@@ -112,13 +112,16 @@ Puede correr lpmd con
 \begin{verbatim}
 username@machine:~$ lpmd
 ...
-LPMD version 0.5.0
-Using liblpmd version 1.0.0
+LPMD version 0.5.2
+Using liblpmd version 1.0.2
 
-Usage:lpmd [--verbose|-v] [--option|-o <option=value,option=value,...>] <file.control>
-      lpmd [--pluginhelp | -p <pluginname>]
-      lpmd [--help | -h ]
-username@machine:~$
+Usage: lpmd [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles | 
+-A <alpha,beta,gamma>] [--vector | -V <ax,ay,az,bx,by,bz,cx,cy,cz>] 
+[--scale | -S <value>] [--option | -O <option=value,option=value,...>] 
+[--input | -i plugin:opt1,opt2,...] [--output | -o plugin:opt1,opt2,...] 
+[--use | -u plugin:opt1,opt2,...] [--replace-cell | -r] [file.control]
+       lpmd [--pluginhelp | -p <pluginname>]
+       lpmd [--help | -h]
 \end{verbatim}
 
 \subsection{Problemas t\'ipicos post-instalaci\'on}

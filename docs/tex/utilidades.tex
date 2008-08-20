@@ -2,13 +2,152 @@
 \label{chap:utilidades}
 \section{lpmd-analyzer}
 
-Al igual que \lpmd, \verb|lpmd-analyzer| utiliza un fichero de control, basado en los mismos plugins, y a diferencia de \lpmd, tiene otros flags ...
+Al igual que \lpmd, \verb|lpmd-analyzer| utiliza un fichero de control, basado en los mismos plugins, pero a diferencia de \lpmd, \textbf{lpmd-analyzer} no necesita todos los requerimientos de una din\'amica molecular, ya que su fichero de control es m\'as corto, este solo requiere las propiedades que se desean calcular, asi como tambi\'en la especificaci\'on del sistema, y como se llevar\'a a cabo la evaluaci\'on.
 
+Los an\'alisis son hechos generalmente, sobre ficheros de salida de simulaciones computacionales, tales como \verb|xyz| o cualquiera de los listados en la tabla~\ref{tab:modinout}.
+
+\subsection{Fichero de Control}
+Ahora listamos cada una de las \'areas principales de un fichero de control para ejcutar con \textbf{lpmd-analyzer}.
+
+\begin{enumerate}
+ \item Propiedades de la Celda.
+ \item Carga de m\'odulos de an\'alisis.
+ \item Forma de an\'alisis, o llamado a m\'odulos.
+\end{enumerate}
+
+\subsubsection{Propiedades de la Celda}
+Se especifican las caracter\'isticas de la celda de simulaci\'on del fichero que posee las configuraciones at\'omicas. Pueden ser en ocaciones entregados como argumentos de ejecuci\'on del comando \textbf{lpmd-analyzer}.
+
+Los principales campos que deber\'ian estar en esta secci\'on del fichero son:
+\begin{itemize}
+ \item cell : Caracter\'isticas generales de la celda.
+ \item input : Para cargar el fichero de entrada.
+ \item prepare : Alguna modificaci\'on a la celda original, tales como las replicas.
+\end{itemize}
+\subsubsection{Carga de m\'odulos}
+En esta secci\'on del fichero especificamos las propiedades que deseamos calcular, pueden ser tanto est\'aticas como din\'amicas, podemos calcular multiples propiedades en una sola ejecuci\'on, asi como tambien una misma propiedad con distintos par\'ametros.
+
+En este caso, lo importante es cargar cada m\'odulo evaluador de propiedades con:
+
+\control{use module as alias \\ ... \\enduse}
+\subsubsection{Llamado a m\'odulos}
+Al igual que en \lpmd, el llamado a m\'odulos de propiedades, se realiza con la orden:
+
+\control{property alias start=0 end=1000 each=10}
+
+Por ejemplo, en este caso, un fichero con mas de 1000 configuraciones, es caracterizado en sus primeras 1000 configuraciones y la evaluaci\'on de esta propiedad se realiza cada 10 pasos.
+
+\subsection{Caracter\'isitcas}
+
+La principal caracter\'istica de \textbf{lpmd-analyzer} es que toma ventaja de la mayor\'ia de las cosas implementadas ya para \lpmd, y trat en cierta medida de ser una evoluci\'on de lo que en alg\'un momento fue \textbf{fumody} (\texttt{http://www.gnm.cl/software/fumody}) y que ahora no s\'olo es de r\'apido manejo y configuraci\'on, sino que cuenta con m\'as ventajas, mejor soporte y mayor simplicidad en la implementaci\'on de utilidades para ficheros de \textit{Din\'amica Molecular}.
+
+\subsection{Ejecuci\'on}
+
+La ejecuci\'on de \textbf{lpmd-analyzer} es similar a la de \lpmd, con la salvedad de que el fichero de control, posee menos informaci\'on, y tambien posee modos de referencia r\'apida, que puede ver en~\ref{chap:util-quickmode}. Una ejecuci\'on t\'ipica ser\'ia:
+
+\control{lpmd-analyzer file.control}
+
+La salida de \textbf{lpmd-analyzer} es manejada por cada m\'odulo.
 
 \section{lpmd-convert}
 
 Utlizado para conversi\'on de celdas entre distintos formatos, es una forma propia de \verb|babel|, con algunas funcionalidades xtras, las que son independientes de cada m\'odulo.
 
-\section{lpmd-mixer}
+\subsection{Fichero de Control}
+Las \'areas principales de un fichero de control para ejcutar con \textbf{lpmd-converter}, son:
 
-Su objetivo es crear combinaciones de estructuras at\'omicas, a partir de archivos, o cristalinas, asi da la ventaja de generar configuraciones m\'as complejas tales como materiales nanoestructurados.
+\begin{enumerate}
+ \item Propiedades de la Celda.
+ \item Carga de fichero de entrada.
+ \item Uno o multiples ficheros de salida.
+\end{enumerate}
+
+\subsubsection{Propiedades de la Celda}
+Se especifican las caracter\'isticas de la celda de simulaci\'on del fichero que posee las configuraciones at\'omicas. Pueden ser en ocaciones entregados como argumentos de ejecuci\'on del comando \textbf{lpmd-converter}.
+
+Los principales campos que deber\'ian estar en esta secci\'on del fichero son:
+\begin{itemize}
+ \item cell : Caracter\'isticas generales de la celda.
+ \item prepare : Alguna modificaci\'on a la celda original, tales como las replicas.
+\end{itemize}
+\subsubsection{Carga de fichero de entrada}
+Especificamos claramente el fichero inicial o de entrada, el que corresponde al que queremos \textit{convertir} a un formato distinto, en esta secci\'on la orden m\'as importante es:
+
+\control{input module=... file=...}
+\subsubsection{Ficheros de salida}
+En esta secci\'on podemos especificar uno o m\'as ficheros de salida para realizar la transformaci\'on de nuestra celda inicial. La orden, de modo similar a \lpmd, es dada por la palabra clave \verb|output|.
+
+\control{output module=... file=... \\output module=... file=...}
+
+Por ejemplo, en este caso, un fichero con mas de 1000 configuraciones, es caracterizado en sus primeras 1000 configuraciones y la evaluaci\'on de esta propiedad se realiza cada 10 pasos.
+
+
+\subsection{Caracter\'isticas}
+Por ahora, \textbf{lpmd-converter} puede manejar todos los formatos listados en la tabla~\ref{tab:modinout}. Adem\'as se pueden aplicar las propiedades del m\'odulo selectatoms, para modificar, extraer o a\~nadir \'atomos en el sistema.
+
+\subsection{Ejecuci\'on}
+Al igual que \lpmd, \textbf{lpmd-coverter} puede ejecutarse con los argumentos en l\'inea de comandos y a trav\'es del fichero de control:
+
+\control{lpmd-converter fichero.control}
+
+\section{lpmd-visualizer}
+Utilidad capaz de visualizar sistemas at\'omicos, su funci\'on es aplicar cualquier tipo de m\'odulo de visualizaci\'on del sistema. Por ejemplo desde la generaci\'on de ficheros \verb|pov| para una posterior conversi\'on a imagenes, as\'i como la observaci\'on directa de configuraciones at\'omicas mediante openGL (m\'odulo \verb|lpvisual|).
+
+\subsection{Fichero de Control}
+
+Las \'areas principales de un fichero de control para ejcutar con \textbf{lpmd-converter}, son:
+
+\begin{enumerate}
+ \item Propiedades de la Celda.
+ \item Carga de modulos de visualizaci\'on.
+ \item Llamado de los m\'odulos.
+\end{enumerate}
+
+\subsubsection{Propiedades de la Celda}
+Se especifican las caracter\'isticas de la celda de simulaci\'on del fichero que posee las configuraciones at\'omicas. Pueden ser en ocaciones entregados como argumentos de ejecuci\'on del comando \textbf{lpmd-converter}.
+
+Los principales campos que deber\'ian estar en esta secci\'on del fichero son:
+\begin{itemize}
+ \item cell : Caracter\'isticas generales de la celda.
+ \item input : Especificando el fichero de entrada.
+ \item prepare : Alguna modificaci\'on a la celda original, tales como las replicas.
+\end{itemize}
+\subsubsection{Carga de m\'odulo de visualizaci\'on}
+Cargamos el m\'odulo, actualmentela distribuci\'on incluye el m\'odulo \verb|povray| para la generaci\'on de ficheros \verb|pov|, adem\'as existe un m\'odulo adicional, distribuido de forma independiente, para visualizaci\'on con openGL.
+
+\subsubsection{Llamado al m\'odulo}
+Especificamente llamamos al m\'odulo y vemos como deseamos mostrar la imagen o generar informaci\'on:
+
+\control{visualize module-alias start=0 end=1000 each=20}
+
+Por ejemplo, en este caso, un fichero con mas de 1000 configuraciones, se muestra cada 20 pasos comenzando en el paso inicial y terminando en el paso 1000.
+
+\subsection{Caracter\'isticas}
+Poder generar ficheros para visualizaci\'ones grandes y complejas, asi como tambien una visualizaci\'on simple y directa.
+
+\subsection{Ejecuci\'on}
+
+Al igual que \lpmd, \textbf{lpmd-visualize} es llamado con un fichero de control o tambien puede ser llamado directamente en l\'inea de comandos como
+
+%\section{lpmd-mixer}
+%
+%Su objetivo es crear combinaciones de estructuras at\'omicas, a partir de archivos, o cristalinas, asi da la ventaja de generar configuraciones m\'as complejas tales como materiales nanoestructurados.
+
+\section{Quick-Mode}
+\label{chap:util-quickmode}
+
+Esta secci\'on, da una idea generalizada de los flags que utilizan los utilitarios de lpmd, y cuales son sus caracter\'isticas, ya que puede incluso correrse an\'alisis sin necesidad de poseer un fichero de control. Las caracter\'isticas de los flags y el soporte en cada utilitario, pueden verse en la tabla~\ref{tab:quickmode}.
+
+\begin{table}[h!]
+ \centering
+ \begin{tabular}{cp{5cm}ccc}\\
+ \hline\hline
+  Flag & Funcionalidad & lpmd & analyzer & converter \\
+ \hline\hline
+\verb|-c| $\parallel$ \verb|--cell|&Los tama\~nos de la celda son indicados durante la ejecuci\'on.&Si&Si&Si\\\hline
+\verb|-p| $\parallel$ \verb|--pluginname|&Brinda ayuda sobre el plugin que se da en el argumento.&Si&Si&Si\\\hline
+ &&&&\\\hline
+ \end{tabular}
+ \label{tab:quickmode}
+ \caption{Se muestran los posibles flags de simulaci\'on de las utilidades y de \lpmd.}
+\end{table}

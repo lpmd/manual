@@ -14,7 +14,7 @@ Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| 
  density & = & Retorna la densidad de la celda.\\
  cell-n & = & n=a,b,c Retorna el largo de cada eje.\\
  particledensity & = & Retorna la densidad por particula. \\
- volumeperatom & = & Retornael volumen por \'atomo. \\
+ volumeperatom & = & Retorna el volumen por \'atomo. \\
 \end{tabular}
 }
 
@@ -27,7 +27,7 @@ Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|
                    &&cin\'etica [eV].\\
  potential-energy & = &Retorna la energ\'ia potencial[eV].\\
  total-energy & = &Retorna la energ\'ia total [eV].\\
- momentum & = &Retorna el momentum [?]. \\
+ momentum & = &Retorna el momentum [uma*A/fs]. \\
  p-n & = &n=x,y,z Retorna el momentum\\
                    && para cada eje. \\
  temperature & = &Retorna el valor de la \\
@@ -185,12 +185,13 @@ Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano 
 \end{itemize}
 
 \subsection{skewstart}
-M\'etodo crado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regulr para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
+M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regulr para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
 
 \cajatx{
 \begin{tabular}{lcl}
  symbol & = & S\'imbolo at\'omico de la especie.\\
- atoms & = & Especif\'ica el n\'umero de \'atomos dentro de la celda.\\
+ atoms & = & Especif\'ica el n\'umero de \'atomos dentro \\
+ &&de la celda.\\
 \end{tabular}
 }
 
@@ -210,9 +211,11 @@ Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion c
 
 \cajatx{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
+ file & = & Archivo que contiene la configuraci\'on \\
+ &&de \textbf{dlpoly}\\
  level & = & Nivel del archivo (0,1,2).\\
- preiodicity & = & Especifica \textit{key} de periodicidad, fichero CONFIG.\\
+ preiodicity & = & Especifica \textit{key} de periodicidad del \\
+ &&fichero CONFIG.\\
 \end{tabular}
 }
 
@@ -222,7 +225,8 @@ El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero
 \cajatx{
 \begin{tabular}{lcl}
  file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
- species & = & lista de las especies (en orden) del fichero POSCAR.\\
+ species & = & lista de las especies (en orden) del fichero \\
+ &&POSCAR.\\
  type & = & Tipo de posiciones, direct/cartesian.\\
 \end{tabular}
 }
@@ -279,20 +283,44 @@ De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un
 
 \cajatx{
 \begin{tabular}{lcl}
- percent & = & Especifica el porcentaje en el que se variar\'a el largo de la celda.\\
- axis & = & Indica, el eje (x,y o z) en el que se comprimira la celda (all=hidrost\'atico).\\
- constant & = & true/false indica si la modificacion es constante respecto al valor inicial.\\
+ percent & = & Especifica el porcentaje en el que se variar\'a \\
+ &&el largo de la celda.\\
+ axis & = & Indica, el eje (x,y o z) en el que se comprimira \\
+ &&la celda (all=hidrost\'atico).\\
+ constant & = & true/false indica si la modificacion es constante \\
+ &&respecto al valor inicial.\\
 \end{tabular}
 }
 
 Para un detalle m\'as acabado en el uso de cellscaling, vea el cap\'itulo~\ref{chap:exa}.
 
 \subsection{displacement}
+M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desplazamiento vectorial de los \'atomos de la muestra. Su funcionalidad esta enfocada principalmente en la construcci\'on de sistemas nanoestructurados a futuro.
+
+\cajatx{
+\begin{tabular}{lcl}
+ x & = & Desplazamiento en el eje x.\\
+ y & = & Desplazamiento en el eje y.\\
+ z & = & Desplazamiento en el eje z.\\
+\end{tabular}
+}
 
 \subsection{rotate}
+M\'odulo que modifica las posiciones, rotando los \'atomos cierto grado en torno a un origen. Al igual que el m\'odulo \verb|displace|, est\'a desarrollado para la futura creaci\'on de estructuras m\'as complejas.
+
+\cajatx{
+\begin{tabular}{lcl}
+ x & = & Coordenada x del eje de rotaci\'on.\\
+ y & = & Coordenada y del eje de rotaci\'on.\\
+ z & = & Coordenada z del eje de rotaci\'on.\\
+ angle & = & \'Angulo de rotaci\'on en grados.\\
+\end{tabular}
+}
 
 \subsection{quenchedmd}
+M\'odulo que m\'inimiza la estructura, utilizando el m\'etodo \textit{Quenched Molecular Dynamics}. Durante el proceso, el integrador no actua, como una din\'amica molecular simple, ya que erifica la proyeccion entre fuerza y velocidad, la que se ve forzada si la energ\'ia es incrementada.
 
+El m\'odulo no necesita argumentos especiales, solo ser llamado y aplicado.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -328,36 +356,13 @@ As\'i subdividimos la celda en una grilla de 10x10x10. Para generar las listas d
 \subsection{lennardjones}
 El m\'odulo \textbf{lennardjones} hace referencia al potencial de Lennard-Jones, que es de la forma,
 $$U(r_{ij}) = 4\epsilon\left(\left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^6\right)$$
-En donde $r_{ij}$ es la distancia interat\'omica de los \'atomos $i$ y $j$. La implementaci\'on del m\'etodo virtual, queda entonces como :
-\begin{verbatim}
-double LennardJones::pairEnergy(const double & r) const
-{
- double rtmp=sigma/r;
- double r6 = rtmp*rtmp*rtmp*rtmp*rtmp*rtmp;
- double r12 = r6*r6;
- return 4.0e0*epsilon*(r12 - r6);
-}
-\end{verbatim}
+En donde $r_{ij}$ es la distancia interat\'omica de los \'atomos $i$ y $j$. 
 
 Para el c\'alculo de Fuerzas, la forma del potencial que nos interesa, es aquella fuerza que siente el \'atomo $i$ producida por el \'atomo $j$, la que debe ser implementada en el plugin, para potentiales de pares, para el caso del potencial de Lennard Jones, la fuerza esta dada por,
 
 $$F_{ij} = \frac{-48.0\epsilon}{r_{ij}^2}\left( \left(\frac{\sigma}{r_{ij}}\right)^{12} + \frac{1}{2}\left(\frac{\sigma}{r_{ij}}\right)^6 \right) \vec{r_{ij}}$$
 
-en donde $\vec{r_{ij}}$ es el vector distancia entre los \'atomos $i$ y $j$, y $r_{ij}$ es la distancia entre ellos. La implementaci\'on de la fuerza de pares requerida por la API es :
-
-\begin{verbatim}
-Vector LennardJones::pairForce(const Vector & r) const
-{
- double rr2 = r.Mod2();
- double r6 = pow(sigma*sigma / rr2, 3.0e0);
- double r12 = r6*r6;
- double ff = -48.0e0*(epsilon/rr2)*(r12 - 0.50e0*r6);
- Vector fv = r;
- fv.Scale(ff);
- return fv;
-}
-\end{verbatim}
-
+en donde $\vec{r_{ij}}$ es el vector distancia entre los \'atomos $i$ y $j$, y $r_{ij}$ es la distancia entre ellos. 
 Las palabras reservadas por el plugin \textbf{lennardjones}, son :
 
 \cajatx{
@@ -370,7 +375,7 @@ Las palabras reservadas por el plugin \textbf{lennardjones}, son :
 
 Las unidades en que deben ser ingresados, las constantes, deben ser basadas en que las distancias estan en [\AA] y la energ\'ia debe ser adquirida en [eV].
 
-\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+%\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
 
 \subsection{fastlj}
 Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
@@ -394,7 +399,6 @@ Las palabras reservadas por el plugin \textbf{morse}, son :
  cutoff & = & indica el cutoff del potencial.\\
 \end{tabular}
 }
-
 
 \subsection{constantforce}
 Mantiene una fuerza constante sobre atomos de cierta especie, se utiliza principalmente para aplicarles fuerzas a especies at\'omicas o bien a atomos seleccionados de alguna forma en especial. Este \textit{potencial}, no retorna una energ\'ia (cero) y solo tiene capacidad de asginar una fuerza constante a un set de atomos.
@@ -458,7 +462,7 @@ Las palabras reservadas por el plugin \textbf{buckingham}, son :
 \subsection{suttonchen}
 Este potencial, se utiliza para interacciones de atomos met\'alicos, es por eso que el plugin \textbf{suttonchen} implementa los m\'etodos virtuales de \verb|metalpotential|, que cuentan con una parte de pares y otro t\'ermino de muchos cuerpos. La parte asociada al t\'ermino de pares, est\'a dado por,
 
-$$U(r_{ij}) = \left(\frac{a}{r_{ij}}\right)^n$$
+$$U(r_{ij}) = \epsilon\left(\frac{a}{r_{ij}}\right)^n$$
 
 en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de muchos cuerpos esta dado por
 
@@ -481,94 +485,39 @@ $$\delta U_1 = \frac{2\pi N\overline{\rho}\epsilon a^3}{n-3}\left(\frac{a}{r_{me
 Hay que notar que $\delta U_2$ no es requerido si $\rho_i$ ya fue corregido, con $\delta U_2$ de la forma
 
 $$\delta U_2 = -\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{n-3}\left<\frac{Nc\epsilon}{2\sqrt{\rho_i^0}}\right>$$
-
-La implementaci\'on de esta energ\'ia para el potencial met\'alico, 
-
-\begin{verbatim}
-double SuttonChen::pairEnergy(const double &r) const
-{
- return e*pow((a/r),n);
-}
-
-double SuttonChen::rhoij(const double &r) const
-{
- return pow((a/r),m);
-}
-
-double SuttonChen::F(const double &rhoi) const
-{
- return -c*e*sqrt(rhoi);
-}
-
-double SuttonChen::deltarhoi(const double &rhobar) const
-{
- return (4*M_PI*rhobar*a*a*a/(m-3))*pow(a/rcut,m-3);
-}
-
-double SuttonChen::deltaU1(const double &rhobar, const int &N) const
-{
- double f = 2*M_PI*N*rhobar*e*a*a*a/(n-3);
- return f*pow(a/rcut,n-3);
-}
-\end{verbatim}
 
 y la fuerza asociada al potencial de suttonchen que aplica para un par de atomos $i$ y $j$ est\'a dada por,
 
 $$\vec{F}(\vec{r}_{ij}) = -\epsilon\left[n\left(\frac{a}{\vec{r}_{ij}}\right)^n - \frac{Cm}{2}(\rho_j^{(-1/2)}+\rho_i^{(-1/2)})\left(\frac{a}{\vec{r}_{ij}}\right)^m\right]\left(\frac{1}{\vec{r}_{ij}^2}\right)\vec{r}_{ij}$$
 
-Donde la implementaci\'on de la fuerza como m\'etodo virtual de los potenciales met\'alicos queda de la forma,
 
-\begin{verbatim}
- Vector SuttonChen::PairForce(const Vector &rij) const
-{
- Vector norm = rij;
- double rmod = rij.Mod();
- norm.Norm();
- return -n*e*pow(a/rmod,n)*(norm/rmod);
-}
-
-Vector SuttonChen::ManyBodies(const Vector &rij, const double &rhoi, \\
-const double &rhoj) const
-{
- double tmp;
- double rmod = rij.Mod();
- tmp=(m/2)*c*e*((1/sqrt(rhoi))+(1/sqrt(rhoj)))*pow(a/rmod,m)*(1.0/rmod);
- Vector ff = rij;
- ff.Norm();
- return tmp*ff;
-}
-\end{verbatim}
-
-
-\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+%\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
 
 \subsection{Gupta}
 
 Al igual que \verb|suttonchen|, el potencial de \verb|gupta| es utilizado para \'atomos met\'alicos, donde los valores para los terminos de pares est\'a dada por:
 
-$$U(r_{ij}) = \left(\frac{a}{r_{ij}}\right)^n$$
+$$U(r_{ij}) = A\exp{\left(-p\frac{r_{ij}-r_0}{r_0}\right)}$$
 
 en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de muchos cuerpos esta dado por
 
-$$F(\rho_{i}) = -c\epsilon\sqrt{\rho_i}$$
+$$F(\rho_{i}) = -B\sqrt{\rho_i}$$
 
 en donde,
 
-$$\rho_i = \sum_{j\neq i} \left(\frac{a}{r_{ij}}\right)^m$$
+$$\rho_i = \sum_{j\neq i} \exp{\left(-2q_{ij}\frac{r_{ij}-r_0}{r_0}\right)}$$
 
-lo que corresponde a una densidad local del atomo $i$, que depende de todos los atomos $j$ cercanos a \'el, \'esta densidad local sin embargo, debe ser corregida para el caso de suttonchen (note que no todos los potenciales asociados a los metales requieren de esta correcci\'on, pero \verb|metalpotential| lo requiere, as\'i que en ocaciones debe ser cero).
+lo que corresponde a una densidad local del atomo $i$, que depende de todos los atomos $j$ cercanos a \'el. Para el potencial de Gupta, la correcci\'on de la densidad esta dada por,
 
-Para el potencial de SuttonChen, la correcci\'on de la densidad esta dada por,
+$$\delta\rho_i=\frac{2\pi\overline{\rho}r_0}{q_{ij}}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{q_{ij}}\right)+2\left(\frac{r_0}{q_{ij}}\right)^2\right]\exp{\left(-2q_{ij}\frac{r_{met}-r_0}{r_0}\right)}$$
 
-$$\delta\rho_i=\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{(m-3)}$$
+Esta correcci\'on de la densidad debe ser aplicada inmediatamente luego de ser calculada la densidad local. La correcci\'on de la energ\'ia para Gupta, se obtiene de esta forma con :
 
-Esta correcci\'on de la densidad debe ser aplicada inmediatamente luego de ser calculada la densidad local. La correcci\'on de la energ\'ia para Sutton Chen, se obtiene de esta forma con :
-
-$$\delta U_1 = \frac{2\pi N\overline{\rho}\epsilon a^3}{n-3}\left(\frac{a}{r_{met}}\right)^{n-3}$$
+$$\delta U_1 = \frac{2\pi N\overline{\rho}A r_0}{p}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{p}\right)+2\left(\frac{r_0}{p}\right)^2\right]\exp{\left(-p\frac{r_{met}-r_0}{r_0}\right)}$$
 
 Hay que notar que $\delta U_2$ no es requerido si $\rho_i$ ya fue corregido, con $\delta U_2$ de la forma
 
-$$\delta U_2 = -\frac{4\pi\overline{\rho}a^3}{m-3}\left(\frac{a}{r_{met}}\right)^{n-3}\left<\frac{Nc\epsilon}{2\sqrt{\rho_i^0}}\right>$$
+$$\delta U_2 = \frac{2\pi\overline{\rho} r_0}{q_{ij}}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{q_{ij}}\right)+2\left(\frac{r_0}{q_{ij}}\right)^2\right]\exp{\left(-2q_{ij}\frac{r_{met}-r_0}{r_0}\right)}\left<\frac{NB}{2\sqrt{\rho_i^0}}\right>$$
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -588,7 +537,7 @@ El algoritmo de Beeman es un m\'etodo para integrar num\'ericamente ecuaciones d
 Las f\'ormulas para posici\'on y velocidad estan dadas por:
 
 $$r(t+\Delta t) = r(t) + v(t)\Delta t + \frac{2}{3}a(t)\Delta t^2 - \frac{1}{6}a(t-\Delta t)\Delta t^2 +\mathcal{O}(\Delta t^4)$$
-$$v(t+\Delta t) = v(t) + \frac{1}{3}a(t+\Delta t)\Delta t+\frac{5}{6}a(t)\Delta t-\frac{1}{6}a(t-\Delta t)\Delta t+\mathcal{O}(\Delta t^3$$
+$$v(t+\Delta t) = v(t) + \frac{1}{3}a(t+\Delta t)\Delta t+\frac{5}{6}a(t)\Delta t-\frac{1}{6}a(t-\Delta t)\Delta t+\mathcal{O}(\Delta t^3)$$
 
 \subsection{euler}
 El integrador de Euler, es el m\'atodo n\'umerico de primer orden para resolver ecuaciones diferenciales ordinarias. Este es el m\'etodo m\'as b\'asico para la integraci\'on num\'erica de las ecuaciones.
@@ -618,13 +567,27 @@ Es utilizado para simulacion de ensambles de tipo NVT, en general el m\'etodo co
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visualizadores}
 \subsection{lpvisual}
-Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se enceuntra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura...
+Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se enceuntra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[scale=.25]{lpvisual.png}
+ \label{fig:lpvisual}
+ \caption{Screenshoot de \lpmd ejecutando una simulaci\'on de din\'amica molecular, mientras se observan las configuraciones en tiempo real con \textbf{lpvisual}.}
+\end{figure}
 
 Esta completamente basado en OpenGL, y el soporte es completamente independiente, cualqueir duda o consulta respecto al m\'odulo, contacte directamente al autor.
+
+La descarga de \textbf{lpvisual}, se puede realizar a trav\'es de \verb|subversion|, con:
+
+\control{svn co sn://www.gnm.cl/lpmd/lpvisual lpvisual}
+
+Para la instalaci\'on y configuraci\'on refierase directamente a la documentaci\'on del m\'odulo.
+
 \subsection{povray}
 Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on. Hasta la fecha el soporte y las caracteristicas del m\'odulo no son muy buenas, sin embargo espera mejorarse en proximas versiones.
 
-Los argumentos requeridos (no todos) por el m\'odulo povray, son los siguientes,
+Los argumentos requeridos por el m\'odulo povray, son los siguientes,
 
 \cajatx{
 \begin{tabular}{lcl}
@@ -646,25 +609,25 @@ Dentro de cada uno de \'estos argumentos, el que m\'as cabe detallar es \textbf{
 
 \control{text "Titulo" <pos> <color> [size] (extra)}
 
-Ac\'a las opciones son en el orden requerido. El t\'itulo puede ser cualquier texto, si se utiliza el s\'imbolo ``\% '' entonces el valor de \verb|extra| ser\'a reemplazado (Actualmente : Temp, Step). Las opciones \verb|<pos>| y \verb|<color>| son vectores que deben ingresarse en el formato \verb|<x,y,z>| y corresponden a la posici\'on del texto y los colores, exiten valores por defecto, tales como \verb|<green>|, \verb|<red>| o posiciones como \verb|<dl>| (abajo a la izquierda) que pueden ser utilizadas. Finalmente [size] es el tama\~no escalado del texto.
+Ac\'a las opciones son en el orden requerido. El t\'itulo puede ser cualquier texto, si se utiliza el s\'imbolo ``\% '' entonces el valor de \verb|extra| ser\'a reemplazado (Actualmente : Temp, Step). Las opciones \verb|<pos>| y \verb|<color>| son vectores que deben ingresarse en el formato \verb|<x,y,z>| y corresponden a la posici\'on del texto y los colores, exiten valores por defecto, tales como \verb|<green>|, \verb|<red>| o posiciones como \verb|<dl>| (abajo a la izquierda) que pueden ser utilizadas. Finalmente [size] es el tama\~no escalado del texto. Para una visi\'on m\'as detallada revise el cap\'itulo~\ref{chap:exa}.
 
-A continuaci\'on un ejemplo t\'ipico de uso de \verb|povray| en una simulaci\'on.
-
-\begin{verbatim}
-use povray
-    header shoot-
-    direct movie
-    text "Modelacion de Ar" <dl> <green> [1] ()
-    text "Step = %" <3,3,3> <red> [1] (Step)
-    text "Temperatura : % [K]" <uc> <blue> [1] (Temp)
-    text "http://www.gnm.cl/" <dr> <green> [0.5] ()
-    background <0.2,0.1,0.4>
-    rotate <0,0,0>
-    logo "logo-v2.gif" 1.5 <cr>
-enduse
-\end{verbatim}
-
-Luego de que los archivos son creados en el directorio ``movie'', es importante que coloque en ese directorio el logo al que los archivos hacen referencia \verb|logo-v2.gif|.
+% A continuaci\'on un ejemplo t\'ipico de uso de \verb|povray| en una simulaci\'on.
+% 
+% \begin{verbatim}
+% use povray
+%     header shoot-
+%     direct movie
+%     text "Modelacion de Ar" <dl> <green> [1] ()
+%     text "Step = %" <3,3,3> <red> [1] (Step)
+%     text "Temperatura : % [K]" <uc> <blue> [1] (Temp)
+%     text "http://www.gnm.cl/" <dr> <green> [0.5] ()
+%     background <0.2,0.1,0.4>
+%     rotate <0,0,0>
+%     logo "logo-v2.gif" 1.5 <cr>
+% enduse
+% \end{verbatim}
+% 
+% Luego de que los archivos son creados en el directorio ``movie'', es importante que coloque en ese directorio el logo al que los archivos hacen referencia \verb|logo-v2.gif|.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -762,8 +725,8 @@ La forma de utilizarla es:
 \begin{tabular}{lcl}
  axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
  bins & = & N\'umero de intervalos para dividir el eje.\\
- range & = & Rango espacial de cada uno de los ejes, nombre del eje\\
-&&, m\'inimo y m\'aximo.\\
+ range & = & Rango espacial de cada uno de los ejes, con \\
+ && formato: nombre del eje, m\'inimo y m\'aximo.\\
  output & = & Archivo de salida.\\
  average & = & Se promediar\'an o no los calculos.\\
 \end{tabular}
@@ -778,8 +741,8 @@ La forma de utilizar esto es:
 \begin{tabular}{lcl}
  axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
  bins & = & N\'umero de intervalos para dividir el eje.\\
- range & = & Rango espacial de cada uno de los ejes, nombre del eje\\
-&&, m\'inimo y m\'aximo.\\
+ range & = & Rango espacial de cada uno de los ejes, con formato:\\
+&&nombre del eje, m\'inimo y m\'aximo.\\
  output & = & Archivo de salida.\\
  average & = & Se promediar\'an o no los calculos.\\
 \end{tabular}
@@ -816,6 +779,6 @@ La forma de utilizar el plugin es:
 \section{Propiedades Din\'amicas}
 Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para \lpmd. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
 \subsection{vacf}
-Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda.
+Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
 \subsection{msd}
-Calcula el desplazamiento cuadratico medio del sistema.
+Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin esta en etapa de mejora y documentaci\'on.

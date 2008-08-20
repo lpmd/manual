@@ -3,11 +3,12 @@
 \usepackage{graphicx,fancybox,wrapfig}
 \usepackage{fullpage,multicol}
 \usepackage{subfigure}
+\usepackage{rotating}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%NEWCOMMANDS DEFINITIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\lpmd}{\textbf{lpmd~}}
+\newcommand{\lpmd}{\textbf{lpmd}}
 \newcommand{\fumfun}[4]{\begin{center}\begin{tabular}{|c|c|c|c|}\hline
  Flag & Work & Test & Mand\\\hline
 #1 & #2 & #3 & #4 \\\hline
@@ -21,7 +22,7 @@
 %\newcommand{\cvb}[1]{\begin{center}\begin{verbatim} #1 \end{verbatim}\end{center}}
 \newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
 %\newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[scale=.3]{#1}\caption{#2}\label{fig:#3}\end{minipage}}\end{figure}}
-\newcommand{\cajafi}[3]{\begin{figure}[!ht]\centering\includegraphics[scale=.35]{#1}\caption{#2}\label{fig:#3}\end{figure}}
+\newcommand{\cajafi}[3]{\begin{figure}[h!]\centering\includegraphics[scale=.35]{#1}\caption{#2}\label{fig:#3}\end{figure}}
 \newcommand{\control}[1]{\begin{center}\begin{minipage}{10cm}\texttt{#1}\end{minipage}\end{center}}
 
 \newcommand {\foto}[4]{\begin{figure}
@@ -38,9 +39,10 @@
    }
 
 \begin{document}
-\author{http://www.gnm.cl}
+\author{\includegraphics[scale=.35]{logo-lpmd.pdf}}
 \title{``Las Palmeras'' Molecular Dynamics - \textbf{LPMD}.}
 \maketitle
+
 
 \tableofcontents
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,13 +83,13 @@
 %CAPITULO 7%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{desmodulos.tex}
+%\input{desmodulos.tex}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %CAPITULO 8%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{paralelizacion.tex}
+%\input{paralelizacion.tex}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %CAPITULO 9%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,3 +103,88 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{apendice.tex}
 \end{document}
+
+%%%%%%%%%%%%%%%%%%5
+%%Codigo adicional que no esta listo para ser puesto en el documento
+%%%%%%%%%%%%%%%%%%
+
+La implementaci\'on del m\'etodo virtual, queda entonces como :
+\begin{verbatim}
+double LennardJones::pairEnergy(const double & r) const
+{
+ double rtmp=sigma/r;
+ double r6 = rtmp*rtmp*rtmp*rtmp*rtmp*rtmp;
+ double r12 = r6*r6;
+ return 4.0e0*epsilon*(r12 - r6);
+}
+\end{verbatim}
+
+La implementaci\'on de la fuerza de pares requerida por la API es :
+
+\begin{verbatim}
+Vector LennardJones::pairForce(const Vector & r) const
+{
+ double rr2 = r.Mod2();
+ double r6 = pow(sigma*sigma / rr2, 3.0e0);
+ double r12 = r6*r6;
+ double ff = -48.0e0*(epsilon/rr2)*(r12 - 0.50e0*r6);
+ Vector fv = r;
+ fv.Scale(ff);
+ return fv;
+}
+\end{verbatim}
+
+La implementaci\'on de esta energ\'ia para el potencial met\'alico, 
+
+\begin{verbatim}
+double SuttonChen::pairEnergy(const double &r) const
+{
+ return e*pow((a/r),n);
+}
+
+double SuttonChen::rhoij(const double &r) const
+{
+ return pow((a/r),m);
+}
+
+double SuttonChen::F(const double &rhoi) const
+{
+ return -c*e*sqrt(rhoi);
+}
+
+double SuttonChen::deltarhoi(const double &rhobar) const
+{
+ return (4*M_PI*rhobar*a*a*a/(m-3))*pow(a/rcut,m-3);
+}
+
+double SuttonChen::deltaU1(const double &rhobar, const int &N) const
+{
+ double f = 2*M_PI*N*rhobar*e*a*a*a/(n-3);
+ return f*pow(a/rcut,n-3);
+}
+\end{verbatim}
+
+Donde la implementaci\'on de la fuerza como m\'etodo virtual de los potenciales met\'alicos queda de la forma,
+
+\begin{verbatim}
+ Vector SuttonChen::PairForce(const Vector &rij) const
+{
+ Vector norm = rij;
+ double rmod = rij.Mod();
+ norm.Norm();
+ return -n*e*pow(a/rmod,n)*(norm/rmod);
+}
+
+Vector SuttonChen::ManyBodies(const Vector &rij, const double &rhoi, \\
+const double &rhoj) const
+{
+ double tmp;
+ double rmod = rij.Mod();
+ tmp=(m/2)*c*e*((1/sqrt(rhoi))+(1/sqrt(rhoj)))*pow(a/rmod,m)*(1.0/rmod);
+ Vector ff = rij;
+ ff.Norm();
+ return tmp*ff;
+}
+\end{verbatim}
+
+

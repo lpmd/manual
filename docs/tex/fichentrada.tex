@@ -1,7 +1,7 @@
 \chapter{El Fichero de Control}
 \label{chap:input}
 
-Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de sistema, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de sistema, revisaremos los archivos de posiciones at\'omicas.
+Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de sistema, revisaremos los archivos de posiciones at\'omicas.
 
 \section{Fichero con Posiciones At\'omicas}
 
@@ -46,14 +46,12 @@ Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Otros Formatos Soportados}
 
-Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados (de forma b\'asica) para lectura/escritura de configuraciones at\'omicas, algunos de ellos son:
+Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados (de forma b\'asica) para lectura/escritura de configuraciones at\'omicas, algunos de ellos son listados en la tabla~\ref{tab:modinout}.
 
-\begin{tabular}{lcl}\\
- mol2 &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{mol2} \\
- pdb  &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{pdb} \\
-\end{tabular}
-
-
+% \begin{tabular}{lcl}\\
+%  mol2 &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{mol2} \\
+%  pdb  &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{pdb} \\
+% \end{tabular}
 
 \section{El Fichero de configuraci\'on .control}
 
@@ -65,7 +63,7 @@ Entre las cosas a considerar en un fichero de control, est\'an:
  \item \# Es una l\'inea de comentario.
  \item Pese a que puede ser aleatorio el orden de los flags, se recomienda llevar un orden.
  \item Recomendamos definir los m\'odulos antes de utilizarlos. Tampoco es obligaci\'on.
- \item Existen m\'odulos en un fichero de control que \textbf{no} pueden ser omitidos, como por ejemplo, un \textbf{cellmanager}.
+ \item Existen m\'odulos en un fichero de control que \textbf{no} pueden ser omitidos, como por ejemplo, un \textbf{cellmanager}. Sin embargo la mayor\'ia de estos casos, pueden ser entregados por l\'inea de comando.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -127,7 +125,7 @@ Veamos a continuaci\'on brevemente cada uno de ellos,
 \begin{itemize}
  \item{Con Fichero}
 
-Para cargar un fichero con configuraciones at\'omicas es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargarun fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
+Para cargar un fichero con configuraciones at\'omicas es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargar un fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
   \item{Generadores de celda}
 
 A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con atomos, seg\'un los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para genrar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc} y el m\'etodo \textbf{skewstart}.
@@ -144,7 +142,7 @@ La forma general de la orden \verb|input| requiere de argumentos para un funcion
 \end{tabular}
 }
 
-Estos son los argumntos m\'as standard ya que cada m\'odulo posee sus propios argumentos, por lo que se hace necesario ver cada uno seg\'un los inter\'eses propios.
+Estos son los argumentos m\'as standard ya que cada m\'odulo posee sus propios argumentos, por lo que se hace necesario ver cada uno seg\'un el inter\'es.
 
 Veamos algunas formas de uso para la orden \verb|input| :
 
@@ -157,22 +155,22 @@ Veamos algunas formas de uso para la orden \verb|input| :
 \control{input module=skewstart atoms=108 symbol=Ar}
 \end{itemize}
 
-Esta es una lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de configuraciones,
+La lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de configuraciones, se pueden observar en la tabla~\ref{tab:modinout}.
 
-\begin{enumerate}
- \item \verb|xyz|
- \item \verb|lpmd|
- \item \verb|zlp|
- \item \verb|hcp| - \verb|fcc| - \verb|bcc| - \verb|sc|
- \item \verb|skewstart|
- \item \verb|mol2|
- \item \verb|pdb|
-\end{enumerate}
+% \begin{enumerate}
+%  \item \verb|xyz|
+%  \item \verb|lpmd|
+%  \item \verb|zlp|
+%  \item \verb|hcp| - \verb|fcc| - \verb|bcc| - \verb|sc|
+%  \item \verb|skewstart|
+%  \item \verb|mol2|
+%  \item \verb|pdb|
+% \end{enumerate}
 
 
 \subsubsection{output}
 
-Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo en la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, sin embargo es \textit{importante} notar que cada m\'odulo posee configuraciones independientes, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos requeridos por el par\'ametro \verb|output| son:
+Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo en la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, sin embargo es \textit{importante} notar que cada m\'odulo posee configuraciones independientes, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos generales principales del par\'ametro \verb|output| son:
 
 \cajatx{ 
 \begin{tabular}{lcl}
@@ -196,20 +194,20 @@ Algunas formas de uso,
 \control{output module=lpmd file=fichero.xyz level=1 each=1}
 \end{itemize}
 
-Esta es una lista de los m\'odulos soportados a la fecha para escritura de configuraciones,
+La lista de los m\'odulos soportados a la fecha para escritura de configuraciones, pude verse en la tabla~\ref{tab:modinout}.
 
-\begin{enumerate}
- \item \verb|xyz|
- \item \verb|lpmd|
- \item \verb|zlp|
- \item \verb|mol2|
- \item \verb|pdb|
-\end{enumerate}
+% \begin{enumerate}
+%  \item \verb|xyz|
+%  \item \verb|lpmd|
+%  \item \verb|zlp|
+%  \item \verb|mol2|
+%  \item \verb|pdb|
+% \end{enumerate}
 
 
 \subsubsection{restore}
 
-Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de energ\'ia el\'ectrica o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping''.
+Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de energ\'ia el\'ectrica o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping'' dentro del fichero de control, indicando el nombre del archivo \verb|dump|. Es recomendable que antes de reiniciar una corrida, respalde los datos en otro directorio, o efectue la \textit{reiniciaci\'on} de la corrida en un directorio distinto, para evitar da\~nar, perder o sobreescribir los datos previos de la simulaci\'on.
 
 Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, por favor si encuentra alg\'un bug, reportelo.
 
@@ -234,7 +232,7 @@ De esta froma, la celda que se ley\'o en \verb|input| es replicada 2 veces por c
 Utilizado para setear valores de la simulaci\'on, utilizado principalmente para algunas variables globales del sistema. A continuaci\'on los m\'as utilizados, ya que la mayor\'ia de las variables pueden ser modificadas utilizando \verb|set|.
 
 \begin{itemize}
- \item Evitando que aparezca la celda inicial en pantalla
+ \item Evitando que aparezca la celda inicial en la salida \textit{standard}.
 \control{set showcoords false}
  \item Evitando que se muestren los modulos no utilizados durante la salida.
 \control{set showunused false}
@@ -243,7 +241,7 @@ Utilizado para setear valores de la simulaci\'on, utilizado principalmente para 
 \end{itemize}
 
 \subsubsection{charge}
-Set de las cargas en eV para las especies at\'omicas. Estos valores de las cargas, son seteados principalmente para utilizaci\'on de potenciales interatomicos en los cuales se utilizan las cargas de los atomos involucrados.
+Set de las cargas en eV para las especies at\'omicas. Estos valores de las cargas, son seteados principalmente para utilizaci\'on de potenciales interat\'omicos en los cuales se utilizan las cargas de los atomos involucrados.
 
 
 Forma de uso
@@ -265,7 +263,7 @@ N\'umero de pasos de la simulaci\'on de DM.
 
 \control{steps 10000}
 
-Ac\'a se indica que la siulaci\'on se realizar\'a con 10000 pasos.
+Ac\'a se indica que la simulaci\'on se realizar\'a con 10000 pasos.
 
 \subsubsection{dumping}
 Genera una salida global del sistema para poder restaurar a partir de ese punto.
@@ -275,7 +273,7 @@ Genera una salida global del sistema para poder restaurar a partir de ese punto.
 Generamos un fichero de volcado cada 10000 pasos de la simulaci\'on, en \'el se graba toda la informaci\'on necesaria, para reiniciar una corrida.
 
 \subsubsection{monitor}
-Cada cuantos pasos la simulaci\'on muestra las propiedades globales. Estas propiedades, pueden ser asignadas por el mismo usuario, haciendo la salida lo m\'as configurables seg\'un los requerimientos propios.
+Cada cuantos pasos la simulaci\'on muestra las propiedades globales. Estas propiedades, pueden ser asignadas por el mismo usuario, haciendo la salida lo m\'as configurables seg\'un los propios requerimientos.
 
 Entre las opciones de monitor, cuentan :
 
@@ -321,7 +319,7 @@ Algunas de las opciones soportadas por \textbf{properties} son:
  \item sij : i,j=x,y,z entrega los valores para el tensor de stress.
 \end{itemize}
 
-Una ventaja muy considerable es la utilizaci\'onde multiples \verb|monitor| para as\'i ir almacenando la informaci\'on \textit{a medida}. Para revisar todas las opciones de salida, refirase a la secci\'on~\ref{chap:modulos}.
+Una ventaja es la utilizaci\'on de multiples \verb|monitor| para as\'i ir almacenando la informaci\'on \textit{a medida}. Para revisar todas las opciones de salida, refirase a la secci\'on~\ref{chap:modulos}.
 
 \subsection{Carga de M\'odulos}
 
@@ -334,6 +332,7 @@ Los m\'odulos son de distintos tipos en general, y los de un tipo en com\'un com
 \begin{tabular}{lcl}
  Generadores de celda & : & Tales como \verb|xyz|, \verb|pdb|, \verb|crystalfcc|, etc. \\
  Manejadores de celda & : &\verb|minimumimage|, \verb|linkedcell|, etc. \\
+ Modificadores de celda & : &\verb|cellscale|, \verb|tempscalling|, etc.\\
  Calculadores de Propiedades & : & \verb|gdr|, \verb|angdist|, \verb|msd|, etc. \\
  Integradores & : & \verb|verlet|, \verb|euler|, etc. \\
  Potenciales & : & \verb|LennardJones|, \verb|SuttonChen|, \verb|Morse|, etc. \\
@@ -348,16 +347,19 @@ De esta forma el m\'odulo \texttt{MODULO} puede ser llamado en forma posterior c
 
 Entonces dentro de un archivo de \textbf{control}, debemos cargar los m\'odulos necesarios para un posterior llamado.
 
-\subsection{Aplicac\'on de m\'odulos}
+\subsection{Aplicaci\'on de m\'odulos}
 
 Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{control}, como existen distintas ``especies'' de m\'odulos, estos deben ser llamados de diferentes maneras, aunque su forma es muy general.
 
 \begin{itemize}
+ \item \textbf{Modificadores}
+  M\'odulos llamados para modificar alguna propiedad de la celda de simulaci\'on. Se aplican con:
+  \control{apply module-alias start=0 end=1000 each=20}
  \item \textbf{Calculadores de Propiedades}
-  Estos siempre son llamados a ser evaluados cada cierto tiempo entre un rango de intervalos, 
+  Estos siempre son llamados a ser evaluados cada cierto tiempo entre un rango de intervalos. Aplicados con:
   \control{property module-alias start=0 end=1000 each=10}
  \item \textbf{Integradores}
-  Estos son llamados facilmente con
+  Estos son llamados facilmente con:
   \control{integrator module-alias}
  \item \textbf{Potenciales}
   Estos definen una interaccion entre dos \'atomos (por el momento no hay de tres cuerpos). Se crea un potencial para cada interacci\'on especificando los valores y llamando luego con
@@ -366,7 +368,6 @@ Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{contr
   Llaman al manejador de celda que se utilizara en la simulaci\'on, en nuestro caso hay dsiponibilidad de dos manejadores, \verb|linkdecell| y \verb|minimumimage|.
   \control{cellmanager linkedcell}
 \end{itemize}
-
 
 
 
@@ -407,7 +408,7 @@ el fichero \verb|salida.out| tiene toda la informaci\'on que deb\'ia salir a pan
 \subsubsection{Fichero generado por output}
 Este fichero se gener\'o con el nombre entregado en el fichero de control a la linea \textbf{output}, en \'el se encuentran las configuraciones atomicas de la \textbf{DM} y suelen ser los ficheros a partir de los cuales suelen crearse animaciones y an\'alisis detallados de la simulaci\'on.
 
-Muchos an\'alisis pueden llevarse a cabo \textit{\textbf{durante la simulaci\'on misma}}, sin embargo \lpmd tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utilidades}
+Todas las propiedades instantaneas pueden calcularse \textit{\textbf{durante la simulaci\'on misma}}, sin embargo \lpmd tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utilidades}.
 
 Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores. Por ejemplo si se adquiere un archivo \verb|xyz| con \verb|level=0| no se podr\'a calcular un perfil de temperaturas ya que no se cuenta con la informaci\'on suficiente (posiciones y velocidades).
 
@@ -415,7 +416,7 @@ Es importante definir un buen formato de salida ya que es la clave para simplifi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Salida de errores}
-La versi\'on actual no redrecciona informacion a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de \lpmd.
+La versi\'on actual no redirecciona informaci\'on a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de \lpmd.
 
 Para aislar estos errores, ejecute \lpmd como ya se indico:
 

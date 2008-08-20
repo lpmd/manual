@@ -1,6 +1,188 @@
-\chapter{Ap\'endice}
+\appendix
+%\chapter{Ap\'endice}
 
-\section{API - liblpmd}
+\chapter{M\'odulos}
+A continuaci\'on se muestran las listas de los tipos de m\'odulos implementados a la fecha en \lpmd. Adem\'as se indica la calidad del m\'odulo, segun la tabla~\ref{tab:modquality}
+
+\begin{table}[h!]
+ \begin{tabular}{|c|l|}\hline\hline
+ Calidad & Descripci\'on \\\hline\hline
+ A & Sin documentaci\'on, sin pruebas, alta posibilidad de fallas. \\
+ B & Documentaci\'on incompleta, sin pruebas, alta posibilidad de fallas. \\
+ C & Documentaci\'on completa, sin pruebas, baja posibilidad de fallas. \\
+ D & Documentaci\'on incompleta, pruebas rigurosas, baja posibilidad de fallas. \\
+ E & Documentaci\'on completa, pruebas rigurosas, no ha presentado fallas. \\
+ F & Full support. \\\hline\hline
+ \end{tabular}
+ \label{tab:modquality}
+ \caption{Tabla de calidad de implementaci\'on de m\'odulos, s\'olo se presta soporte para los m\'odulos incluidos en el paquete \textbf{lpmd-plugins}}
+\end{table}
+
+
+\section{General}
+M\'odulos de \lpmd que manejan informaci\'on interna de la API, tales como caracter\'isticas propias de la celda, son en general todos de tipo informativo ya que no llevan dentro algoritmo de an\'alisis complejos.
+
+\begin{table}[h!]
+\centering
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{energy} & 5.0 & A & M\'odulo que retorna propiedades del sistema tales como energ\'ia(cin\'etica, potencial y total), momentum en cada eje y la temperatura.\\
+ \hline
+ \texttt{cell} & 5.0 & A & M\'odulo que retorna propiedades del sistema, volumen, largo por eje, densidad y volumen y densdidad por \'atomo. \\
+ \hline
+ \texttt{pressure} & 5.0 & A & M\'odulo que retorna propiedades del sistema, presi\'on cin\'etica y virial, junto con las componentes del stress. \\
+ \hline
+ \end{tabular}
+\label{tab:modgeneral}
+\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\end{table}
+
+\section{Manejadores de Celda}
+Determinan como es la forma de interactuar entre los \'atomos pertenecientes a la celda de simulaci\'on.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{minimumimage} & 5.0 & F & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de m\'imima imagen.\\
+ \hline
+ \texttt{linkedcell} & 5.0 & F & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{linked-cell}.\\
+ \hline
+ \end{tabular}
+\label{tab:modmanager}
+\caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
+\end{table}
+
+\section{Entrada Salida}
+M\'odulos para manejar los ficheros de entrada/salida para las configuraci\'ones at\'omicas que se simulan.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{xyz} & 5.0 & F & M\'odulo de lectura/escritura para ficheros \textbf{xyz}, soporta 3 niveles distintos para manejo.\\
+ \hline
+ \texttt{lpmd} & 5.0 & F & Formato propio de \lpmd, soporte lectura/escritura, 3 niveles distintos de manejo.\\
+ \hline
+ \texttt{zlp} & 5.0 & F & Formato propio de \lpmd, utiliza las zlib, y 3 niveles distintos de manejo, la utilizaci\'on es similar a zlp pero con ficheros de menor tama\~no.\\
+ \hline
+ \texttt{crystalfcc} & 5.0 & F & Generador de celdas FCC. \\
+ \hline
+ \texttt{crystalbcc} & 5.0 & F & Generador de celdas BCC. \\
+ \hline
+ \texttt{crystalhcp} & 5.0 & F & Generador de celdas HCP. \\
+ \hline
+ \texttt{crystalsc} & 5.0 & F & Generador de celdas SC. \\
+ \hline
+ \texttt{crystal2d} & 5.0 & F & Generador de celdas bidimensionales.\\
+ \hline
+ \texttt{skewstart} & 5.0 & F & Generador de celdas con m\'etodo skewstart, desarrollado por \textit{K. Refson}, para el programa de cin\'amica molecular \textbf{moldy}.\\
+ \hline
+ \texttt{dlpoly} & 5.0 & F & Lee Ficheros en formato de posiciones de \textbf{dlpoly}.\\
+ \hline
+ \texttt{vasp} & 5.0 & F & Lee ficheros \textbf{POSCAR} de vasp, el cu\'al posee las posiciones at\'omcias de la configuraci\'on.\\
+ \hline
+ \end{tabular}
+\label{tab:modinout}
+\caption{Tabla con los m\'odulos de entrada y salida utilizados por \lpmd y sus utilitarios.}
+\end{table}
+
+\section{Modificadores}
+Son los m\'odulos que alteran propiedades de la celda, tales como tama\~no, forma, o bien modifican los \'atomos que se encuentran dentro de ella.
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{tempscaling} & 5.0 & F & Escalamiento de temperatura.\\
+ \hline
+ \texttt{berendsen} & 5.0 & F & Termostato de berendsen para escalar la temperatura del sistema.\\
+ \hline
+ \texttt{cellscaling} & 5.0 & F & Escala la celda, modificando los vectores base de la muestra.\\
+ \hline
+ \texttt{displace} & 5.0 & F & M\'odulo que puede modificar la posici\'on de los \'atomos, desplazandolos.\\
+ \hline
+ \texttt{rotate} & 5.0 & F & M\'odulo que puede modificar la posici\'on at\'omica, rotando los atomos en torno a un origen y en un cierto \'angulo.\\
+ \hline
+ \texttt{quenchedmd} & 5.0 & F & M\'odulo que minimiza la muestra a temperatura cero.\\
+ \hline
+ \end{tabular}
+\label{tab:modmodify}
+\caption{Tabla con los m\'odulos modificadores del sistema utilizado por \lpmd.}
+\end{table}
+
+\section{Visualizadores}
+Utilizados para obtener imagenes de la simulaci\'on.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{povray} & 5.0 & B & Generador de archivos \textbf{pov} para generar im\'agenes de alta resoluci\'on.\\
+ \hline
+ \end{tabular}
+\label{tab:modgvisual}
+\caption{Tabla con los m\'odulos visualizadores de lpmd.}
+\end{table}
+
+
+\section{Potenciales}
+Son los que determinan como interactuan los \'atomos durante la simulaci\'on.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{lennardjones} & 5.0 & F & Interacci\'on at\'omica con potencial de Lennard-Jones.\\
+ \hline
+ \texttt{fastlj} & 5.0 & F & Interacci\'on at\'omica con potencial de Lennard-Jones Tabulado.\\
+ \hline
+ \texttt{morse} & 5.0 & F & Interacci\'on at\'omica con potencial de Morse.\\
+ \hline
+ \texttt{constantforce} & 5.0 & F & Interacci\'on at\'omica con potencial de fuerza constante.\\
+ \hline
+ \texttt{harmonic} & 5.0 & F & Interacci\'on at\'omica con potencial Arm\'onico.\\
+ \hline
+ \texttt{buckingham} & 5.0 & F & Interacci\'on at\'omica con potencial de Buckingham.\\
+ \hline
+ \texttt{suttonchen} & 5.0 & F & Interacci\'on at\'omica con potencial de Sutton y Chen.\\
+ \hline
+ \texttt{gupta} & 5.0 & F & Interacci\'on at\'omica con potencial de Gupta.\\
+ \hline
+ \end{tabular}
+\label{tab:modpotentials}
+\caption{Tabla con los Potenciales interat\'omicos con los que cuenta \lpmd.}
+\end{table}
+
+\section{Integradores}
+Resuelven las ecuaciones de movimiento del sistema.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{beeman} & 5.0 & F & Integrador de Beeman.\\
+ \hline
+ \end{tabular}
+\label{tab:modginteg}
+\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\end{table}
+
+\section{Propiedades}
+Calculan caracteristicas propias del sistema, tanto como propiedades temporales as\'i como instantaneas.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline
+ \texttt{angdist} & 5.0 & F & Calcula la distribuci\'on angular de la muestra.\\
+ \hline
+ \end{tabular}
+\label{tab:modproper}
+\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\end{table}
+
+\chapter{API - liblpmd}
 \label{ap:API}
 La \textbf{API} (Ap. Programming Interface) es una herramienta de programaci\'on que puede ser utilizada por cualquier usuario/programador que se vea beneficiado por sus caracter\'isticas.
 
@@ -8,7 +190,7 @@ Consideramos que la mejor forma de comprender el funcionamiento de esta \textbf{
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Din\'amica Molecular B\'asica}
+\section{Din\'amica Molecular B\'asica}
 
 A continuaci\'on un c\'odigo que utilza todas las caracter\'isticas de la \textbf{API}, para realizar din\'amica molecular.
 
@@ -82,7 +264,7 @@ y listo, tendremos entonces un ejecutable llamado \verb|nanodm| que realizar\'a 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Calculo de Propiedad est\'atica}
+\section{Calculo de Propiedad est\'atica}
 
 Consideremos que tenemos una celda de simulaci\'on y queremos utiliar las ventajas de la \textbf{API} para calcular una propiedad, que sabemos existe en un m\'odulo, por ejemplo \textbf{gdr}. El c\'odigo para el c\'alculo de \textbf{gdr} de la celda nos quea as\'i,
 
