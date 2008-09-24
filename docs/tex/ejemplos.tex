@@ -7,7 +7,7 @@ Ac\'a encontrar\'a algunos ejemplos de simulaciones realizadas con lpmd, en su u
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos para LPMD}
 
-Existen algunas l\'ineas dentro de cada ejemplo que al final poseen \verb|\|, lo que significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que \lpmd identifica el s\'imbolo \verb|\| y comprende que la l\'inea no ha finalizado.
+Existen algunas l\'ineas dentro de cada ejemplo que al final poseen \verb|\|, lo que significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que {\lpmd} identifica el s\'imbolo \verb|\| y comprende que la l\'inea no ha finalizado.
 
 \subsection{Celda de Ar de 108 \'atomos.}
 
@@ -194,7 +194,7 @@ Muchas otras caracter\'isticas pueden ser observadas, a continuaci\'on una muest
 \label{fig:ar108scaltemp}
 \end{figure}
 
-Adem\'as de este escalamiento de temperatura cl\'asico, \lpmd posee dentro de sus plugins otros termostatos, refierase al cap\'itulo\ref{chap:modulos}
+Adem\'as de este escalamiento de temperatura cl\'asico, {\lpmd} posee dentro de sus plugins otros termostatos, refierase al cap\'itulo\ref{chap:modulos}
 
 \subsection{Escalamiento de Celda.}
 
@@ -294,7 +294,7 @@ Podemos ver entonces, como cambia la presi\'on y el volumen durante la simulaci\
 
 \subsection{Calculando Propiedades durante la Simulaci\'on.}
 
-A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades, durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}. Adem\'as la informaci\'on en \lpmd puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, y presiones, en dos ficheros \verb|monitor| distintos, para un an\'alisis mucho mas simple. El ejemplo se puede encontrar en:
+A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades, durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}. Adem\'as la informaci\'on en {\lpmd} puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, y presiones, en dos ficheros \verb|monitor| distintos, para un an\'alisis mucho mas simple. El ejemplo se puede encontrar en:
 
 \cajatx{http://wwww.gnm.cl/software/lpmd/examples/au-prop.tgz}
 
@@ -413,7 +413,7 @@ Las propiedades calculadas se pueden observar en las figuras ~\ref{fig:augdr}, ~
 
 \subsection{Multiples corridas con bash.}
 
-Haremos a continuaci\'on un peque\~no estudio de un gas de Ar a distintas temperaturas, para ello nos respaldaremos de los flags del comando \lpmd para poder modificar variables a partir de un fichero de control, relizaremos un estudio de la \textit{funci\'on de distribuci\'on de pares} para argon bajo distintas temperaturas.
+Haremos a continuaci\'on un peque\~no estudio de un gas de Ar a distintas temperaturas, para ello nos respaldaremos de los flags del comando {\lpmd} para poder modificar variables a partir de un fichero de control, relizaremos un estudio de la \textit{funci\'on de distribuci\'on de pares} para argon bajo distintas temperaturas.
 
 Las temperaturas iniciales que se utilizar\'an son de 5, 100 y 200 Kelvin, estas tres simulaciones podemos realizarlas a partir de un s\'olo fichero de control, como el que se ve a contianuaci\'on:
 
@@ -619,7 +619,7 @@ visualize povray start=0 \
 
 % \subsection{Cambiando el integrador durante la simulaci\'on.}
 % 
-% Una caracter\'istica de \lpmd es poder cambiar el integrador, durante la simulaci\'on, esto es utilizado en un ejemplo a continuaci\'on que puede descagar en:
+% Una caracter\'istica de {\lpmd} es poder cambiar el integrador, durante la simulaci\'on, esto es utilizado en un ejemplo a continuaci\'on que puede descagar en:
 % 
 % \cajatx{http://wwww.gnm.cl/software/lpmd/examples/int-change.tgz}
 % 
@@ -639,7 +639,7 @@ Para los ejemplos de \textbf{lpmd-analyzer} utilizaremos un fichero de tipo \ver
 
 \subsection{Calculando funci\'on radial de distribuci\'on.}
 
-Tomamos un fichero \verb|xyz| y obtenemos la funci\'on de distribuci\'on radial del sistema, este fichero consta de 50 configuraciones, para obtener gdr utilizamos un fichero de \verb|control|, pero a diferencia de los ficheros de control de \lpmd, este fichero cuenta solo con lo necesario para evaluar una propiedad, como se ve a continuaci\'on:
+Tomamos un fichero \verb|xyz| y obtenemos la funci\'on de distribuci\'on radial del sistema, este fichero consta de 50 configuraciones, para obtener gdr utilizamos un fichero de \verb|control|, pero a diferencia de los ficheros de control de {\lpmd}, este fichero cuenta solo con lo necesario para evaluar una propiedad, como se ve a continuaci\'on:
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
@@ -830,7 +830,7 @@ Podemos ver el resultado del n\'umero de coordinaci\'on en la figura~\ref{fig:ex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos LPMD-CONVERTER}
 
-Pese a que existe una muy amplia variedad de c\'odigos para convertir entre formatos de ficheros, \lpmd cuenta con uno propio que, adem\'as de poder convertir entre los formatos seg\'un el m\'odulo, tiene la varacter\'istica de poder modificar la celda, agregando, eliminando o bien seleccionando \'atomos. A continuaci\'on veremos un par de ejemplos simples que pueden realizar con \textbf{lpmd-converter}.
+Pese a que existe una muy amplia variedad de c\'odigos para convertir entre formatos de ficheros, {\lpmd} cuenta con uno propio que, adem\'as de poder convertir entre los formatos seg\'un el m\'odulo, tiene la varacter\'istica de poder modificar la celda, agregando, eliminando o bien seleccionando \'atomos. A continuaci\'on veremos un par de ejemplos simples que pueden realizar con \textbf{lpmd-converter}.
 
 \subsection{De un formato a otro}
 

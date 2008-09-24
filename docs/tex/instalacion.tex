@@ -1,7 +1,7 @@
 \chapter{Instalaci\'on}
 \label{chap:inst}
 
-\lpmd ha sido probado en distintas arquitecturas y compiladores. Hasta ahora podemos \textbf{dar fe} que se ha logrado compilar el c\'odigo fuente en las siguientes arquitecturas:
+{\lpmd} ha sido probado en distintas arquitecturas y compiladores. Hasta ahora podemos \textbf{dar fe} que se ha logrado compilar el c\'odigo fuente en las siguientes arquitecturas:
 
 \begin{itemize}
  \item Linux I686/AMD64
@@ -12,7 +12,7 @@
 
 \section{Descarga}
 
-Para el correcto funcionamiento de \lpmd es necesario instalar previamente una librer\'ia y un set de plugins. Por lo que se requieren descargar 3 paquetes principales. La divisi\'on del c\'odigo en este set de paquetes se debe a la reutilizaci\'on de la \textbf{API} y los \textbf{plugins} para nuevos programas de utilidades o bien para un propio usuario interesado en la programaci\'on. Lo que adem\'as lleva una simplificaci\'on a aquellas personas que desean programar sus propios \textbf{plugins}.
+Para el correcto funcionamiento de {\lpmd} es necesario instalar previamente una librer\'ia y un set de plugins. Por lo que se requieren descargar 3 paquetes principales. La divisi\'on del c\'odigo en este set de paquetes se debe a la reutilizaci\'on de la \textbf{API} y los \textbf{plugins} para nuevos programas de utilidades o bien para un propio usuario interesado en la programaci\'on. Lo que adem\'as lleva una simplificaci\'on a aquellas personas que desean programar sus propios \textbf{plugins}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,7 +26,7 @@ La \'ultima versi\'on estable de los paquetes es :
  \item lpmd    : ver. 0.5.2
 \end{itemize}
 
-%Los n\'umeros de los plugins indican la compatibilidad con las versiones de \lpmd y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
+%Los n\'umeros de los plugins indican la compatibilidad con las versiones de {\lpmd} y de la \textbf{API} liblpmd, de esta forma se mantiene un \textbf{orden} seg\'un la versi\'on que conocemos.
 
 Estos pueden ser descargados directamente en la pagina web \texttt{http://www.gnm.cl/lpmd}, o bien solicitados por e-mail.
 
@@ -34,7 +34,7 @@ Estos pueden ser descargados directamente en la pagina web \texttt{http://www.gn
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Descarga de versi\'on en desarrollo}
 
-Para los interesados en el desarrollo de \lpmd y sus complementos principales(API, plugins, utilitarios, etc.), la version de pruebas ``\textit{testing}'' se puede descargar con subversion:
+Para los interesados en el desarrollo de {\lpmd} y sus complementos principales(API, plugins, utilitarios, etc.), la version de pruebas ``\textit{testing}'' se puede descargar con subversion:
 
 \begin{center}
  \begin{verbatim}
@@ -47,7 +47,7 @@ Para los interesados en el desarrollo de \lpmd y sus complementos principales(AP
 Est\'a disponible adem\'as una rama \verb|unstable|; sin embargo, no recomendamos utilizarla para c\'alculos de Din\'amica Molecular. S\'olo utilizable para investigaci\'on y prueba de c\'odigos.
 
 \section{Instalaci\'on}
-Antes de comenzar con la instalaci\'on de \lpmd es necesario instalar 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}. A continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
+Antes de comenzar con la instalaci\'on de {\lpmd} es necesario instalar 2 paquetes previos, \textbf{liblpmd} y \textbf{plugins}. A continuaci\'on se muestra una descripci\'on de c\'omo instalar cada uno de los paquetes.
 
 \cajatx{Nota : Los que poseen la versi\'on testing/unstable cuentan con el fichero \textbf{autogen.sh} para poder generar los Makefiles. \\ Se necesita instalar automake y libtool para poder ejecutar \textbf{autogen.sh}.}
 
@@ -65,7 +65,7 @@ En primer lugar descomprima el paquete de la \textbf{liblpmd},
 
 \control{tar -xvzf liblpmd-X.X.X.tar.gz}
 
-lo que le generar\'a un nuevo directorio; para instalar esta librer\'ia con todos los requerimientos necesarios para el funcionamiento de \lpmd y la implementaci\'on de plugins ejecute :
+lo que le generar\'a un nuevo directorio; para instalar esta librer\'ia con todos los requerimientos necesarios para el funcionamiento de {\lpmd} y la implementaci\'on de plugins ejecute :
 
 \control{./configure \\ make}
 
@@ -83,7 +83,7 @@ En caso de cualquier error en el proceso de instalaci\'on env\'ie un e-mail a al
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando plugins}
 
-Uno de los requerimientos b\'asicos de \lpmd es tener bien especificada la ubicaci\'on de los plugins que \lpmd requiere, es por eso que se debe indicar la ubicaci\'on de la instalaci\'on de la librer\'ia \textbf{liblpmd}. Normalmente deber\'ia correr sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
+Uno de los requerimientos b\'asicos de {\lpmd} es tener bien especificada la ubicaci\'on de los plugins que {\lpmd} requiere, es por eso que se debe indicar la ubicaci\'on de la instalaci\'on de la librer\'ia \textbf{liblpmd}. Normalmente deber\'ia correr sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|--with-lpmd=/ubicacion/|.
 
 \control{./configure  \\ make}
 
@@ -128,7 +128,7 @@ Usage: lpmd [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles |
 
 \subsubsection{Error cargando librer\'ia}
 
-Es uno de los errores m\'as comunes luego de la instlaci\'on de \lpmd. Ocurre que al ejecutar \lpmd no muestra nada m\'as que un error referencial a la librer\'ia liblpmd que no puede ser encontrada.
+Es uno de los errores m\'as comunes luego de la instlaci\'on de {\lpmd}. Ocurre que al ejecutar {\lpmd} no muestra nada m\'as que un error referencial a la librer\'ia liblpmd que no puede ser encontrada.
 
 La forma de corregir el problema es,
 
@@ -174,9 +174,9 @@ De esta forma se generar\'an los esqueletos en \verb|/home/user/local| con \verb
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{Actualizando lpmd}
 
-% \lpmd tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee \lpmd ya que las versiones nuevas de \lpmd o de los plugins dependen completamente de la API que tengamos.
+% {\lpmd} tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee {\lpmd} ya que las versiones nuevas de {\lpmd} o de los plugins dependen completamente de la API que tengamos.
 % 
-% Para ver la versi\'on que utiliza \lpmd ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
+% Para ver la versi\'on que utiliza {\lpmd} ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
 % 
 % Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
 

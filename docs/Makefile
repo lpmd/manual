@@ -3,15 +3,13 @@
 #
 
 DOCUMENT=manual
+SOURCES=*.tex
 SRCDIR=tex
 
 all: $(DOCUMENT).pdf
 
-#$(DOCUMENT).dvi: $(SRCDIR)/$(DOCUMENT).tex
-#	latex $(SRCDIR)/$(DOCUMENT).tex
-#	
-
-$(DOCUMENT).pdf: $(SRCDIR)/$(DOCUMENT).tex
+# manual.pdf (DOCUMENT) depende de todos los archivos ".tex" (SOURCES) que estén en la carpeta tex/ (SRCDIR)
+$(DOCUMENT).pdf: $(SRCDIR)/$(SOURCES)
 	cd $(SRCDIR);make;cd ../;
 	cp $(SRCDIR)/$(DOCUMENT).pdf .;
 

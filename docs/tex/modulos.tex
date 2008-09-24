@@ -6,7 +6,7 @@
 \section{Propiedades del sistema}
 Estos m\'odulos corresponden principalmente a \textbf{informaci\'on} del set de part\'iculas con el cu\'al se esta trabajando, as\'i como tambi\'en a aquellos m\'odulos que tienen la capacidad de \textbf{modificar} y \textbf{manejar} este set, o alguna propiedad de ellas.
 \subsection{cell}
-Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| para entregar esta informaci\'on. \textbf{NO} es necesario cargar este m\'odulo ya que se carga por \textit{default} al correr \lpmd.
+Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| para entregar esta informaci\'on. \textbf{NO} es necesario cargar este m\'odulo ya que se carga por \textit{default} al correr {\lpmd}.
 
 \cajatx{
 \begin{tabular}{lcl}
@@ -19,7 +19,7 @@ Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| 
 }
 
 \subsection{energy}
-Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargo autom\'aticamente al correr \lpmd. La informaci\'on que entrega el m\'odulo a trav\'es de \verb|monitor| es:
+Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargo autom\'aticamente al correr {\lpmd}. La informaci\'on que entrega el m\'odulo a trav\'es de \verb|monitor| es:
 
 \cajatx{
 \begin{tabular}{lcl}
@@ -83,7 +83,7 @@ en donde \verb|opcX| son las opciones de cada m\'odulo en paticular. Y de igual 
 \end{tabular}
 }
 
-Muchas de estas opciones no son utilizadas en una corrida con \lpmd, sin embargo pueden ser utiles a la hora de trabajar con utilidades tales como \verb|lpmd-analyzer| u otras. En general la forma de utilizar el m\'odulo es,
+Muchas de estas opciones no son utilizadas en una corrida con {\lpmd}, sin embargo pueden ser utiles a la hora de trabajar con utilidades tales como \verb|lpmd-analyzer| u otras. En general la forma de utilizar el m\'odulo es,
 
 \begin{itemize}
  \item \textbf{Cargando un fichero xyz}
@@ -96,7 +96,7 @@ No todas las opciones son necesarias, muchas de ellas ya tienen valores por defe
 
 \subsection{lpmd}
 
-Es un formato propio de \lpmd, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios.
+Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios.
 
 \cajatx{
 \begin{tabular}{lcl}
@@ -573,7 +573,7 @@ Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se log
  \centering
  \includegraphics[scale=.25]{lpvisual.png}
  \label{fig:lpvisual}
- \caption{Screenshoot de \lpmd ejecutando una simulaci\'on de din\'amica molecular, mientras se observan las configuraciones en tiempo real con \textbf{lpvisual}.}
+ \caption{Screenshoot de {\lpmd} ejecutando una simulaci\'on de din\'amica molecular, mientras se observan las configuraciones en tiempo real con \textbf{lpvisual}.}
 \end{figure}
 
 Esta completamente basado en OpenGL, y el soporte es completamente independiente, cualqueir duda o consulta respecto al m\'odulo, contacte directamente al autor.
@@ -777,7 +777,7 @@ La forma de utilizar el plugin es:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Propiedades Din\'amicas}
-Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para \lpmd. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
+Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para {\lpmd}. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
 \subsection{vacf}
 Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
 \subsection{msd}

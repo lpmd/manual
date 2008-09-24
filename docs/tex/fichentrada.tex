@@ -1,11 +1,11 @@
 \chapter{El Fichero de Control}
 \label{chap:input}
 
-Una de las piezas fundamentales en \lpmd para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de sistema, revisaremos los archivos de posiciones at\'omicas.
+Una de las piezas fundamentales en {\lpmd} para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de sistema, revisaremos los archivos de posiciones at\'omicas.
 
 \section{Fichero con Posiciones At\'omicas}
 
-\lpmd puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que dispongamos; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz} y \textbf{lpmd}.
+{\lpmd} puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que dispongamos; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz} y \textbf{lpmd}.
 
 Esperamos que los usuarios, seg\'un su necesidad, ayuden a implementar o solicitar a los desarrolladores tipos espec\'ificos de sistemas de posiciones at\'omicas para din\'amica molecular. Veamos brevemente en que consisten algunos de ellos. Para informaci\'on espec\'ifica de cada m\'odulo, vea la secci\'on~\ref{chap:modulos:entradasalida}.
 
@@ -106,7 +106,7 @@ donde,
  a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
 }
 
-Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de \lpmd y no necesitan estar dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de \textit{scripts}.
+Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de {\lpmd} y no necesitan estar dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de \textit{scripts}.
 
 \cajatx{\texttt{lpmd -L a,b,c -A alpha,beta,gamma archivo.control} \\ \texttt{lpmd -V ax,ay,az,bx,by,bz,cx,cy,cz archivo.control}}
 
@@ -376,7 +376,7 @@ Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{contr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Ficheros de salida}
-\lpmd Tiene dos tipos de fichero de salida, uno que es generado usualmente por la opci\'on \verb|output| dentro del fichero de control y otro es la salida standard, que por defecto va a \verb|cout|, pero que nosotros recomendamos enviar (o redireccionar) a un fichero.
+{\lpmd} Tiene dos tipos de fichero de salida, uno que es generado usualmente por la opci\'on \verb|output| dentro del fichero de control y otro es la salida standard, que por defecto va a \verb|cout|, pero que nosotros recomendamos enviar (o redireccionar) a un fichero.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -408,7 +408,7 @@ el fichero \verb|salida.out| tiene toda la informaci\'on que deb\'ia salir a pan
 \subsubsection{Fichero generado por output}
 Este fichero se gener\'o con el nombre entregado en el fichero de control a la linea \textbf{output}, en \'el se encuentran las configuraciones atomicas de la \textbf{DM} y suelen ser los ficheros a partir de los cuales suelen crearse animaciones y an\'alisis detallados de la simulaci\'on.
 
-Todas las propiedades instantaneas pueden calcularse \textit{\textbf{durante la simulaci\'on misma}}, sin embargo \lpmd tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utilidades}.
+Todas las propiedades instantaneas pueden calcularse \textit{\textbf{durante la simulaci\'on misma}}, sin embargo {\lpmd} tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utilidades}.
 
 Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores. Por ejemplo si se adquiere un archivo \verb|xyz| con \verb|level=0| no se podr\'a calcular un perfil de temperaturas ya que no se cuenta con la informaci\'on suficiente (posiciones y velocidades).
 
@@ -416,9 +416,9 @@ Es importante definir un buen formato de salida ya que es la clave para simplifi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Salida de errores}
-La versi\'on actual no redirecciona informaci\'on a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de \lpmd.
+La versi\'on actual no redirecciona informaci\'on a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de {\lpmd}.
 
-Para aislar estos errores, ejecute \lpmd como ya se indico:
+Para aislar estos errores, ejecute {\lpmd} como ya se indico:
 
 \control{lpmd fichero.control 1\&> salida.out 2\&> salida.err}
 
