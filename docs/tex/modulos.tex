@@ -566,8 +566,8 @@ Es utilizado para simulacion de ensambles de tipo NVT, en general el m\'etodo co
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visualizadores}
-\subsection{lpvisual}
-Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se enceuntra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura
+\subsection{\index{lpvisual}lpvisual}
+Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se encuentra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura
 
 \begin{figure}[h!]
  \centering
@@ -576,13 +576,26 @@ Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se log
  \caption{Screenshoot de {\lpmd} ejecutando una simulaci\'on de din\'amica molecular, mientras se observan las configuraciones en tiempo real con \textbf{lpvisual}.}
 \end{figure}
 
-Esta completamente basado en OpenGL, y el soporte es completamente independiente, cualqueir duda o consulta respecto al m\'odulo, contacte directamente al autor.
+Esta completamente basado en OpenGL, y el soporte es completamente independiente, cualquier duda o consulta respecto al m\'odulo, contacte directamente al autor.
 
 La descarga de \textbf{lpvisual}, se puede realizar a trav\'es de \verb|subversion|, con:
 
 \control{svn co sn://www.gnm.cl/lpmd/lpvisual lpvisual}
 
 Para la instalaci\'on y configuraci\'on refierase directamente a la documentaci\'on del m\'odulo.
+
+\subsubsection{Opciones lpvisual}
+{\bf lpvisual} ofrece varias opciones durante la visualizaci\'on que son ingresandas tanto del mouse como del teclado:\\
+
+\fb{
+\begin{tabular}[fragile]{lcp{8cm}}
+	LEFT\_MOUSE\_BUTTON&=& al presionar esta tecla y mover el mouse simult\'aneamente, permite rotar la celda de simulaci\'on.\\
+	RIGHT\_MOUSE\_BUTTON&=& al presionar esta tecla y mover el mouse simult\'aneamente, permite trasladar la celda de simulaci\'on.\\
+	MIDDLE\_MOUSE\_BUTTON&=&al presionar esta tecla y mover el mouse simult\'aneamente, permite acercar (hacer $zoom$ a) la celda de simulaci\'on.\\ 
+	r&=&permite mostrar/ocultar el marco de referencia de la celda de simulaci\'on.\\
+\end{tabular}
+}
+
 
 \subsection{povray}
 Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on. Hasta la fecha el soporte y las caracteristicas del m\'odulo no son muy buenas, sin embargo espera mejorarse en proximas versiones.
