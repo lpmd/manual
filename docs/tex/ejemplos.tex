@@ -13,7 +13,7 @@ Existen algunas l\'ineas dentro de cada ejemplo que al final poseen \verb|\|, lo
 
 A continuaci\'on una simulaci\'on de Ar con 108 \'atomos, en este ejemplo no hay escalamientos de temperatura, al sistema se le da inicio solo con una temperatura inicial de 84K para luego dejarlo libre, es decir, sin modificar el sistema. El ejemplo puede descargarlo completamente de:
 
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/ar108-1.tgz}
+\fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-1.tgz}
 
 Veamos el fichero de control.
 
@@ -100,7 +100,7 @@ Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conse
 
 A continuacion veremos un ejemplo de escalamiento de temperatura, utilizando el rescalamiento cl\'asico, consistira en enfriar,de manera directa una muestra de Ar. El ejemplo puede encontrarse en:
 
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/ar108-scalet.tgz}
+\fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-scalet.tgz}
 
 El fichero de control, incorpora la carga del modulo tempscaling, modificando una muestra inicial de 5K de temperatura, hasta los 100K, como se puede apreciar, desde un paso intermedio de la simulaci\'on.
 
@@ -200,7 +200,7 @@ Adem\'as de este escalamiento de temperatura cl\'asico, {\lpmd} posee dentro de 
 
 Modificaremos las caracter\'isticas de la celda durante la simulaci\'on, para ello haremos uso del m\'odulo cellscaling, y luego veremos como se modifica la presi\'on del sistema, junto con la temperatura, el ejemplo esta disponible en
 
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/ar108-scalec.tgz}
+\fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-scalec.tgz}
 
 De manera similar a la anterior, se carga un modulo que modifica una propiedad de nuestro sistema, para llevarlo a las condiciones deseadas. En el siguiente fichero de control, se ve como se escala una celda.
 
@@ -296,7 +296,7 @@ Podemos ver entonces, como cambia la presi\'on y el volumen durante la simulaci\
 
 A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades, durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}. Adem\'as la informaci\'on en {\lpmd} puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, y presiones, en dos ficheros \verb|monitor| distintos, para un an\'alisis mucho mas simple. El ejemplo se puede encontrar en:
 
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/au-prop.tgz}
+\fb{http://wwww.gnm.cl/software/lpmd/examples/au-prop.tgz}
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
@@ -523,7 +523,7 @@ Los resultados de la funcion radial de distribuci\'on de pares, pueden observars
 
 Fue uno de los primeros \textit{approach} a lo que a m\'odulos de visualizaci\'on se refiere, su intenci\'on es generar, a partir de la simulaci\'on, un set de ficheros \verb|pov| para un posterior renderizado y creaci\'on de peliculas, animaciones o simplemente imagnes de alta calidad. El ejemplo puede descargarse en:
 
-\cajatx{http://wwww.gnm.cl/software/lpmd/examples/arpovmul.tgz}
+\fb{http://wwww.gnm.cl/software/lpmd/examples/arpovmul.tgz}
 
 Veamos a continuacion el c\'odigo utilizado para la simulaci\'on:
 
@@ -621,7 +621,7 @@ visualize povray start=0 \
 % 
 % Una caracter\'istica de {\lpmd} es poder cambiar el integrador, durante la simulaci\'on, esto es utilizado en un ejemplo a continuaci\'on que puede descagar en:
 % 
-% \cajatx{http://wwww.gnm.cl/software/lpmd/examples/int-change.tgz}
+% \fb{http://wwww.gnm.cl/software/lpmd/examples/int-change.tgz}
 % 
 % \subsection{Calculo de Modulo de Bulk}
 % 

@@ -4,11 +4,14 @@
 \usepackage{fullpage,multicol}
 \usepackage{subfigure}
 \usepackage{rotating}
+\usepackage{verbatim}
 
+\usepackage[spanish]{babel}
 \usepackage{color} %color letters
 \usepackage[colorlinks]{hyperref} %internal links
 \usepackage{makeidx} %makes an index (you must use "makeindex" program first)
-\usepackage[left=2.2cm,right=1.7cm,top=2.3cm,bottom=2.1cm]{geometry} % Specify page margins
+\usepackage[left=2.2cm,right=1.7cm,top=1cm,bottom=3.5cm]{geometry} % Specify page margins
+\usepackage{fancyhdr} % Headers and Footers.
 \makeindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -23,7 +26,7 @@
 \newcommand{\D}[2]{\frac{\partial #2}{\partial #1}}
 \newcommand{\DD}[2]{\frac{\partial^2 #2}{\partial #1^2}}
 \newcommand{\DC}[2]{\frac{D #2}{D #1}} %derivada conectiva.
-\newcommand{\fb}[1]{\framebox[1.1\width]{#1}}
+\newcommand{\fb}[1]{\begin{center}\framebox[1.1\width]{#1}\end{center}}
 \newcommand{\cajatx}[1]{\begin{center}\setlength{\fboxsep}{0.2cm}\fbox{\parbox[l]{10cm}{#1}}\end{center}}
 %\newcommand{\cvb}[1]{\begin{center}\begin{verbatim} #1 \end{verbatim}\end{center}}
 \newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
@@ -43,16 +46,29 @@
 %   \end{framed}
    \end{figure}
    }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}																%
+\fancyhf{}																		%
+\fancyhead[LE]{{\bf\thepage}\qquad{\color[rgb]{0.094,.4,0}\small\leftmark}}		%
+\fancyhead[RE,LO]{\scriptsize\sl\rightmark}									%
+\fancyhead[RO]{{\color[rgb]{0.094,.4,0}\small\leftmark }\qquad{\bf\thepage}}	%
+\fancyfoot[C]{\thepage}															%
+\fancypagestyle{plain}{%														%
+\fancyhf{}																		%
+\fancyfoot[C]{\thepage}															%
+\renewcommand{\headrulewidth}{0mm}}												%
+\renewcommand{\headrulewidth}{.3mm}												%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand{\indexname}{\'Indice Alfab\'etico}
 \renewcommand{\contentsname}{Contenidos}
+\headsep 0.3in
 
 \begin{document}
 \author{\includegraphics[scale=.35]{logo-lpmd.pdf}}
 \title{``Las Palmeras'' Molecular Dynamics - \textbf{LPMD}.}
 \maketitle
-
-
-\tableofcontents
+\newpage\pagestyle{empty}\tableofcontents\newpage
+\pagestyle{fancy}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{elprograma.tex}

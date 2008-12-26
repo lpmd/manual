@@ -85,7 +85,7 @@ Se utilizan la longitud de los lados y \'angulos de la celda, como sigue:
 
 donde,
 
-\cajatx{ 
+\fb{ 
 \begin{tabular}{lcl}
  a & = & indica el largo de la celda en \textbf{a}.\\
  b & = & indica el largo de la celda en \textbf{b}.\\
@@ -102,13 +102,13 @@ Se utilizan los 3 vectores bases, poni\'endolos de la siguiente manera en el fic
 
 \control{cell ax=1.0 ay=0.0 az=0.0 bx=0.0 by=1.0 bz=0.0 // \\cx=0.0 cy=0.0 cz=1.0}
 donde,
-\cajatx{ 
+\fb{ 
  a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
 }
 
 Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de {\lpmd} y no necesitan estar dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de \textit{scripts}.
 
-\cajatx{\texttt{lpmd -L a,b,c -A alpha,beta,gamma archivo.control} \\ \texttt{lpmd -V ax,ay,az,bx,by,bz,cx,cy,cz archivo.control}}
+\fb{\begin{minipage}[l]{9.5cm}\tt lpmd -L a,b,c -A alpha,beta,gamma archivo.control \\ lpmd -V ax,ay,az,bx,by,bz,cx,cy,cz archivo.control\end{minipage}}
 
 \end{itemize}
 
@@ -134,7 +134,7 @@ A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero c
 
 La forma general de la orden \verb|input| requiere de argumentos para un funcionamiento adecuado. Para ver m\'as informaci\'on sobre el m\'odulo revise la secci\'on ~\ref{chap:modulos:entradasalida}. Estos son ejemplos de algunos argumentos:
 
-\cajatx{ 
+\fb{ 
 \begin{tabular}{lcl}
  module & = & indica el m\'odulo con el que cargar la celda.\\ 
  file & = & indica el fichero con posiciones at\'omicas.\\
@@ -172,7 +172,7 @@ La lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de con
 
 Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo en la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, sin embargo es \textit{importante} notar que cada m\'odulo posee configuraciones independientes, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos generales principales del par\'ametro \verb|output| son:
 
-\cajatx{ 
+\fb{ 
 \begin{tabular}{lcl}
  module & = & indica el m\'odulo (formato) de \\
 &&salida de la simulaci\'on.\\
@@ -277,7 +277,7 @@ Cada cuantos pasos la simulaci\'on muestra las propiedades globales. Estas propi
 
 Entre las opciones de monitor, cuentan :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  start & = & indica el valor de epsilon.\\
  end & = & indica el valor de sigma.\\

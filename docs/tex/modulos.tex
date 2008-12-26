@@ -8,7 +8,7 @@ Estos m\'odulos corresponden principalmente a \textbf{informaci\'on} del set de 
 \subsection{cell}
 Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| para entregar esta informaci\'on. \textbf{NO} es necesario cargar este m\'odulo ya que se carga por \textit{default} al correr {\lpmd}.
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  volume & = & Retorna el volumen de la celda.\\
  density & = & Retorna la densidad de la celda.\\
@@ -21,7 +21,7 @@ Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| 
 \subsection{energy}
 Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargo autom\'aticamente al correr {\lpmd}. La informaci\'on que entrega el m\'odulo a trav\'es de \verb|monitor| es:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  kinetic-energy & = &Retorna el valor de la Energ\'ia \\
                    &&cin\'etica [eV].\\
@@ -43,7 +43,7 @@ Entrega informaci\'on sobre la presi\'on en el sistema y el stress. Este m\'odul
 
 para luego utilizar en \verb|monitor| los llamados posibles de pressure. Es recomendable que primero ``cargue'' el m\'odulo \verb|pressure| y luego especif\'ique el monitor que har\'a menci\'on a alguna de sus propiedades.
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  pressure & = & Retorna el valor de la Presi\'on [MPa].\\
  virial-pressure & = & Retorna la contribuci\'on \\
@@ -68,7 +68,7 @@ en donde \verb|opcX| son las opciones de cada m\'odulo en paticular. Y de igual 
 \subsection{xyz}
 \'Este es el m\'odulo que se utiliza para cargar/escribir archivos de configuraci\'on en formato \verb|xyz|, las opciones actuales de este m\'odulo son :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  file & = & archivo de entrada/salida.\\
  level & = & indica el nivel del fichero, estos pueden ser \\
@@ -98,7 +98,7 @@ No todas las opciones son necesarias, muchas de ellas ya tienen valores por defe
 
 Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios.
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  file & = & archivo de entrada/salida.\\
  level & = & indica el nivel del fichero, estos pueden ser \\
@@ -121,7 +121,7 @@ Es un formato similar a \verb|lpmd| sin embargo, este formato utiliza las librer
 
 Las opciones y el uso es similar al formato \verb|lpmd|, salvo algunas opciones de compresi\'on, 
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  file & = & archivo de entrada/salida.\\
  level & = & indica el nivel del fichero, estos pueden ser \\
@@ -136,7 +136,7 @@ La forma de uso, es similar a \verb|lpmd|.
 \subsection{crystalfcc}
 Genera una celda cristalina del tipo fcc. Este m\'odulo se utiliza en lugar de un fichero de entrada, para entregar las posiciones at\'omicas de la red cristalina, 
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  symbol & = & S\'imbolo at\'omico de la especie.\\
  n$\alpha$ & = & $\alpha=x,y,z$ El inverso sobre el largo del cristal.\\
@@ -165,7 +165,7 @@ Al igual que el caso de \textbf{crystalfcc}, existen otros crystales que pueden 
 \subsection{crystal2d}
 A diferencia de los generadores de cristalprevios, este m\'odulo genera cristales simples bidimensionales, los argumentos requeridos para generar son:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  symbol & = & S\'imbolo at\'omico de la especie.\\
  a & = & Longitud del vector base $\vec{a}$.\\
@@ -187,7 +187,7 @@ Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano 
 \subsection{skewstart}
 M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regulr para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  symbol & = & S\'imbolo at\'omico de la especie.\\
  atoms & = & Especif\'ica el n\'umero de \'atomos dentro \\
@@ -209,7 +209,7 @@ Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de en
 
 Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  file & = & Archivo que contiene la configuraci\'on \\
  &&de \textbf{dlpoly}\\
@@ -222,7 +222,7 @@ Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion c
 \subsection{vasp}
 El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero de configuracion inicial, o bien para otro prop\'osito, entre las opciones del m\'odulo, estan:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
  species & = & lista de las especies (en orden) del fichero \\
@@ -268,7 +268,7 @@ De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un
 \subsection{berendsen}
 \'Este m\'odulo controla o escala la temperatura, al igual que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. Los argumentos requeridos por el m\'odulo son:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  from & = & Desde que temperatura comenzar a aplicar.\\
  to & = & Temperatura final a la que se desea llegar.\\
@@ -281,7 +281,7 @@ De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un
 \subsection{cellscaling}
 \'Este m\'odulo es un modificador de la celda, en particular, tiene la propiedad de cambiar el tama\~no de la celda durante la simulaci'on, lo que lo hace una herramienta muy util para ver, por ejemplos, comportamiento de materiales bajo distintas densidades durante una sola simulaci\'on. El m\'odulo tiene las siguientes opciones:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  percent & = & Especifica el porcentaje en el que se variar\'a \\
  &&el largo de la celda.\\
@@ -297,7 +297,7 @@ Para un detalle m\'as acabado en el uso de cellscaling, vea el cap\'itulo~\ref{c
 \subsection{displacement}
 M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desplazamiento vectorial de los \'atomos de la muestra. Su funcionalidad esta enfocada principalmente en la construcci\'on de sistemas nanoestructurados a futuro.
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  x & = & Desplazamiento en el eje x.\\
  y & = & Desplazamiento en el eje y.\\
@@ -308,7 +308,7 @@ M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desp
 \subsection{rotate}
 M\'odulo que modifica las posiciones, rotando los \'atomos cierto grado en torno a un origen. Al igual que el m\'odulo \verb|displace|, est\'a desarrollado para la futura creaci\'on de estructuras m\'as complejas.
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  x & = & Coordenada x del eje de rotaci\'on.\\
  y & = & Coordenada y del eje de rotaci\'on.\\
@@ -365,7 +365,7 @@ $$F_{ij} = \frac{-48.0\epsilon}{r_{ij}^2}\left( \left(\frac{\sigma}{r_{ij}}\righ
 en donde $\vec{r_{ij}}$ es el vector distancia entre los \'atomos $i$ y $j$, y $r_{ij}$ es la distancia entre ellos. 
 Las palabras reservadas por el plugin \textbf{lennardjones}, son :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  epsilon & = & indica el valor de epsilon.\\
  sigma & = & indica el valor de sigma.\\
@@ -375,7 +375,7 @@ Las palabras reservadas por el plugin \textbf{lennardjones}, son :
 
 Las unidades en que deben ser ingresados, las constantes, deben ser basadas en que las distancias estan en [\AA] y la energ\'ia debe ser adquirida en [eV].
 
-%\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+%\fb{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
 
 \subsection{fastlj}
 Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
@@ -391,7 +391,7 @@ $$\vec{F}_{ij} ( \vec{r}_{ij}) = 2aD_e\exp(-a(\vec{r}_{ij}-\vec{r}_e))\left(1-\e
 
 Las palabras reservadas por el plugin \textbf{morse}, son :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  depth & = & indica el valor de profundidad del pozo.\\
  a & = & indica el valor del ancho del pozo.\\
@@ -409,7 +409,7 @@ Por ejemplo si queremos que algunos \'atomos se vean afectados por la gravedad, 
 
 Las palabras reservadas por el plugin \textbf{constantforce}, son :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  forcevector & = & indica de la fuerza constante a aplicarse.\\
 \end{tabular}
@@ -426,7 +426,7 @@ $$\vec{F}(\vec{r}_{ij}) = \frac{k}{|\vec{r}_{ij}|}\left(|\vec{r}_{ij}|-a\right)$
 
 Las palabras reservadas por el plugin \textbf{harmonic}, son :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  k & = & indica el valor de la constante de elasticidad.\\
  a & = & indica el valor de el largo de equilibrio.\\
@@ -435,7 +435,7 @@ Las palabras reservadas por el plugin \textbf{harmonic}, son :
 }
 
 \subsection{buckingham}
-\cajatx{Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.}
+\fb{\begin{minipage}{10cm}Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.\end{minipage}}
 
 Est\'e m\'odulo especif\'ica la interacci\'on de buckingham entre los \'atomos, de esta forma, la energ\'ia producida por la interacci\'on de dos part\'iculas $i$ y $j$, queda
 
@@ -447,7 +447,7 @@ $$\vec{F}(\vec{r}_{ij}) = -\frac{B1\exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right)
 
 Las palabras reservadas por el plugin \textbf{buckingham}, son :
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  B1 & = & indica el valor de la constante B1.\\
  B2 & = & indica el valor de la constante B2.\\
@@ -491,7 +491,7 @@ y la fuerza asociada al potencial de suttonchen que aplica para un par de atomos
 $$\vec{F}(\vec{r}_{ij}) = -\epsilon\left[n\left(\frac{a}{\vec{r}_{ij}}\right)^n - \frac{Cm}{2}(\rho_j^{(-1/2)}+\rho_i^{(-1/2)})\left(\frac{a}{\vec{r}_{ij}}\right)^m\right]\left(\frac{1}{\vec{r}_{ij}^2}\right)\vec{r}_{ij}$$
 
 
-%\cajatx{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
+%\fb{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
 
 \subsection{Gupta}
 
@@ -588,21 +588,28 @@ Para la instalaci\'on y configuraci\'on refierase directamente a la documentaci\
 {\bf lpvisual} ofrece varias opciones durante la visualizaci\'on que son ingresandas tanto del mouse como del teclado:\\
 
 \fb{
-\begin{tabular}[fragile]{lcp{8cm}}
-	LEFT\_MOUSE\_BUTTON&=& al presionar esta tecla y mover el mouse simult\'aneamente, permite rotar la celda de simulaci\'on.\\
-	RIGHT\_MOUSE\_BUTTON&=& al presionar esta tecla y mover el mouse simult\'aneamente, permite trasladar la celda de simulaci\'on.\\
-	MIDDLE\_MOUSE\_BUTTON&=&al presionar esta tecla y mover el mouse simult\'aneamente, permite acercar (hacer $zoom$ a) la celda de simulaci\'on.\\ 
-	r&=&permite mostrar/ocultar el marco de referencia de la celda de simulaci\'on.\\
+\begin{tabular}[fragile]{lcp{9cm}}
+	LEFT\_MOUSE\_BUTTON&=& Al presionar esta tecla y mover el mouse simult\'aneamente, permite rotar la celda de simulaci\'on.\\
+	RIGHT\_MOUSE\_BUTTON&=& Al presionar esta tecla y mover el mouse simult\'aneamente, permite trasladar la celda de simulaci\'on.\\
+	MIDDLE\_MOUSE\_BUTTON&=&Al presionar esta tecla y mover el mouse simult\'aneamente, permite acercar (hacer $zoom$ a) la celda de simulaci\'on.\\ 
+	\tt q&=&Permite cerrar la ventana de visualizaci\'on (no cierra el archivo que se est\'a ejecutando).\\
+	\tt p&=&Pausa la simulaci\'on.\\
+	\tt c&=&Permite mostrar/ocultar el marco de referencia de la celda de simulaci\'on (encierra la celda de simulaci\'on en un $wirecube$).\\
+	\tt i&=&Permite mostrar/ocultar informaci\'on de la simulaci\'on que se est\'a ejecutando (energ\'ia total del sistema, temperatura, presi\'on y cantidad de \'atomos en la celda.\\
+	\tt l&=&Cambia el tipo de marco de referencia de la celda de simulaci\'on. Los tipos de marcos de referencia son $wirecube$ (placas transparentes) y $solidcube$ (placas opacas).\\
+	\tt a&=&Permite mostrar/ocultar los ejes de coordenadas.\\
+	\tt Z&=&Aumenta el $zoom$ manualmente en una unidad.\\
+	\tt z&=&Disminuye el $zoom$ manualmente en una unidad.\\
+	\tt r&=&Retorna la celda de simulaci\'on a su posici\'on original (con una cara paralela a la pantalla).\\
 \end{tabular}
 }
-
 
 \subsection{povray}
 Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on. Hasta la fecha el soporte y las caracteristicas del m\'odulo no son muy buenas, sin embargo espera mejorarse en proximas versiones.
 
 Los argumentos requeridos por el m\'odulo povray, son los siguientes,
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  header & = & Es un nombre previo al nombre \\
 &&de los ficheros \textbf{pov} que ser\'an generados.\\
@@ -657,7 +664,7 @@ Calcula la distribucion angular de la celda de simulaci\'on. Para determinar los
 
 De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra cuales son los principales angulos de ``enlace'' o ``distancia'' de los \'atomos. Las opciones de uso son:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  bins & = & N\'umero de intervalos entre 0 y 180 grados. \\
  atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
@@ -677,7 +684,7 @@ Calcula el n\'umero de cordinaci\'on de la celda, informandonos a modo de histog
  \item Se entrega un valor porcentual del conteo previo.
 \end{enumerate}
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  maxn & = & N\'umero m\'aximo d vecinos para el histograma.\\
  atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
@@ -701,7 +708,7 @@ Calcula el n\'umero de cordinaci\'on de la celda, en este caso es la funci\'on m
 
 La forma de utilizar el m\'etodo esta dada por:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
  atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
@@ -720,7 +727,7 @@ Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodo
  \item Se promedia sobre los \'atomos asociados.
 \end{enumerate}
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
  rcut & = & Radio de corte m\'aximo para an\'alisis.\\
@@ -734,7 +741,7 @@ Calc\'ula un perfil de densidades bidimensional. Este m\'etodo divide la celda d
 
 La forma de utilizarla es:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
  bins & = & N\'umero de intervalos para dividir el eje.\\
@@ -750,7 +757,7 @@ Calc\'ula un perfil de temperaturas bidimensional. Al igual que el m\'etodo ante
 
 La forma de utilizar esto es:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
  bins & = & N\'umero de intervalos para dividir el eje.\\
@@ -764,7 +771,7 @@ La forma de utilizar esto es:
 \subsection{veldist}
 Muestra como estan distribuidas las velocidades del sistema. La salida es un histograma de velocidades. La forma de uso es:
 
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  bins & = & N\'umero de intervalos para dividir el histograma.\\
  output & = & Archivo de salida.\\
@@ -777,7 +784,7 @@ Muestra como estan distribuidas las velocidades del sistema. La salida es un his
 Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
 
 La forma de utilizar el plugin es:
-\cajatx{
+\fb{
 \begin{tabular}{lcl}
  rcut & = & Radio de corte.\\
  n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\

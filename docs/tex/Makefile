@@ -19,6 +19,7 @@ $(EXECUTABLE): $(SOURCES)
 	$(IDXMAKER) manual.idx
 	$(COMPILER) manual.tex
 	$(COMPILER) manual.tex
+	$(COMPILER) manual.tex
 
 clean:
 	rm *.toc *.log *.aux *.idx *.ilg *.ind *.out *~

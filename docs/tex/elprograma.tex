@@ -3,7 +3,7 @@
 
 \section{Or\'igenes.}
 
-El c\'odigo \index{lpmd}{\lpmd} comenz\'o su desarrollo durante junio del a\~no 2007 como una idea de implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el usuario en el dise\~no de plugins e implementaci\'on de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, \index{Sergio Davis}Sergio Davis, \index{Claudia Loyola}Claudia Loyola y \index{Joaqu\'in Peralta}Joaqu\'in Peralta, todos ellos integrantes del \index{GNM}\textit{Grupo de NanoMateriales} (\textbf{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo~\ref{chap:auth}.
+El c\'odigo {\lpmd} comenz\'o su desarrollo durante junio del a\~no 2007 como una idea de implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el usuario en el dise\~no de plugins e implementaci\'on de actualizaciones. Los programadores principales de la primera etapa del c\'odigo fueron, Sergio Davis, Claudia Loyola y Joaqu\'in Peralta, todos ellos integrantes del \index{GNM}\textit{Grupo de NanoMateriales} (\textbf{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo~\ref{chap:auth}.
 
 Las versiones que se han lanzado en formato estable son:
 
@@ -17,11 +17,11 @@ Las versiones que se han lanzado en formato estable son:
 El sistema de actualizaci\'on va siendo administrado completamente por los desarrolladores. A partir de la versi\'on 0.5 de {\lpmd} se cuenta con tres paquetes principales de desarrollo.
 
 \begin{itemize}
- \item liblpmd \\
-\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la columna vertebral de todas las caracter\'isticas que presenta {\lpmd}. Por favor refi\'erase a m\'as caracter\'isticas en el ap\'endice ~\ref{ap:API}
- \item lpmd-plugins \\
+\index{liblpmd} \item liblpmd \\
+\index{API}\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la columna vertebral de todas las caracter\'isticas que presenta {\lpmd}. Por favor refi\'erase a m\'as caracter\'isticas en el ap\'endice ~\ref{ap:API}
+\index{lpmd-plugins} \item lpmd-plugins \\
 Es un set de plugins que han sido implementados, que cuentan con caracter\'isticas provenientes de la \textbf{API}, son en general potenciales interat\'omicos, integradores, analizadores de celdas de simulaci\'on, as\'i como tambi\'en manejadores de archivos de din\'amica molecular.
- \item lpmd \\
+\index{lpmd} \item lpmd \\
 {\lpmd} es un software de din\'amica molecular que utiliza plugins implementados por usuarios para realizar todo el trabajo de simulaci\'on. Tambi\'en incluye herramientas como \textbf{lpmd-analyzer} y \textbf{lpmd-converter} que son utilizados para la generaci\'on de configuraciones, as\'i como tambi\'en el an\'alisis a partir de ficheros de simulaci\'on de din\'amica molecular.
 \end{itemize}
 
@@ -34,7 +34,7 @@ Por ejemplo, consideremos un sistema de din\'amica molecular en el cual todas la
 \begin{center}
  \texttt{lpmd simulacion.control > simulacion.output}
 \end{center}
-
+\noindent
 o tambi\'en podemos utilizar,
 
 \begin{center}
@@ -52,13 +52,13 @@ Otras caracter\'isticas de {\lpmd} es que cuenta con flags para el manejo de var
  prepare temperature t=$(TEMP)
  ...
 \end{verbatim}
-
+\noindent
 entonces, podemos ejecutar {\lpmd} de la siguiente forma para asignar a \verb|TEMP| un \'unico valor real, dado directamente por l\'inea de comandos, por ejemplo:
 
 \begin{center}
  \texttt{lpmd -o TEMP=500 simulacion.control > simulacion.output}
 \end{center}
-
+\noindent
 de esta forma el programa comienza la simulaci\'on del sistema con una temperatura inicial de 500K. 
 
 Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la dificultad de implementar scripts para distintas simulaciones o simulaciones consecutivas de din\'amica molecular. Por ejemplo con un solo comando podemos correr un set de simulaciones con un valor distinto asociado a una variable del archivo de control. Para el caso de la temperatura:
@@ -66,7 +66,7 @@ Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la d
 \begin{center}
  \texttt{for i in 300 400 500 ; \\do lpmd -o TEMP=\$i simulacion.control > simulacion-\$i.output ; done}
 \end{center}
-
+\noindent
 realiza tres simulaciones seguidas con diferentes temperaturas iniciales con un solo fichero de control.
 
 
@@ -75,6 +75,6 @@ Otro de los flags importantes de {\lpmd} es \verb|-p| que brinda informaci\'on a
 \begin{center}
  \texttt{lpmd -p angdist}
 \end{center}
-
+\noindent
 donde \verb|angdist| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on. Para m\'as opciones vea \verb|lpmd -h| o \verb|man lpmd|. En los cap\'itulos siguientes se dar\'a una descripci\'on mucho m\'as detallada de otras caracter\'isticas {\lpmd} y sus funcionalidades.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
