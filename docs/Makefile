@@ -18,3 +18,4 @@ $(DOCUMENT).pdf: $(SRCDIR)/$(SOURCES)
 
 clean:
 	cd $(SRCDIR);make clean;cd ../;
+	rm -fr manual.pdf

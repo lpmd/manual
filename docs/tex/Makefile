@@ -22,4 +22,4 @@ $(EXECUTABLE): $(SOURCES)
 	$(COMPILER) manual.tex
 
 clean:
-	rm *.toc *.log *.aux *.idx *.ilg *.ind *.out *~
+	rm -fr manual.pdf *.toc *.log *.aux *.idx *.ilg *.ind *.out *~
