@@ -1,17 +1,17 @@
 \chapter{Ejemplos.}
 \label{chap:exa}
 
-Ac\'a encontrar\'a algunos ejemplos de simulaciones realizadas con lpmd, en su ultima versi\'on estable.
+Ac\'a encontrar\'a algunos ejemplos de simulaciones realizadas con lpmd, en su \'ultima versi\'on estable.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos para LPMD}
 
-Existen algunas l\'ineas dentro de cada ejemplo que al final poseen \verb|\|, lo que significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que {\lpmd} identifica el s\'imbolo \verb|\| y comprende que la l\'inea no ha finalizado.
+Existen algunas l\'ineas dentro de cada ejemplo que al final tienen el s\'imbolo \verb|\|, lo cual significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que {\lpmd} identifica el s\'imbolo \verb|\| y comprende que la l\'inea contin\'ua en la siguiente.
 
 \subsection{Celda de Ar de 108 \'atomos.}
 
-A continuaci\'on una simulaci\'on de Ar con 108 \'atomos, en este ejemplo no hay escalamientos de temperatura, al sistema se le da inicio solo con una temperatura inicial de 84K para luego dejarlo libre, es decir, sin modificar el sistema. El ejemplo puede descargarlo completamente de:
+A continuaci\'on una simulaci\'on de Ar con 108 \'atomos, en este ejemplo no hay escalamientos de temperatura, el sistema es inicializado con una temperatura de 84K para luego dejarlo libre, es decir, sin modificar el sistema. El ejemplo puede descargarlo completamente de:
 
 \fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-1.tgz}
 
@@ -37,23 +37,13 @@ output module=xyz file=output.xyz \
 ###################
 #GENERAL###########
 ###################
-prepare replicate 1 1 1
-prepare temperature 84
-charge Ar 0.0
+prepare temperature t=84
 steps 5000
-dumping file=ljargon.dump each=10000
 periodic true true true
-
-#Cargamos inmediatamente pressure
-#para poder visualizar con monitor
-
-use pressure
-enduse
-
 monitor start=0 end=5000 each=10 \
-  properties=kinetic-energy, \
-  potential-energy,total-energy, \
-  pressure,volume output=monitor.dat
+ properties=kinetic-energy,potential-energy, \
+ total-energy,temperature, \
+ pressure,volume output=monitor.dat
 ###################
 #MODULES DEF#######
 ###################
@@ -80,20 +70,19 @@ cellmanager minimumimage
 \end{multicols}
 
 
-Para correr la simulaci\'on, utilizamos solamente como argumento el fichero de control \verb|ljargon.control|.
+Para correr la simulaci\'on, utilizamos solamente como argumento el fichero de control \verb|argon108.control|.
 \begin{verbatim}
-  lpmd ljargon.control > salida.out
+  lpmd argon108.control > salida.out
 \end{verbatim}
 
 \cajafi{ar108-1-energy.pdf}{Valores de la Energ\'ia para la simulaci\'on de Argon con 108 \'atomos.}{ar1081energy}
 
-Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conservaci\'on de la energ\'ia a partir del fichero \verb|monitor.dat| que fue generado. Como se observa en la figura~\ref{fig:ar1081energy}. En un equipo moderno, la simulaci\'on no deber\'ia tardar m\'as all\'a de 40 segundos, puede observar los detalls de las cargas de los m\'odulos, asi como tambi\'en toda la informaci\'on de la simulaci\'on realizada en el archivo \verb|salida.out|. Junto con la finalizaci\'on de la simulaci\'on, se han generado los siguientes ficheros :
+Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conservaci\'on de la energ\'ia a partir del fichero \verb|monitor.dat| que fue generado. Como se observa en la figura~\ref{fig:ar1081energy}. En un equipo moderno, la simulaci\'on no deber\'ia tardar m\'as all\'a de 40 segundos, se puede observar los detalles de las cargas de los m\'odulos, asi como tambi\'en toda la informaci\'on de la simulaci\'on realizada en el archivo \verb|salida.out|. Junto con la finalizaci\'on de la simulaci\'on, se han generado los siguientes ficheros :
 
 \begin{tabular}{lcl}\\
- monitor.dat &:& Guarda toda la informaci\'ond e monitoreo solicitada por la orden \verb|monitor|\\
+ monitor.dat &:& Guarda toda la informaci\'on de monitoreo solicitada por la orden \verb|monitor|\\
 && del fichero de control. \\
  output.xyz &:& Salida de las posiciones at\'omicas de la celda de simulaci\'on. \\
- restore.dump &:& En caso de corte de luz o falla, sirve para reiniciar una simulaci\'on.\\
 \end{tabular}
 
 \subsection{Escalamiento de Temperatura.}
