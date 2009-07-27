@@ -7,13 +7,15 @@ Ac\'a encontrar\'a algunos ejemplos de simulaciones realizadas con lpmd, en su \
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos para LPMD}
 
-Existen algunas l\'ineas dentro de cada ejemplo que al final tienen el s\'imbolo \verb|\|, lo cual significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que {\lpmd} identifica el s\'imbolo \verb|\| y comprende que la l\'inea contin\'ua en la siguiente.
+Existen algunas l\'ineas dentro de cada ejemplo que al final tienen el s\'imbolo \verb|\|, lo cual significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que {\lpmd} identifica el s\'imbolo \verb|\| y comprende que la l\'inea contin\'ua en la siguiente. 
 
-\subsection{Celda de Ar de 108 \'atomos.}
+Todos los ejemplos se pueden descargar desde:
 
-A continuaci\'on una simulaci\'on de Ar con 108 \'atomos, en este ejemplo no hay escalamientos de temperatura, el sistema es inicializado con una temperatura de 84K para luego dejarlo libre, es decir, sin modificar el sistema. El ejemplo puede descargarlo completamente de:
+\fb{http://www.gnm.cl/lpmd/pmwiki.php?n=Manual.Examples}
 
-\fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-1.tgz}
+\subsection{Ejemplo1: Celda de Ar de 108 \'atomos.}
+
+A continuaci\'on una simulaci\'on de Ar con 108 \'atomos, en este ejemplo no hay escalamientos de temperatura, el sistema es inicializado con una temperatura de 84K para luego dejarlo libre, es decir, sin modificar el sistema.
 
 Veamos el fichero de control.
 
@@ -41,8 +43,8 @@ prepare temperature t=84
 steps 5000
 periodic true true true
 monitor start=0 end=5000 each=10 \
- properties=kinetic-energy,potential-energy, \
- total-energy,temperature, \
+ properties=step,kinetic-energy, \
+ potential-energy,total-energy,temperature, \
  pressure,volume output=monitor.dat
 ###################
 #MODULES DEF#######
@@ -85,13 +87,11 @@ Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conse
  output.xyz &:& Salida de las posiciones at\'omicas de la celda de simulaci\'on. \\
 \end{tabular}
 
-\subsection{Escalamiento de Temperatura.}
+\subsection{Ejemplo2: Escalamiento de Temperatura.}
 
-A continuacion veremos un ejemplo de escalamiento de temperatura, utilizando el rescalamiento cl\'asico, consistira en enfriar,de manera directa una muestra de Ar. El ejemplo puede encontrarse en:
+A continuació\'on veremos un ejemplo de escalamiento de temperatura cl\'asico, \'este consistir\'a en calentar de manera directa una muestra de Ar. 
 
-\fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-scalet.tgz}
-
-El fichero de control, incorpora la carga del modulo tempscaling, modificando una muestra inicial de 5K de temperatura, hasta los 100K, como se puede apreciar, desde un paso intermedio de la simulaci\'on.
+El fichero de control incorpora la carga del m\'odulo tempscaling, el cual será aplicado dos veces, primero para mantener la muestra a una temperatura de 5K y finalmente para escalar la temperatura de la muestra desde 5K hasta los 150K.
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
@@ -112,23 +112,14 @@ output module=xyz file=output.xyz \
 ###################
 #GENERAL###########
 ###################
-prepare replicate 1 1 1
-prepare temperature 84
-charge Ar 0.0
+prepare temperature t=5
 steps 15000
-dumping file=ljargon.dump each=10000
 periodic true true true
 
-#Cargamos inmediatamente pressure
-#para poder visualizar con monitor
-
-use pressure
-enduse
-
 monitor start=0 end=15000 each=10 \
-  properties=kinetic-energy, \
+  properties=step,kinetic-energy, \
   potential-energy,total-energy, \
-  temperature,pressure,volume \
+  temperature,pressure \
   output=monitor.dat
 ###################
 #MODULES DEF#######
@@ -147,7 +138,12 @@ use minimumimage
     cutoff 8.5
 enduse
 
-use tempscaling as TS
+use tempscaling as t1
+    from 5
+    to 5
+enduse
+
+use tempscaling as t2
     from 5
     to 150
 enduse
@@ -157,15 +153,16 @@ enduse
 potential lj_Ar Ar Ar
 integrator beeman
 cellmanager minimumimage
-apply TS start=5000 end=10000 each=200
+apply t1 start=1 end=5000 each=200
+apply t2 start=5001 end=10000 each=200
 \end{verbatim}
 \end{multicols}
 
-La aplicaci\'on del escalamiento de temperatura, genera un disen\~no autom\'atico para el decenso de la temperatura del sistema, en este caso vemos que el escalamiento se realiza de forma lineal y autom\'atica, partiendo en el paso 5000 a 5K y llegando en el paso 10000 a los 150K, donde la \textbf{inyecci\'on} de energ\'ia se aplica cada 200 pasos. Como se puede apreciar en la figura~\ref{fig:ar108scalet}
+La aplicaci\'on del escalamiento de temperatura genera un dise\~no autom\'atico para la mantención y luego el aumento de la temperatura del sistema, en este caso primero se mantiene la temperatura a 5K desde el paso 1 hasta el 5000, luego se realiza el escalamiento de forma lineal y autom\'atica, partiendo en el paso 5001 a 5K y finalizando en el paso 10000 con una temperatura de 150K, donde la \textbf{inyecci\'on} de energ\'ia se aplica cada 200 pasos. Como se puede apreciar en la figura~\ref{fig:ar108scalet}
 
 \cajafi{ar108-scalet.pdf}{Escalamiento de Temperatura.}{ar108scalet}
 
-Muchas otras caracter\'isticas pueden ser observadas, a continuaci\'on una muestra de la celda entre 0 5000 pasos y luego de la termalizaci\'on se puede observar en la figuras~\ref{fig:ar108scaletemp-4000} y~\ref{fig:ar108scaletemp-15000}. Propiedades a partir de estas configuraciones \verb|xyz| pueden ser analizadas utilizando \textbf{lpmd-analyzer}.
+Muchas otras caracter\'isticas pueden ser observadas por medio de esta simulaci\'on, por ejemplo, la muestra durante los primeros 5000 pasos se puede visualizar ordenada como se observa la figura~\ref{fig:ar108scaletemp-4000} y despué\'es de la termalizaci\'on termina desordenada por efecto de la temperatura como se ve en la figura~\ref{fig:ar108scaletemp-15000}. Propiedades a partir de estas configuraciones \verb|xyz| pueden ser analizadas utilizando \textbf{lpmd-analyzer}.
 
 \begin{figure}[h!]
 \centering
@@ -183,15 +180,13 @@ Muchas otras caracter\'isticas pueden ser observadas, a continuaci\'on una muest
 \label{fig:ar108scaltemp}
 \end{figure}
 
-Adem\'as de este escalamiento de temperatura cl\'asico, {\lpmd} posee dentro de sus plugins otros termostatos, refierase al cap\'itulo\ref{chap:modulos}
+Adem\'as de este escalamiento de temperatura cl\'asico, {\lpmd} posee dentro de sus plugins otros termostatos, refi\'erase al cap\'itulo~\ref{chap:modulos}.
 
-\subsection{Escalamiento de Celda.}
+\subsection{Ejemplo3: Escalamiento de Celda.}
 
-Modificaremos las caracter\'isticas de la celda durante la simulaci\'on, para ello haremos uso del m\'odulo cellscaling, y luego veremos como se modifica la presi\'on del sistema, junto con la temperatura, el ejemplo esta disponible en
+Modificaremos las caracter\'isticas de la celda durante la simulaci\'on, para ello haremos uso del m\'odulo cellscaling, y luego veremos c\'omo se modifica la presi\'on del sistema, junto con la temperatura.
 
-\fb{http://wwww.gnm.cl/software/lpmd/examples/ar108-scalec.tgz}
-
-De manera similar a la anterior, se carga un modulo que modifica una propiedad de nuestro sistema, para llevarlo a las condiciones deseadas. En el siguiente fichero de control, se ve como se escala una celda.
+De manera similar al ejemplo anterior, se carga un m\'odulo que modifica una propiedad de nuestro sistema, para llevarlo a las condiciones deseadas. En el siguiente fichero de control, se ve c\'omo se escala una celda.
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
@@ -212,21 +207,11 @@ output module=xyz file=output.xyz \
 ###################
 #GENERAL###########
 ###################
-prepare replicate 1 1 1
-prepare temperature 84
-charge Ar 0.0
+prepare temperature t=84
 steps 15000
-dumping file=ljargon.dump each=10000
 periodic true true true
-
-#Cargamos inmediatamente pressure
-#para poder visualizar con monitor
-
-use pressure
-enduse
-
 monitor start=0 end=15000 each=10 \
-  properties=kinetic-energy, \
+  properties=step,kinetic-energy, \
   potential-energy,total-energy, \
   temperature,pressure,volume \
   output=monitor.dat
@@ -262,7 +247,7 @@ apply CS start=5000 end=10000 each=200
 \end{verbatim}
 \end{multicols}
 
-Podemos ver entonces, como cambia la presi\'on y el volumen durante la simulaci\'on en las figuras~\ref{fig:ar108scalecpres} y~\ref{fig:ar108scalecvol}, con estos datos, uno puede obtener distintos tipos de propiedades mec\'anicas de los materiales en estudio, por ejemplo m\'odulo de \textit{Bulk}.
+Podemos ver entonces, c\'omo cambia la presi\'on y el volumen durante la simulaci\'on en las figuras~\ref{fig:ar108scalecpres} y~\ref{fig:ar108scalecvol}, con estos datos se pueden obtener distintos tipos de propiedades mec\'anicas de los materiales en estudio, por ejemplo el m\'odulo de \textit{Bulk}.
 
 \begin{figure}[h!]
 \centering
@@ -281,9 +266,9 @@ Podemos ver entonces, como cambia la presi\'on y el volumen durante la simulaci\
 \end{figure}
 
 
-\subsection{Calculando Propiedades durante la Simulaci\'on.}
+\subsection{Ejemplo4: Calculando Propiedades durante la Simulaci\'on.}
 
-A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades, durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}. Adem\'as la informaci\'on en {\lpmd} puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, y presiones, en dos ficheros \verb|monitor| distintos, para un an\'alisis mucho mas simple. El ejemplo se puede encontrar en:
+A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades durante la simulaci\'on. En este caso veremos, la \textit{funci\'on radial de distribuci\'on}, \textit{distribuci\'on angular} y \textit{n\'umero de coordinaci\'on}. Adem\'as la informaci\'on en {\lpmd} puede ser \textbf{subdividida} seg\'un los requerimientos mismos del usuario a la hora de monitorear caracter\'isiticas propias de la celda de simulaci\'on. En este ejemplo, se guarda la informaci\'on de las energ\'ias, y presiones, en dos ficheros \verb|monitor| distintos, para un an\'alisis mucho mas simple. El ejemplo se puede encontrar en:
 
 \fb{http://wwww.gnm.cl/software/lpmd/examples/au-prop.tgz}
 
