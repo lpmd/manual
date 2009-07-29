@@ -593,9 +593,11 @@ Los resultados de la funci\'on radial de distribuci\'on de pares, pueden observa
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos LPMD-ANALYZER}
 
-La funci\'on principal de \textbf{lpmd-analyzer} es poder cargar configuraciones, proveninetes de archivos con distintas extensiones, tales como \verb|xyz| o \verb|lpmd|, para poder obtener an\'alisis de estas configuraciones.
+La funci\'on principal de \textbf{lpmd-analyzer} es poder cargar configuraciones, provenientes de archivos con distintas extensiones, tales como \verb|xyz| o \verb|lpmd|, para poder obtener an\'alisis de estas configuraciones.
 
 Para los ejemplos de \textbf{lpmd-analyzer} utilizaremos un fichero de tipo \verb|xyz| proveniente de una simulaci\'on de din\'amica molecular hecha con \textbf{moldy} de di\'oxido de germanio, o germania, como se ve en la figura~\ref{fig:geo2-1}.
+
+La manera de utilizar \textbf{lpmd-analyzer} es ejecutando \verb|lpmd-analyzer archivo.control|.
 
 \cajafi{geo2-1.pdf}{Una de las configuraciones de GeO$_2$ bajo condiciones ambientales, del total de configuraciones obtendremos distintas propiedades utilizando \textbf{lpmd-analyzer}.}{geo2-1}
 
@@ -705,19 +707,19 @@ property ang start=0 end=100 each=1
 \end{verbatim}
 \end{multicols}
 
-Vemos ahora, las principales distribuciones angulares de nuestra muestraen la figura~\ref{fig:exaang}, los radios de corte utilizados, corresponden, como en muchos d los an\'alisis de este tipo, a los puntos posteriores al primer \textit{peak} mostrados en la funci\'on radial de distribuci\'on de pares.
+El resultado de las distribuciones angulares de toda la muestra se ven en la figura~\ref{fig:exaang}, los radios de corte utilizados corresponden, como en muchos de los an\'alisis de este tipo, al primer m\'inimo despu\'es del primer \textit{peak} de la funci\'on radial de distribuci\'on de pares.
 
-\cajafi{ang.pdf}{Distribuci\'on angular para dos de todos los \'angulos entregados por \texttt{lpmd-analyzer}.}{exaang}
+\cajafi{ang.pdf}{Distribuci\'on angular para toda la muestra, calculada con \texttt{lpmd-analyzer}.}{exaang}
 
-\subsection{N\'umero de Coordinaci\'on.}
+\subsection{Ejemplo4: N\'umero de Coordinaci\'on.}
 
-El n\'umero de coordinaci\'on puede ser calculado de distintas formas, en esta ocaci\'on, haremos uso de la funci\'on n\'umero de coordinaci\'on para el c\'alculo.
+El n\'umero de coordinaci\'on puede ser calculado de distintas formas, en esta ocasi\'on, haremos uso de la funci\'on n\'umero de coordinaci\'on para el c\'alculo.
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
 \begin{verbatim}
-#Calcula numero de coordinac
-#para un fichero xyz con 100
+#Calcula numero de coordinacion
+#para un fichero xyz con 101
 #configuraciones
 
 cell cubic a=20.7
@@ -726,11 +728,9 @@ input module=xyz \
       file=final20p8.xyz \
       level=0 inside=true
 
-use linkedcell
-    nx 1
-    ny 1
-    nz 1
-    rcut 20 
+use lcbinary
+    mode auto
+    rcut 10 
 enduse
 
 use cordnumfunc as cnf
@@ -741,14 +741,14 @@ use cordnumfunc as cnf
   average true
 enduse
 
-cellmanager linkedcell
-property cnf start=1 end=100 each=1
+cellmanager lcbinary
+property cnf start=0 end=100 each=1
 \end{verbatim}
 \end{multicols}
 
 Podemos ver el resultado del n\'umero de coordinaci\'on en la figura~\ref{fig:exacnf}.
 
-\cajafi{cnf.pdf}{N\'umero de coordinaci\'on para un par de resultados de \texttt{lpmd-analyzer}.}{exacnf}
+\cajafi{cnf.pdf}{Algunos resultados del n\'umero de coordinaci\'on calculados con \texttt{lpmd-analyzer}.}{exacnf}
 
 % \subsection{Distribuci\'on de velocidades.}
 % La dsitribuci\'on de velocidades corresponde a la forma en que las velocidades de las especies at\'omicas estan distribuidas, en este caso, el archivo de control queda de la forma:
@@ -787,65 +787,51 @@ Podemos ver el resultado del n\'umero de coordinaci\'on en la figura~\ref{fig:ex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos LPMD-CONVERTER}
 
-Pese a que existe una muy amplia variedad de c\'odigos para convertir entre formatos de ficheros, {\lpmd} cuenta con uno propio que, adem\'as de poder convertir entre los formatos seg\'un el m\'odulo, tiene la varacter\'istica de poder modificar la celda, agregando, eliminando o bien seleccionando \'atomos. A continuaci\'on veremos un par de ejemplos simples que pueden realizar con \textbf{lpmd-converter}.
+Pese a que existe una muy amplia variedad de c\'odigos para convertir entre formatos de ficheros, {\lpmd} cuenta con uno propio que, adem\'as de poder convertir entre los formatos seg\'un el m\'odulo, tiene la caracter\'istica de poder modificar la celda, agregando, eliminando o bien seleccionando \'atomos. A continuaci\'on veremos un par de ejemplos simples que pueden realizar con \textbf{lpmd-converter}.
 
-\subsection{De un formato a otro}
+\subsection{Ejemplo1: De un formato a otro}
 
-El siguiente ejemplo, muestra como convertir un fichero \verb|POSCAR|, que es un fichero de entrada de posiciones at\'omicas para \textbf{vasp}, en un formato de tipo \verb|xyz|.
+El siguiente ejemplo, muestra c\'omo convertir un fichero \verb|POSCAR|, que es un fichero de entrada de posiciones at\'omicas para \textbf{vasp}, en un formato de tipo \verb|xyz|.
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
 \begin{verbatim}
-#
 # input para lpmd-converter
-#
-
 cell vector ax=2.650038 ay=0.0 az=0.0 \
      bx=-1.53 by=3.06 bz=0 cx=0.0 \
      cy=0.0 cz=13.45
-
 input module=vasp file=POSCAR \
       species=Ti,Ga,N
-
 # escribe la salida en formato xyz
-output xyz file=hcp.xyz level=0
+output xyz file=TiGaN.xyz level=0
 \end{verbatim}
 \end{multicols}
 
 Obteniendo el resultado, ejecutando \verb|lpmd-converter vasp2xyz.control|.
+% Esto mismo se puede ejecutar del terminal sin necesidad de crear un archivo de control, para ello siguiendo los par\'ametros del ejemplo se debe escribir,
+% 
+% \verb|lpmd-converter |
 
-\subsection{Eliminando \'atomos}
+\subsection{Ejemplo2: Eliminando \'atomos}
 
-Con un archivo de entrada y el plugin \verb|selectatoms|, podemos seleccionar o modificar \'atomos dentro de nuestra celda, es decir somos capaces de convertir nuestra celda original en una nueva celda con modificaciones. A continuaci\'on modificamos una celda original \verb|xyz| en una nueva celda pero a la cual le hemos eliminado una regi\'on del espacio.
+Con un archivo de entrada y el plugin \verb|selectatoms|, se pueden seleccionar o modificar \'atomos dentro de una celda de simulaci\'on, es decir, se puede convertir la celda original en una nueva celda modificada. A continuaci\'on modificamos una celda original en formato \verb|xyz| en una nueva celda en la cual hemos eliminado una regi\'on del espacio.
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
 \begin{verbatim}
-#
 # input para lpmd-converter
-#
-
 cell cubic a=20.7
-
 input module=xyz file=final20p8.xyz \
       level=0 inside=true
-
 output module=xyz file=newcell.xyz \
        level=0
+filter box x=10-20.7 y=10-20.7 \
+z=0-20.7 inverse=true
 
-use selectatoms as selat
-    mode extract
-    x 10 20.7
-    y 10 20.7
-    z 0 20.7
-    outside true
-enduse
-
-apply selat
 \end{verbatim}
 \end{multicols}
 
-Hemos entonces, como se muestra en la figura~\ref{fig:selectatoms}, eliminado una region del espacio al momento de convertir la celda.
+Con el plugin filter se ha seleccionado una parte de la caja, pero, al aplicarle la opci\'on \verb|inverse=true|, se ha seleccionado finalmente lo que quedo fuera de la zona de la caja antes seleccionada, lo cual se muestra en la figura~\ref{fig:selectatoms}. 
 
 \begin{figure}[h!]
 \centering
@@ -854,11 +840,11 @@ Hemos entonces, como se muestra en la figura~\ref{fig:selectatoms}, eliminado un
  \includegraphics[scale=.25]{GeO2-all.png}
  \label{fig:selectatoms-con}
 }
-\subfigure[Nuevama configuraci\'on at\'omica en la cu\'al se ha eliminado una regi\'on del espacio.]
+\subfigure[Nueva configuraci\'on at\'omica en la cual se ha eliminado una regi\'on del espacio.]
 {
  \includegraphics[scale=.30]{GeO2-selat.png}
  \label{fig:selectatoms-sin}
 }
-\caption{Configuraci\'ones at\'omicas antes y despues de aplicar selectatoms, muy \'util para dise\~nar pel\'iculas con defectos o elementos distintos dentro de una celda, un posterior an\'alisis tambien se puede llevar a cabo por regiones.}
+\caption{Configuraciones at\'omicas antes y despu\'es de aplicar filter, muy \'util para dise\~nar pel\'iculas con defectos o elementos distintos dentro de una celda, un posterior an\'alisis tambi\'en se puede llevar a cabo por regiones.}
 \label{fig:selectatoms}
 \end{figure}
