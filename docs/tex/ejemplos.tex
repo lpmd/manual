@@ -10,7 +10,7 @@ Todos los ejemplos se pueden descargar desde:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Ejemplos para LPMD}
+\section{Ejemplos con LPMD}
 
 Existen algunas l\'ineas dentro de cada ejemplo que al final tienen el s\'imbolo \verb|\|, lo cual significa que la l\'inea no ha finalizado, sino que contin\'ua en la siguiente l\'inea. Sin embargo, no es necesario corregirlo ya que {\lpmd} identifica el s\'imbolo \verb|\| y comprende que la l\'inea contin\'ua en la siguiente. 
 
@@ -78,9 +78,9 @@ Para correr la simulaci\'on, utilizamos solamente como argumento el fichero de c
   lpmd argon108.control > salida.out
 \end{verbatim}
 
-\cajafi{ar108-1-energy.pdf}{Valores de la Energ\'ia para la simulaci\'on de Argon con 108 \'atomos.}{ar1081energy}
+\cajafi{ar108-1-energy.pdf}{Valores de la energ\'ia para la simulaci\'on de arg\'on con 108 \'atomos.}{ar1081energy}
 
-Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conservaci\'on de la energ\'ia a partir del fichero \verb|monitor.dat| que fue generado. Como se observa en la figura~\ref{fig:ar1081energy}. En un equipo moderno, la simulaci\'on no deber\'ia tardar m\'as all\'a de 40 segundos, se puede observar los detalles de las cargas de los m\'odulos, asi como tambi\'en toda la informaci\'on de la simulaci\'on realizada en el archivo \verb|salida.out|. Junto con la finalizaci\'on de la simulaci\'on, se han generado los siguientes ficheros :
+Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conservaci\'on de la energ\'ia a partir del fichero \verb|monitor.dat| que fue generado. Como se observa en la figura~\ref{fig:ar1081energy}. En un equipo moderno, la simulaci\'on no deber\'ia tardar m\'as all\'a de 40 segundos, se pueden observar los detalles de las cargas de los m\'odulos, asi como tambi\'en toda la informaci\'on de la simulaci\'on realizada en el archivo \verb|salida.out|. Junto con la finalizaci\'on de la simulaci\'on, se han generado los siguientes ficheros :
 
 \begin{tabular}{lcl}\\
  monitor.dat &:& Guarda toda la informaci\'on de monitoreo solicitada por la orden \verb|monitor|\\
@@ -92,7 +92,7 @@ Podemos entonces ver algunos resultados de la simulaci\'on, por ejemplo la conse
 
 A continuació\'on veremos un ejemplo de escalamiento de temperatura cl\'asico, \'este consistir\'a en calentar de manera directa una muestra de Ar. 
 
-El fichero de control incorpora la carga del m\'odulo tempscaling, el cual será aplicado dos veces, primero para mantener la muestra a una temperatura de 5K y finalmente para escalar la temperatura de la muestra desde 5K hasta los 150K.
+El fichero de control incorpora la carga del m\'odulo tempscaling, el cual ser\'a aplicado dos veces, primero para mantener la muestra a una temperatura de 5K y finalmente para escalar la temperatura de la muestra desde 5K hasta los 150K.
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
@@ -159,11 +159,11 @@ apply t2 start=5001 end=10000 each=200
 \end{verbatim}
 \end{multicols}
 
-La aplicaci\'on del escalamiento de temperatura genera un dise\~no autom\'atico para la mantención y luego el aumento de la temperatura del sistema, en este caso primero se mantiene la temperatura a 5K desde el paso 1 hasta el 5000, luego se realiza el escalamiento de forma lineal y autom\'atica, partiendo en el paso 5001 a 5K y finalizando en el paso 10000 con una temperatura de 150K, donde la \textbf{inyecci\'on} de energ\'ia se aplica cada 200 pasos. Como se puede apreciar en la figura~\ref{fig:ar108scalet}
+La aplicaci\'on del escalamiento de temperatura genera un dise\~no autom\'atico para la mantenci\'on y luego el aumento de la temperatura del sistema, en este caso primero se mantiene la temperatura a 5K desde el paso 1 hasta el 5000, luego se realiza el escalamiento de forma lineal y autom\'atica, partiendo en el paso 5001 a 5K y finalizando en el paso 10000 con una temperatura de 150K, donde la \textbf{inyecci\'on} de energ\'ia se aplica cada 200 pasos. Como se puede apreciar en la figura~\ref{fig:ar108scalet}
 
 \cajafi{ar108-scalet.pdf}{Escalamiento de Temperatura.}{ar108scalet}
 
-Muchas otras caracter\'isticas pueden ser observadas por medio de esta simulaci\'on, por ejemplo, la muestra durante los primeros 5000 pasos se puede visualizar ordenada como se observa la figura~\ref{fig:ar108scaletemp-4000} y despué\'es de la termalizaci\'on termina desordenada por efecto de la temperatura como se ve en la figura~\ref{fig:ar108scaletemp-15000}. Propiedades a partir de estas configuraciones \verb|xyz| pueden ser analizadas utilizando \textbf{lpmd-analyzer}.
+Muchas otras caracter\'isticas pueden ser observadas por medio de esta simulaci\'on, por ejemplo, la muestra durante los primeros 5000 pasos se puede visualizar ordenada como se observa en la figura~\ref{fig:ar108scaletemp-4000} y despué\'es de la termalizaci\'on termina desordenada por efecto de la temperatura como se ve en la figura~\ref{fig:ar108scaletemp-15000}. Propiedades a partir de estas configuraciones \verb|xyz| pueden ser analizadas utilizando \textbf{lpmd-analyzer}.
 
 \begin{figure}[h!]
 \centering
@@ -257,7 +257,7 @@ Podemos ver entonces, c\'omo cambia la presi\'on y el volumen durante la simulac
  \includegraphics[scale=.25]{ar108scalecpres.pdf}
  \label{fig:ar108scalecpres}
 }
-\subfigure[Cambio de vol\'umen de la celda durante la simulaci\'on.]
+\subfigure[Cambio de volumen de la celda durante la simulaci\'on.]
 {
  \includegraphics[scale=.25]{ar108scalecvol.pdf}
  \label{fig:ar108scalecvol}
@@ -270,8 +270,6 @@ Podemos ver entonces, c\'omo cambia la presi\'on y el volumen durante la simulac
 \subsection{Ejemplo4: Calculando Propiedades durante la Simulaci\'on.}
 
 A continuaci\'on, realizaremos un procedimiento simple de din\'amica molecular, pero esta vez, con una celda de Oro, sobre la cual calcularemos propiedades durante la simulaci\'on. Las propiedades evaluadas ser\'an la \textit{funci\'on de distribuci\'on radial y angular},  y el \textit{n\'umero de coordinaci\'on}. 
-
-\fb{http://www.gnm.cl/software/lpmd/examples/au-prop.tgz}
 
 \begin{multicols}{2}
 \setlength{\columnseprule}{.5pt}
@@ -293,15 +291,10 @@ periodic true true true
 steps 20000
 
 monitor start=0 end=20000 each=1 \
-      properties=kinetic-energy,\
+      properties=step,kinetic-energy,\
       potential-energy,\
       total-energy,temperature \
       output=monitor-cell.out
-monitor start=0 end=20000 each=1 \
-      properties=virial-pressure,\
-      kinetic-pressure,pressure,\
-      volume,sxx,syy,szz \
-      output=monitor-pres.out
 
 # Using LSC parameters for gold
 use suttonchen as sc
@@ -317,11 +310,9 @@ use velocityverlet
     dt 1.0
 enduse
 
-use linkedcell
-	nx 2
-	ny 2
-	nz 2
-	cutoff 8
+use lcbinary
+    mode auto
+    cutoff 8
 enduse
 
 use gdr
@@ -341,14 +332,13 @@ enduse
 
 use cordnumfunc
  bins 200
- atoms 1 Au
  rcut 10
  output cordnumfunc.dat
  average true
 enduse
 
 potential sc Au Au
-cellmanager linkedcell
+cellmanager lcbinary
 integrator velocityverlet
 property gdr start=10000 \
          end=15000 each=50
@@ -787,7 +777,7 @@ Podemos ver el resultado del n\'umero de coordinaci\'on en la figura~\ref{fig:ex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Ejemplos LPMD-CONVERTER}
 
-Pese a que existe una muy amplia variedad de c\'odigos para convertir entre formatos de ficheros, {\lpmd} cuenta con uno propio que, adem\'as de poder convertir entre los formatos seg\'un el m\'odulo, tiene la caracter\'istica de poder modificar la celda, agregando, eliminando o bien seleccionando \'atomos. A continuaci\'on veremos un par de ejemplos simples que pueden realizar con \textbf{lpmd-converter}.
+Pese a que existe una muy amplia variedad de c\'odigos para convertir entre formatos de ficheros, {\lpmd} cuenta con uno propio que, adem\'as de poder convertir entre los formatos seg\'un el m\'odulo, tiene la caracter\'istica de poder modificar la celda, agregando, eliminando o bien seleccionando \'atomos. A continuaci\'on veremos un par de ejemplos simples que se pueden realizar con \textbf{lpmd-converter}.
 
 \subsection{Ejemplo1: De un formato a otro}
 
@@ -831,7 +821,7 @@ z=0-20.7 inverse=true
 \end{verbatim}
 \end{multicols}
 
-Con el plugin filter se ha seleccionado una parte de la caja, pero, al aplicarle la opci\'on \verb|inverse=true|, se ha seleccionado finalmente lo que quedo fuera de la zona de la caja antes seleccionada, lo cual se muestra en la figura~\ref{fig:selectatoms}. 
+Con el plugin \verb|filter| se ha seleccionado una parte de la caja, pero, al aplicarle la opci\'on \verb|inverse=true|, se ha seleccionado finalmente lo que qued\'o fuera de la zona de la caja antes seleccionada, lo cual se muestra en la figura~\ref{fig:selectatoms}. 
 
 \begin{figure}[h!]
 \centering
