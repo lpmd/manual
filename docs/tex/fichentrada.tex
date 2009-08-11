@@ -1,11 +1,11 @@
 \chapter{El Fichero de Control}
 \label{chap:input}
 
-Una de las piezas fundamentales en {\lpmd} para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de sistema, revisaremos los archivos de posiciones at\'omicas.
+Una de las piezas fundamentales en {\lpmd} para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de control, revisaremos de forma general los archivos de posiciones at\'omicas.
 
 \section{Fichero con Posiciones At\'omicas}
 
-{\lpmd} puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que dispongamos; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz} y \textbf{lpmd}.
+{\lpmd} puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que se disponga; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz}, \textbf{lpmd}, \textbf{dlpoly} (archivos \verb|CONFIG| o \verb|HISTORY| de dl\_poly), etc.
 
 Esperamos que los usuarios, seg\'un su necesidad, ayuden a implementar o solicitar a los desarrolladores tipos espec\'ificos de sistemas de posiciones at\'omicas para din\'amica molecular. Veamos brevemente en que consisten algunos de ellos. Para informaci\'on espec\'ifica de cada m\'odulo, vea la secci\'on~\ref{chap:modulos:entradasalida}.
 
@@ -17,64 +17,96 @@ Es el est\'andar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulac
 \begin{center}
 \begin{tabular}{l|l}
  \verb|N| & Especifica el n\'umero de \'atomos en la celda \\
- \verb|comment| & Una l\'inea adicional de comentario, t\'itulo etc. \\
+ \verb|comment| & Una l\'inea adicional de comentario, t\'itulo, etc. \\
  \verb|Sym X Y Z| & S\'imbolo at\'omico y las posiciones en coordenadas cartesianas. \\
 \end{tabular}
 \end{center}
+
+Actualmente el m\'odulo \verb|xyz| soporta tres niveles distintos estos son 0,1 y 2 los que indican la informaci\'on que poseen los \'atomos an cada l\'inea. El nivel cero indica las posiciones at\'omicas, el nivel uno a\~nade las velocidades y el nivel 2 las aceleraciones. Es decir :
+
+\begin{itemize}
+\item 0 : \verb|Sym X Y Z| (valor por defecto).
+\item 1 : \verb|Sym X Y Z VX VY VZ|.
+\item 2 : \verb|Sym X Y Z VX VY VZ AX AY AZ|.
+\end{itemize}
+
+Cualquiera de estos niveles puede ser le\'ido como un fichero de entrada para el formato \verb|xyz|.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fichero .lpmd}
 
-Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. Es de tipo ASCII y su estructura principal est\'a dada por:
+A partir de {\lpmd} 0.6.0, existe un nuevo formato 2.0 para los ficheros \verb|.lpmd| (compatible con la versi\'on 1.0). Este es un fichero con las posiciones escaladas de los \'atomos que forman la celda. Es de tipo ASCII y su estructura principal est\'a dada por:
 
 \begin{center}
  \begin{tabular}{l|l}
  \verb|LPMD VERSION X.X | & Especifica la versi\'on del fichero \verb|.lpmd| \\
+ \verb|HEAD X Y Z| & Especif\'ica la informaci\'on que posee cada l\'inea at\'omica. \\
  \verb|cell properties | & Propiedades de la celda, pueden ser 3 vectores o longitudes y \'angulos. \\
  \verb|Sym sx sy sz| & S\'imbolo at\'omico y las posiciones escaladas en cada eje [0,1].\\
 \end{tabular}
 \end{center}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fichero .zlp}
-
-Es un fichero con las posiciones escaladas de los \'atomos que forman la celda. A diferencia del formato \verb|lpmd| este formato es comprimido utilizando zlib. Recomendamos lo utilize para la adquisici\'on de gran n\'umero de datos.
+Al igual que el \verb|xyz|, los ficheros de tipos \verb|lpmd| cuentan con niveles (0,1 y 2) junto con flags extras tales como color del \'atomo o alguna propiedad que se puede o no guardar, seg\'un los requerimientos del mismo usuario.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Otros Formatos Soportados}
 
-Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados (de forma b\'asica) para lectura/escritura de configuraciones at\'omicas, algunos de ellos son listados en la tabla~\ref{tab:modinout}.
-
-% \begin{tabular}{lcl}\\
-%  mol2 &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{mol2} \\
-%  pdb  &:& M\'odulo para Leer/Escribir Configuraciones en formato \textbf{pdb} \\
-% \end{tabular}
+Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados para lectura/escritura de configuraciones at\'omicas, algunos de ellos son listados en la tabla~\ref{tab:modinout}. Si tiene dudas con respecto a alg\'un formato, as\'i como sugerencias o requerimientos, no dude en contactarnos.
 
 \section{El Fichero de configuraci\'on .control}
 
-Es el fichero principal para realizar la simulaci\'on computacional. Es por eso que en primer lugar se har\'a una descripci\'on general y luego veremos cada una de sus secciones principales.
+Es el fichero principal para realizar la simulaci\'on computacional. Es por eso que en primer lugar se har\'a una descripci\'on general de cada una de sus partes principales y luego veremos \'estas de forma mucho m\'as detallada.
 
-Entre las cosas a considerar en un fichero de control, est\'an:
+
+Entre los puntos generales a considerar en un fichero de control, est\'an:
 
 \begin{itemize}
- \item \# Es una l\'inea de comentario.
+ \item \# Es una l\'inea de comentario. (Evitelas dentro de un bloque \texttt{use ... enduse}).
  \item Pese a que puede ser aleatorio el orden de los flags, se recomienda llevar un orden.
- \item Recomendamos definir los m\'odulos antes de utilizarlos. Tampoco es obligaci\'on.
+ \item Recomendamos \textbf{definir los m\'odulos} antes de utilizarlos. Tampoco es obligaci\'on.
  \item Existen m\'odulos en un fichero de control que \textbf{no} pueden ser omitidos, como por ejemplo, un \textbf{cellmanager}. Sin embargo la mayor\'ia de estos casos, pueden ser entregados por l\'inea de comando.
 \end{itemize}
+
+Con estos puntos previos en mente, veamos entonces cuales son las secciones principales a tener en cuenta dentro de un \textbf{fichero de control} para utilizar con {\lpmd}, consideremos de forma general el esquema que se muestra a continuaci\'on.
+
+\fb{ 
+\texttt{
+\begin{tabular}{lcl}
+ \#Cell Properties & $\rightarrow$ & Propiedades de la celda.\\
+ cell ... &&\\
+ \#Input/Output & $\rightarrow$ & Principales ficheros de entrada y salida\\
+ input ... &&\\
+ output ... &&\\
+ \#General & $\rightarrow$ & Setting generales de la simulaci\'on\\
+ prepare ... &&\\
+ steps ... &&\\
+ monitor ... &&\\
+ \#Filters & $\rightarrow$ & Filtros a aplicar sobre la muestra.\\
+ filter ... &&\\
+ \#Module Load & $\rightarrow$ & Carga de todos los modulos necesarios.\\
+ use ... &&\\
+ enduse ... &&\\
+ \#Module Apply & $\rightarrow$ & Indica como son aplicados los modulos.\\
+ apply ... &&\\
+ potential ... &&\\
+ integrator ... &&\\
+\end{tabular}
+}
+}
+
+Esta entonces es una \textbf{aproximaci\'on general} a los ficheros de entrada utilizados en din\'amica molecular por {\lpmd}. Con esta idea en mente veremos a continuaci\'on cada una de las secciones principales del fichero de control.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Celda de Simulaci\'on.}
 
-Son todas las propiedades que describen la celda de simulaci\'on. La mayor\'ia de las opciones del c\'odigo en esta parte est\'an descritas en \textbf{Propiedades Generales}. A continuaci\'on se describir\'a la propiedad que siempre debe estar presente en el fichero .control y va al comienzo de \'este.
+Es la propiedad que describe la celda de simulaci\'on. Es decir el detalle completo de cada uno de los ejes que la conforman, los que pueden ser entregados en forma detallada o en forma general. A continuaci\'on se describir\'a la forma en la cu\'al se entrega \'esta propiedad, que \textit{casi siempre} debe estar presente en el fichero .control y va al comienzo de \'este.
 
 \subsubsection{cell}
 
-El flag cell es utilizado para describir la celda de simulaci\'on y asignar las propiedades de \'esta. Generalmente una celda de simulaci\'on puede venir descrita ya en el formato del fichero de entrada. Sin embargo, hay formatos, como el \textbf{xyz}, que no poseen la descripci\'on de la celda, es por eso que es necesario utilizar siempre esta opci\'on. Si despu\'es de dar la opci\'on \textbf{cell} se utiliza un formato de entrada descriptivo, como \textbf{lpmd}, este \'ultimo es el valor que toma la celda.
+El flag cell es utilizado para describir la celda de simulaci\'on y asignar las propiedades de \'esta. Generalmente una celda de simulaci\'on puede venir descrita ya en el formato del fichero de entrada (como es el caso de lo ficheros \texttt{lpmd} o \texttt{CONFIG}). Sin embargo, hay formatos, como el \texttt{xyz}, que no poseen la descripci\'on de la celda, es por eso que es necesario en algunos casos utilizar esta opci\'on. Si se desea dar la opci\'on \verb|cell| aunque la informaci\'on se encuentre en un archivo, \'esta predominar\'a sobre la del archivo.
 
 \begin{itemize} 
 \item{Forma 1}
@@ -98,17 +130,40 @@ donde,
 
 \item{Forma 2}
 
-Se utilizan los 3 vectores bases, poni\'endolos de la siguiente manera en el fichero, note que \verb|//| indican la continuaci\'on de una l\'inea \'unica.
+Se utilizan los 3 vectores bases, poni\'endolos de la siguiente manera en el fichero, note que \verb|\| indican la continuaci\'on de una l\'inea \'unica.
 
-\control{cell ax=1.0 ay=0.0 az=0.0 bx=0.0 by=1.0 bz=0.0 // \\cx=0.0 cy=0.0 cz=1.0}
-donde,
-\fb{ 
- a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
-}
+\control{cell ax=1.0 ay=0.0 az=0.0 bx=0.0 by=1.0 bz=0.0 \textbackslash \\cx=0.0 cy=0.0 cz=1.0}
+
+donde: a${i}$, b${i}$ y c${i}$ con $i$={$x$,$y$,$z$} son las coordenadas $x, y$ y $z$ de los vectores bases.
 
 Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden ser entregadas como argumentos en la ejecuci\'on de {\lpmd} y no necesitan estar dentro del fichero de \textbf{control}, lo que ayuda a la creaci\'on de \textit{scripts}.
 
 \fb{\begin{minipage}[l]{9.5cm}\tt lpmd -L a,b,c -A alpha,beta,gamma archivo.control \\ lpmd -V ax,ay,az,bx,by,bz,cx,cy,cz archivo.control\end{minipage}}
+
+
+\item{Forma 3}
+
+Existe una forma extra para celdas cubicas que ahorran un poco la escritura completa de cada t\'ermino de la celda, por ejemplo una celda cubica de largo 5\AA, se puede asignar facilmente con :
+
+\control{cell cubic a=5}
+
+\end{itemize}
+
+\subsubsection{Omitiendo cell}
+Como se mencion\'o previamente, hay ocaciones en que el archivo de posiciones at\'omicas posee adem\'as la informaci\'on de la celda de simulaci\'on, para estos casos hay dos formas de \textbf{especificar} a {\lpmd} que debe leer la informaci\'on desde ese archivo.
+
+\begin{itemize} 
+\item{Forma 1}
+
+Se utilizan opciones especiales dentro del mismo fichero de control :
+
+\control{set replacecell true}
+
+\item{Forma 2}
+
+Se especifica en la ejecuci\'on misma de lpmd con el flag \verb|-r|.
+
+\fb{\begin{minipage}[l]{9.5cm}\tt lpmd archivo.control -r\end{minipage}}
 
 \end{itemize}
 
@@ -120,15 +175,15 @@ Las posibles formas de ingresar una descripcion de la llamada \verb|cell| pueden
 
 Existen actualmente dos formas de ingreso de un sistema de entrada para la configuraci\'on at\'omica que se requiere simular; estas son, el ingreso de las posiciones at\'omicas de la celda a trav\'es de un archivo (por ejemplo \verb|.xyz| o \verb|.lpmd|) y el otro es mediante m\'odulos que generan autom\'aticamente celdas at\'omicas con ciertas propiedades, por ejemplo celdas \textbf{bcc}, \textbf{fcc}, etc.
 
-Veamos a continuaci\'on brevemente cada uno de ellos,
+Veamos brevemente a continuaci\'on cada uno de ellos,
 
 \begin{itemize}
  \item{Con Fichero}
 
-Para cargar un fichero con configuraciones at\'omicas es necesario la existencia del m\'odulo que reconoce el tipo de ficheros, por ejemplo para cargar un fichero del tipo \verb|.xyz|, es necesario cargar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo. 
+Para cargar un fichero con configuraciones at\'omicas es necesario la existencia del m\'odulo que reconozca el tipo de fichero, por ejemplo para cargar un fichero del tipo \verb|.xyz|, es necesario utilizar el m\'odulo \verb|xyz| para poder leer sin problemas el archivo, ya que es el m\'odulo el que \textit{entiende} el archivo de ese tipo. 
   \item{Generadores de celda}
 
-A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con atomos, seg\'un los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para genrar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc} y el m\'etodo \textbf{skewstart}.
+A diferencia con el m\'etodo anterior, este m\'etodo no requiere de un fichero con posiciones at\'omicas, en lugar de ello se requiere un m\'odulo que genera automaticamente una celda con \'atomos, seg\'un los requerimientos propios del m\'odulo. Por ejemplo existen m\'odulos actualmente para generar celdas del tipo \textbf{sc}, \textbf{bcc}, \textbf{fcc}, etc. utilizando el plugin \verb|crystal3d|, tambi\'en hay generadores de redes bidimensionales (\verb|crystal2d|) y finalmente se pueden utilizar m\'etodos m\'as sofisticados como \textbf{skewstart}.
 
 \end{itemize}
 
@@ -147,30 +202,23 @@ Estos son los argumentos m\'as standard ya que cada m\'odulo posee sus propios a
 Veamos algunas formas de uso para la orden \verb|input| :
 
 \begin{itemize}
-\item Carga desde un fichero XYZ.
+\item Carga posiciones at\'omicas desde un fichero XYZ.
 \control{input module=xyz file=fichero.xyz level=0}
-\item Inicializa una celda del tipo fcc
-\control{input module=fcc a=1 nx=3 ny=3 nz=3}
-\item Inicializa con metodo skewstart
+\item Carga posiciones y velocidades desde un fichero XYZ (level 1).
+\control{input module=xyz file=fichero.xyz level=1}
+\item Inicializa una celda del tipo fcc con átomos de Au.
+\control{input module=crystal3d type=fcc nx=3 ny=3 nz=3 symbol=Au}
+\item Inicializa una celda del tipo sc con átomos de Na
+\control{input module=crystal3d type=sc nx=5 ny=5 nz=5 symbol=Na}
+\item Inicializa con metodo skewstart para 108 \'atomos de arg\'on.
 \control{input module=skewstart atoms=108 symbol=Ar}
 \end{itemize}
 
 La lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de configuraciones, se pueden observar en la tabla~\ref{tab:modinout}.
 
-% \begin{enumerate}
-%  \item \verb|xyz|
-%  \item \verb|lpmd|
-%  \item \verb|zlp|
-%  \item \verb|hcp| - \verb|fcc| - \verb|bcc| - \verb|sc|
-%  \item \verb|skewstart|
-%  \item \verb|mol2|
-%  \item \verb|pdb|
-% \end{enumerate}
-
-
 \subsubsection{output}
 
-Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo en la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, sin embargo es \textit{importante} notar que cada m\'odulo posee configuraciones independientes, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos generales principales del par\'ametro \verb|output| son:
+Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo a partir de la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, pese a esto es \textit{importante} notar que \textbf{cada m\'odulo posee configuraciones independientes}, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos generales principales del par\'ametro \verb|output| son:
 
 \fb{ 
 \begin{tabular}{lcl}
@@ -191,57 +239,50 @@ Algunas formas de uso,
  \item Grabando la simulaci\'on en un fichero XYZ (nivel 0), cada 20 steps.
 \control{output module=xyz file=fichero.xyz level=0 each=20}
  \item Grabando la simulaci\'on en fichero LPMD (nivel 1), cada 1 step.
-\control{output module=lpmd file=fichero.xyz level=1 each=1}
+\control{output module=lpmd file=fichero.lpmd level=1 each=1}
+ \item Grabando las posiciones at\'omicas en formato lpmd nivel 2 y con colores de los \'atomos.
+\control{output module=lpd file=saved.lpmd level=2 each=5 extra=rgb}
 \end{itemize}
 
 La lista de los m\'odulos soportados a la fecha para escritura de configuraciones, pude verse en la tabla~\ref{tab:modinout}.
-
-% \begin{enumerate}
-%  \item \verb|xyz|
-%  \item \verb|lpmd|
-%  \item \verb|zlp|
-%  \item \verb|mol2|
-%  \item \verb|pdb|
-% \end{enumerate}
-
 
 \subsubsection{restore}
 
 Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de energ\'ia el\'ectrica o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping'' dentro del fichero de control, indicando el nombre del archivo \verb|dump|. Es recomendable que antes de reiniciar una corrida, respalde los datos en otro directorio, o efectue la \textit{reiniciaci\'on} de la corrida en un directorio distinto, para evitar da\~nar, perder o sobreescribir los datos previos de la simulaci\'on.
 
-Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, por favor si encuentra alg\'un bug, reportelo.
+Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, por favor si encuentra alg\'un bug, reportelo y \textbf{recuerde usar esta opci\'on con precauci\'on}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Propiedades Generales}
 \subsubsection{prepare}
-Esta opci\'on es utilizada para \textit{setear} valores y caracter\'isticas de la simulaci\'on, que son brindadas a trav\'es de plugins, tenemos por ejemplo :
+Esta opci\'on es utilizada para \textit{setear} valores y caracter\'isticas de la simulaci\'on, que son brindadas a trav\'es de plugins o de la misma API, tenemos por ejemplo :
 
 \begin{itemize}
  \item \textbf{temperature}
 Para dar una temperatura inicial al sistema, se prepara la celda con :
-\control{prepare temperature T=300}
+\control{prepare temperature t=300}
 de esta forma el sistema asigna velocidades iniciales a las part\'iculas para que la temperatura de nuestro sistema corresponda a 300K.
  \item \textbf{replicate}
 Para replicar nuestra celda en las distintas direcciones de los vectores bases, la forma de hacerlo para una celda antes de comenzar la simulaci\'on es:
 \control{prepare replicate nx=2 ny=2 nz=2}
-De esta froma, la celda que se ley\'o en \verb|input| es replicada 2 veces por cada eje, alcanzando 8 veces el n\'umero inicial de part\'iculas.
+De esta froma, la celda que se ley\'o en \verb|input| es replicada 2 veces por cada eje, alcanzando 8 veces el n\'umero inicial de part\'iculas. Esta opci\'on es v\'alida s\'olo cuando se desactiva la optimizaci\'on previa utilizando \verb|set|.
 \end{itemize}
 
 \subsubsection{set}
-Utilizado para setear valores de la simulaci\'on, utilizado principalmente para algunas variables globales del sistema. A continuaci\'on los m\'as utilizados, ya que la mayor\'ia de las variables pueden ser modificadas utilizando \verb|set|.
+Utilizado para setear valores de la simulaci\'on, principalmente para algunas variables globales del sistema. A continuaci\'on los m\'as utilizados :
 
 \begin{itemize}
- \item Evitando que aparezca la celda inicial en la salida \textit{standard}.
-\control{set showcoords false}
- \item Evitando que se muestren los modulos no utilizados durante la salida.
-\control{set showunused false}
- \item Utilizando el cache de distancias en la simulaci\'on
-\control{set distancecache true}
+ \item Desactivando la optimizaci\'on de celda previa a la simulaci\'on.
+\control{set optimize-simulation false}
+ \item Se asigna que la informaci\'on necesaria para \texttt{cell} est\'a en el fichero de entrada.
+\control{set replacecell true}
+ \item Seteando la variable \texttt{delay} usada en visualizaci\'on.
+\control{set delay 0.1}
 \end{itemize}
 
 \subsubsection{charge}
-Set de las cargas en eV para las especies at\'omicas. Estos valores de las cargas, son seteados principalmente para utilizaci\'on de potenciales interat\'omicos en los cuales se utilizan las cargas de los atomos involucrados.
+Set de las cargas en \verb|eV| para las especies at\'omicas. Estos valores de las cargas, son seteados principalmente para utilizaci\'on de potenciales interat\'omicos en los cuales se utilizan las cargas de los atomos involucrados.
 
 
 Forma de uso
@@ -256,7 +297,7 @@ Indica la periodicidad de la celda, en cada eje. Al bloquear la periodicidad en 
 
 \control{periodic false false true}
 
-En \'este caso s\'olo tenemos periodicidad en el eje \verb|z|.
+En \'este caso s\'olo tenemos periodicidad en el eje \verb|z|. En las versiones posteriores a 0.6.0 no se han hecho pruebas rigurosas de las opciones de periodicidad as\'i que \textbf{\'usela con precacuci\'on}.
 
 \subsubsection{steps}
 N\'umero de pasos de la simulaci\'on de DM.
@@ -279,6 +320,7 @@ Entre las opciones de monitor, cuentan :
 
 \fb{
 \begin{tabular}{lcl}
+ step & = & muestra el \texttt{step} actual de la simulaci\'on\\
  start & = & indica el valor de epsilon.\\
  end & = & indica el valor de sigma.\\
  each & = & indica el cutoff del potencial.\\
@@ -288,10 +330,10 @@ Entre las opciones de monitor, cuentan :
 \end{tabular}
 }
 
-Si queremos ir chequeando, los valores de la energ\'ia durante la simulacion, cada 10 pasos, utilizamos la l\'inea, (note que \verb|\\| indica que la l\'inea contin\'ua)
+Si queremos ir chequeando, los valores de la energ\'ia durante la simulaci\'on, cada 10 pasos, utilizamos la l\'inea, (note que \verb|\\| indica que la l\'inea contin\'ua)
 
 \begin{verbatim}
-monitor start=0 end=1000 each=10 properties=kinetik-energy, \\
+monitor start=0 end=1000 each=10 properties=step,kinetik-energy,/
         potential-energy,total-energy output=salida.out
 \end{verbatim}
 
@@ -320,6 +362,23 @@ Algunas de las opciones soportadas por \textbf{properties} son:
 \end{itemize}
 
 Una ventaja es la utilizaci\'on de multiples \verb|monitor| para as\'i ir almacenando la informaci\'on \textit{a medida}. Para revisar todas las opciones de salida, refirase a la secci\'on~\ref{chap:modulos}.
+
+\subsection{Filtros}
+
+Aparecen en versiones posteriores a 0.6.0, son m\'odulos cuya caracter\'istica principal es \textit{filtrar} los \'atomos de una simulaci\'on acorde a ciertos tipos de requerimientos, por ejemplo :
+
+\vspace{1cm}
+\begin{center}
+\begin{tabular}{lcl}
+index &:& Filtrado de atomos seg\'un sus \'indices.\\
+box &:& Filtrado de \'atomos pernetecientes a paralelep\'ipedo.\\
+sphere &:& Filtrado de \'atomos seg\'un esfera.\\  
+symbol &:& Filtrado de \'atomos seg\'un simbolo at\'omico.\\
+\end{tabular}
+\end{center}
+\vspace{1cm}
+
+La ventaja de estos filtros es poder generar nuevas configuraciones a partir de resultados previos, as\'i como tambi\'en an\'alisis mucho m\'as detallados para los \textit{\'atomos filtrados}.
 
 \subsection{Carga de M\'odulos}
 
@@ -368,8 +427,6 @@ Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{contr
   Llaman al manejador de celda que se utilizara en la simulaci\'on, en nuestro caso hay dsiponibilidad de dos manejadores, \verb|linkdecell| y \verb|minimumimage|.
   \control{cellmanager linkedcell}
 \end{itemize}
-
-
 
 \section{Ficheros de Salida}
 

@@ -271,7 +271,7 @@ En caso de cualquier error en el proceso de instalaci\'on env\'ie un e-mail a al
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Instalando plugins}
 
-Uno de los requerimientos b\'asicos de {\lpmd} es tener bien especificada la ubicaci\'on de los plugins que {\lpmd} requiere, es por eso que se debe indicar la ubicaci\'on de la instalaci\'on de la librer\'ia \textbf{liblpmd}. Normalmente deber\'ia correr sin ningun requerimiento especial si instal\'o la \textbf{liblpmd} en el lugar por \textit{default} (/usr/local), de no ser as\'i especifique el lugar con \verb|./setup --prefix=/ubicacion/| a la hora de correr \verb|nmc|.
+Uno de los requerimientos b\'asicos de {\lpmd} es tener bien especificada la ubicaci\'on de los plugins que {\lpmd} requiere, para el caso de que requiera instalar lpmd en un lugar distinto al que viene por \textit{default}, refierase a la secci\'on~\ref{subsub:personaldir}. Si continuará con el desarrollo standard de instalaci\'on entonces puede configurar y compilar el paquete de plugins utilizando :
 
 \control{./setup  \\ make}
 
@@ -359,11 +359,6 @@ De esta forma se generar\'an los esqueletos en \verb|/home/user/local| con \verb
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Actualizando lpmd}
+\subsection{Actualizando lpmd}
 
-% {\lpmd} tiene m\'as de una forma de actualizarse, para eso en primer lugar debemos tener claro qu\'e versi\'on de la API posee {\lpmd} ya que las versiones nuevas de {\lpmd} o de los plugins dependen completamente de la API que tengamos.
-% 
-% Para ver la versi\'on que utiliza {\lpmd} ejecute : \verb|lpmd -h| donde mostrar\'a una l\'inea que contendr\'a el siguiente texto \textbf{Using liblmpd version X.X.X}.
-% 
-% Actualmente la API se encuentra en la versi\'on \textbf{1.0.0} esperamos que la pr\'oxima versi\'on soporte MPI para muchas fases de la din\'amica molecular.
-
+ Actualmente {\lpmd} solo puede ser actualizado utilizando el paquete \verb|lpmd-installer| o bien si es desarrollador, utilizando subversion. Recomendames que s\'olo utilize estos m\'etodos de actualizaci\'on.

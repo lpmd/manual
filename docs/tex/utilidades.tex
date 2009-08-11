@@ -2,12 +2,12 @@
 \label{chap:utilidades}
 \section{\index{lpmd-analyzer}lpmd-analyzer}
 
-Al igual que {\lpmd}, \verb|lpmd-analyzer| utiliza un fichero de control, basado en los mismos plugins, pero a diferencia de {\lpmd}, \textbf{lpmd-analyzer} no necesita todos los requerimientos de una din\'amica molecular, ya que su fichero de control es m\'as corto, este solo requiere las propiedades que se desean calcular, asi como tambi\'en la especificaci\'on del sistema, y como se llevar\'a a cabo la evaluaci\'on.
+Al igual que {\lpmd}, \verb|lpmd-analyzer| puede utilziar un fichero de control o bien, basado en los mismos plugins, pero a diferencia de {\lpmd}, \textbf{lpmd-analyzer} no necesita todos los requerimientos de una din\'amica molecular, por lo que su fichero de control es m\'as corto, \'este s\'olo requiere las propiedades que se desean calcular, asi como tambi\'en la especificaci\'on del sistema, y como se llevar\'a a cabo la evaluaci\'on.
 
-Los an\'alisis son hechos generalmente, sobre ficheros de salida de simulaciones computacionales, tales como \verb|xyz| o cualquiera de los listados en la tabla~\ref{tab:modinout}.
+Los an\'alisis son hechos generalmente, sobre ficheros de salida de simulaciones computacionales, tales como \verb|xyz|, \verb|lpmd|, \verb|dlpoly| (ficheros \verb|HISTORY| o \verb|CONFIG|) o cualquiera de los listados en la tabla~\ref{tab:modinout}.
 
-\subsection{Fichero de Control}
-Ahora listamos cada una de las \'areas principales de un fichero de control para ejcutar con \textbf{lpmd-analyzer}.
+\subsection{An\'alisis utilizando un Fichero de Control}
+Ahora listamos cada una de las \'areas principales de un fichero de control para ejcutarlo con \textbf{lpmd-analyzer}.
 
 \begin{enumerate}
  \item Propiedades de la Celda.
@@ -37,23 +37,24 @@ Al igual que en {\lpmd}, el llamado a m\'odulos de propiedades, se realiza con l
 
 Por ejemplo, en este caso, un fichero con mas de 1000 configuraciones, es caracterizado en sus primeras 1000 configuraciones y la evaluaci\'on de esta propiedad se realiza cada 10 pasos.
 
-\subsection{Caracter\'isitcas}
+\subsection{Ejemplos con Fichero de Control}
 
-La principal caracter\'istica de \textbf{lpmd-analyzer} es que toma ventaja de la mayor\'ia de las cosas implementadas ya para {\lpmd}, y trat en cierta medida de ser una evoluci\'on de lo que en alg\'un momento fue \textbf{fumody} (\texttt{http://www.gnm.cl/software/fumody}) y que ahora no s\'olo es de r\'apido manejo y configuraci\'on, sino que cuenta con m\'as ventajas, mejor soporte y mayor simplicidad en la implementaci\'on de utilidades para ficheros de \textit{Din\'amica Molecular}.
+\subsection{An\'alisis utilizando el quick-mode}
 
-\subsection{Ejecuci\'on}
+Usualmente uno espera que las utilidades sean de \textit{f\'acil acceso} por lo que escribir tediosos ficheros de configuraci\'on no es lo esperado, por eso {\lpmd} como su set de utilidades tienen el llamado \textbf{quick-mode} que \'es simplementa la ejecuci\'on directa de an\'alisis, converciones o visualizaciones de salidas de din\'amica molecular.
 
-La ejecuci\'on de \textbf{lpmd-analyzer} es similar a la de {\lpmd}, con la salvedad de que el fichero de control, posee menos informaci\'on, y tambien posee modos de referencia r\'apida, que puede ver en~\ref{chap:util-quickmode}. Una ejecuci\'on t\'ipica ser\'ia:
+\subsubsection{Salida General}
 
-\control{lpmd-analyzer file.control}
+\subsubsection{Requerimientos M\'inimos para lpmd-analyzer en quick-mode}
 
-La salida de \textbf{lpmd-analyzer} es manejada por cada m\'odulo.
+\subsection{Ejemplos con quick-mode}
 
-\section{\index{lpmd-convert}lpmd-convert}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\index{lpmd-converter}lpmd-converter}
 
-Utlizado para conversi\'on de celdas entre distintos formatos, es una forma propia de \verb|babel|, con algunas funcionalidades xtras, las que son independientes de cada m\'odulo.
+Utlizado para conversi\'on de celdas entre distintos formatos, es una forma propia de \verb|babel|, con algunas funcionalidades extras, las que son independientes de cada m\'odulo. Entre sus ventajas destacan el hecho de hacer filtrados, asignar colores a los \'atomos seleccionar o invertir selecciones, etc.
 
-\subsection{Fichero de Control}
+\subsection{lpmd-converter utilizando un Fichero de Control}
 Las \'areas principales de un fichero de control para ejcutar con \textbf{lpmd-converter}, son:
 
 \begin{enumerate}
@@ -81,11 +82,10 @@ En esta secci\'on podemos especificar uno o m\'as ficheros de salida para realiz
 
 Por ejemplo, en este caso, un fichero con mas de 1000 configuraciones, es caracterizado en sus primeras 1000 configuraciones y la evaluaci\'on de esta propiedad se realiza cada 10 pasos.
 
-
-\subsection{Caracter\'isticas}
+\subsection{Utilizando lpmd-converter con quick-mode}
 Por ahora, \textbf{lpmd-converter} puede manejar todos los formatos listados en la tabla~\ref{tab:modinout}. Adem\'as se pueden aplicar las propiedades del m\'odulo selectatoms, para modificar, extraer o a\~nadir \'atomos en el sistema.
 
-\subsection{Ejecuci\'on}
+\subsection{Ejemplos}
 Al igual que {\lpmd}, \textbf{lpmd-coverter} puede ejecutarse con los argumentos en l\'inea de comandos y a trav\'es del fichero de control:
 
 \control{lpmd-converter fichero.control}
@@ -93,7 +93,7 @@ Al igual que {\lpmd}, \textbf{lpmd-coverter} puede ejecutarse con los argumentos
 \section{\index{lpmd-visualizer}lpmd-visualizer}
 Utilidad capaz de visualizar sistemas at\'omicos, su funci\'on es aplicar cualquier tipo de m\'odulo de visualizaci\'on del sistema. Por ejemplo desde la generaci\'on de ficheros \verb|pov| para una posterior conversi\'on a imagenes, as\'i como la observaci\'on directa de configuraciones at\'omicas mediante openGL (m\'odulo \verb|lpvisual|).
 
-\subsection{Fichero de Control}
+\subsection{Utilizando lpmd-visualizer con un Fichero de Control}
 
 Las \'areas principales de un fichero de control para ejcutar con \textbf{lpmd-converter}, son:
 
@@ -122,32 +122,28 @@ Especificamente llamamos al m\'odulo y vemos como deseamos mostrar la imagen o g
 
 Por ejemplo, en este caso, un fichero con mas de 1000 configuraciones, se muestra cada 20 pasos comenzando en el paso inicial y terminando en el paso 1000.
 
-\subsection{Caracter\'isticas}
+\subsection{Utilizando lpmd-visualizer con quick-mode}
 Poder generar ficheros para visualizaci\'ones grandes y complejas, asi como tambien una visualizaci\'on simple y directa.
 
-\subsection{Ejecuci\'on}
+\subsection{Ejemplos}
 
 Al igual que {\lpmd}, \textbf{lpmd-visualize} es llamado con un fichero de control o tambien puede ser llamado directamente en l\'inea de comandos como
 
-%\section{lpmd-mixer}
-%
-%Su objetivo es crear combinaciones de estructuras at\'omicas, a partir de archivos, o cristalinas, asi da la ventaja de generar configuraciones m\'as complejas tales como materiales nanoestructurados.
-
-\section{Quick-Mode}
-\label{chap:util-quickmode}
-
-Esta secci\'on, da una idea generalizada de los flags que utilizan los utilitarios de lpmd, y cuales son sus caracter\'isticas, ya que puede incluso correrse an\'alisis sin necesidad de poseer un fichero de control. Las caracter\'isticas de los flags y el soporte en cada utilitario, pueden verse en la tabla~\ref{tab:quickmode}.
-
-\begin{table}[h!]
- \centering
- \begin{tabular}{cp{5cm}ccc}\\
- \hline\hline
-  Flag & Funcionalidad & lpmd & analyzer & converter \\
- \hline\hline
-\verb|-c| $\parallel$ \verb|--cell|&Los tama\~nos de la celda son indicados durante la ejecuci\'on.&Si&Si&Si\\\hline
-\verb|-p| $\parallel$ \verb|--pluginname|&Brinda ayuda sobre el plugin que se da en el argumento.&Si&Si&Si\\\hline
- &&&&\\\hline
- \end{tabular}
- \label{tab:quickmode}
- \caption{Se muestran los posibles flags de simulaci\'on de las utilidades y de {\lpmd}.}
-\end{table}
+% \section{Quick-Mode}
+% \label{chap:util-quickmode}
+% 
+% Esta secci\'on, da una idea generalizada de los flags que utilizan los utilitarios de lpmd, y cuales son sus caracter\'isticas, ya que puede incluso correrse an\'alisis sin necesidad de poseer un fichero de control. Las caracter\'isticas de los flags y el soporte en cada utilitario, pueden verse en la tabla~\ref{tab:quickmode}.
+% 
+% \begin{table}[h!]
+%  \centering
+%  \begin{tabular}{cp{5cm}ccc}\\
+%  \hline\hline
+%   Flag & Funcionalidad & lpmd & analyzer & converter \\
+%  \hline\hline
+% \verb|-c| $\parallel$ \verb|--cell|&Los tama\~nos de la celda son indicados durante la ejecuci\'on.&Si&Si&Si\\\hline
+% \verb|-p| $\parallel$ \verb|--pluginname|&Brinda ayuda sobre el plugin que se da en el argumento.&Si&Si&Si\\\hline
+%  &&&&\\\hline
+%  \end{tabular}
+%  \label{tab:quickmode}
+%  \caption{Se muestran los posibles flags de simulaci\'on de las utilidades y de {\lpmd}.}
+% \end{table}
