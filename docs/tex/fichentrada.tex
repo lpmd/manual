@@ -414,6 +414,11 @@ Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{contr
  \item \textbf{Modificadores}
   M\'odulos llamados para modificar alguna propiedad de la celda de simulaci\'on. Se aplican con:
   \control{apply module-alias start=0 end=1000 each=20}
+ \item \textbf{Filtros}
+  M\'odulos que modifican la celda de simulaci\'on filtrando \'atomos seg\'un ciertas condiciones, pueden ser
+  utilizados tanto con la instrucci\'on \verb|over| de \textbf{apply} como con \textbf{filter}.
+  \control{apply <apply-options> over <filter-options>}
+  \control{filter module-alias <options>}
  \item \textbf{Calculadores de Propiedades}
   Estos siempre son llamados a ser evaluados cada cierto tiempo entre un rango de intervalos. Aplicados con:
   \control{property module-alias start=0 end=1000 each=10}
@@ -433,7 +438,7 @@ Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{contr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Ficheros de salida}
-{\lpmd} Tiene dos tipos de fichero de salida, uno que es generado usualmente por la opci\'on \verb|output| dentro del fichero de control y otro es la salida standard, que por defecto va a \verb|cout|, pero que nosotros recomendamos enviar (o redireccionar) a un fichero.
+{\lpmd} Tiene variados tipos de ficheros de salida, uno que es generado usualmente por la opci\'on \verb|output| dentro del fichero de control, otro es la salida standard, que por defecto va a \verb|cout|, pero que nosotros recomendamos enviar (o redireccionar) a un fichero adem\'as estan los que generan cada uno de los m\'odulos en forma independiente cuando estos requieren de aquello.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -455,8 +460,8 @@ el fichero \verb|salida.out| tiene toda la informaci\'on que deb\'ia salir a pan
 \begin{itemize}
  \item Descripci\'on completa de la celda
  \item Informacion de \verb|startinfo|
- \item Informaci\'on de m\'odulos utilizados y variables de c/u.
- \item Energ\'ias, Temperatura, Presi\'on y Vol\'umen, seg\'un \verb|monitor|. En caso de que monitor no utilize \verb|output| propio.
+ \item Informaci\'on de m\'odulos utilizados y variables de cada uno de ellos.
+ \item Energ\'ias, Temperatura, Presi\'on y Vol\'umen, seg\'un \verb|monitor|. En caso de que monitor no utilize un valor propio para el valor de la variable \verb|output|.
 \end{itemize}
 
 
@@ -467,15 +472,14 @@ Este fichero se gener\'o con el nombre entregado en el fichero de control a la l
 
 Todas las propiedades instantaneas pueden calcularse \textit{\textbf{durante la simulaci\'on misma}}, sin embargo {\lpmd} tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utilidades}.
 
-Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores. Por ejemplo si se adquiere un archivo \verb|xyz| con \verb|level=0| no se podr\'a calcular un perfil de temperaturas ya que no se cuenta con la informaci\'on suficiente (posiciones y velocidades).
+Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores. Por ejemplo si se adquiere un archivo \verb|xyz| con \verb|level=0| no es el ideal para calcular por ejemplo la \textit{Velocity autocorrelation Function} (\verb|vacf|) ya que en caso de que el nivel sea menor a uno algunos plugins determinar\'an la velocidad utilizando configuraciones at\'omicas sucesivas de forma autom\'atica.
 
+\subsubsection{Ficheros generados por m\'odulos}
+Muchos m\'odulos de lpmd que realizan an\'alisis generan ficheros de informaci\'on de manera independiente, además los plugins en general manejan dos \textit{est\'andares} de salidas asignados con el flag \verb|average|. Por ejemplo si deseamos calcular la \textit{Funci\'on de distribuci\'on de pares} sobre nuestras configuraciones, podemos calcular \'esta sobre cada una de las muestras e imprimirlas o bien generar un promedio de cada una.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Salida de errores}
-La versi\'on actual no redirecciona informaci\'on a la salida de errores, salvo los que realmente corresponden a errores de ejecuci\'on de {\lpmd}.
-
-Para aislar estos errores, ejecute {\lpmd} como ya se indico:
-
-\control{lpmd fichero.control 1\&> salida.out 2\&> salida.err}
-
+\begin{itemize}
+\item \verb|average true|
+Especif\'ca que luego de realizar los correspondientes an\'alisis sobre las configuraciones especificadas del fichero, estas deben promediarse antes de imprimir en el archivo de salida.
+\item \verb|average false|
+Especif\'ica que cada vez que realiza un an\'alisis sobre las configuraciones pertenecientes al archivo, estas deben ser impresas una a una en el archivo de salida. 
+\end{itemize}

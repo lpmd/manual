@@ -7,51 +7,13 @@ A continuaci\'on se muestran las listas de los tipos de m\'odulos implementados 
 \begin{table}[h!]
  \begin{tabular}{|c|l|}\hline\hline
  Calidad & Descripci\'on \\\hline\hline
- A & Sin documentaci\'on, sin pruebas, alta posibilidad de fallas. \\
- B & Documentaci\'on incompleta, sin pruebas, alta posibilidad de fallas. \\
- C & Documentaci\'on completa, sin pruebas, baja posibilidad de fallas. \\
- D & Documentaci\'on incompleta, pruebas rigurosas, baja posibilidad de fallas. \\
- E & Documentaci\'on completa, pruebas rigurosas, no ha presentado fallas. \\
- F & Full support. \\\hline\hline
+ S & \textit{Stable} El plugin funciona de manera estable. \\
+ T & \textit{Testing} El plugin funciona y se encuentra usable, pero debe ser precavido. \\
+ U & \textit{Unstable} El plugin esta en fase de desarrollo, no utilizar para publicaciones. \\
+\hline
  \end{tabular}
  \label{tab:modquality}
  \caption{Tabla de calidad de implementaci\'on de m\'odulos, s\'olo se presta soporte para los m\'odulos incluidos en el paquete \textbf{lpmd-plugins}}
-\end{table}
-
-
-\section{General}
-M\'odulos de {\lpmd} que manejan informaci\'on interna de la API, tales como caracter\'isticas propias de la celda, son en general todos de tipo informativo ya que no llevan dentro algoritmo de an\'alisis complejos.
-
-\begin{table}[h!]
-\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
- \hline\hline
- \texttt{energy} & 5.0 & A & M\'odulo que retorna propiedades del sistema tales como energ\'ia(cin\'etica, potencial y total), momentum en cada eje y la temperatura.\\
- \hline
- \texttt{cell} & 5.0 & A & M\'odulo que retorna propiedades del sistema, volumen, largo por eje, densidad y volumen y densdidad por \'atomo. \\
- \hline
- \texttt{pressure} & 5.0 & A & M\'odulo que retorna propiedades del sistema, presi\'on cin\'etica y virial, junto con las componentes del stress. \\
- \hline
- \end{tabular}
-\label{tab:modgeneral}
-\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
-\end{table}
-
-\section{Manejadores de Celda}
-Determinan como es la forma de interactuar entre los \'atomos pertenecientes a la celda de simulaci\'on.
-
-\begin{table}[h!]
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
- \hline\hline
- \texttt{minimumimage} & 5.0 & F & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de m\'imima imagen.\\
- \hline
- \texttt{linkedcell} & 5.0 & F & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{linked-cell}.\\
- \hline
- \end{tabular}
-\label{tab:modmanager}
-\caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
 \end{table}
 
 \section{Entrada Salida}
@@ -61,32 +23,90 @@ M\'odulos para manejar los ficheros de entrada/salida para las configuraci\'ones
  \begin{tabular}{|l|c|c|p{10cm}|}\hline
  M\'odulo & Versi\'on & Calidad & Descripci\'on \\
  \hline\hline
- \texttt{xyz} & 5.0 & F & M\'odulo de lectura/escritura para ficheros \textbf{xyz}, soporta 3 niveles distintos para manejo.\\
+ \texttt{dlpoly} & 2.0 & S & Lectura/Escritura de ficheros \texttt{HISTORY} y \texttt{CONFIG} de dl\_poly.\\
  \hline
- \texttt{lpmd} & 5.0 & F & Formato propio de {\lpmd}, soporte lectura/escritura, 3 niveles distintos de manejo.\\
- \hline
- \texttt{zlp} & 5.0 & F & Formato propio de {\lpmd}, utiliza las zlib, y 3 niveles distintos de manejo, la utilizaci\'on es similar a zlp pero con ficheros de menor tama\~no.\\
- \hline
- \texttt{crystalfcc} & 5.0 & F & Generador de celdas FCC. \\
- \hline
- \texttt{crystalbcc} & 5.0 & F & Generador de celdas BCC. \\
- \hline
- \texttt{crystalhcp} & 5.0 & F & Generador de celdas HCP. \\
- \hline
- \texttt{crystalsc} & 5.0 & F & Generador de celdas SC. \\
- \hline
- \texttt{crystal2d} & 5.0 & F & Generador de celdas bidimensionales.\\
- \hline
- \texttt{skewstart} & 5.0 & F & Generador de celdas con m\'etodo skewstart, desarrollado por \textit{K. Refson}, para el programa de cin\'amica molecular \textbf{moldy}.\\
- \hline
- \texttt{dlpoly} & 5.0 & F & Lee Ficheros en formato de posiciones de \textbf{dlpoly}.\\
+ \texttt{lpmd} & 2.0 & S & Formato propio de {\lpmd}, soporte lectura/escritura, 3 niveles distintos y tags.\\
  \hline
  \texttt{vasp} & 5.0 & F & Lee ficheros \textbf{POSCAR} de vasp, el cu\'al posee las posiciones at\'omcias de la configuraci\'on.\\
+ \hline
+ \texttt{xyz} & 1.0 & S & Formato de ficheros \texttt{xyz}, sporta 3 niveles distintos.\\
+ \hline
+ \texttt{zlp} & 2.0 & S & Formato propio de {\lpmd}, utiliza las zlib, y 3 niveles distintos de manejo, la utilizaci\'on es similar a lpmd pero con ficheros de menor tama\~no.\\
+ \hline
+ \texttt{mol2} & 1.0 & T & Lectura/Escritura de ficheros \texttt{mol2}, soporte b\'asico.\\
+ \hline
+ \texttt{pdb} & 1.0 & T & Lectura/Escritura de ficheros \texttt{pdb}, soporte b\'asico.\\
+ \hline
+ \texttt{rawbinary} & 1.0 & S & Lectura/Escritura en modo binario. Ideal para espacio y velocidad.\\
+ \hline
+\end{tabular}
+\label{tab:modinout}
+\caption{Tabla con los m\'odulos de entrada y salida utilizados por {\lpmd} y sus utilitarios.}
+\end{table}
+
+
+\section{Generadores de Celda}
+M\'odulos de {\lpmd} que generan celdas at\'omicas de forma autom\'atica.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{crystal3d} & 1.0 & S & Generador de celdas tridimensionales.\\
+ \hline
+ \texttt{crystal2d} & 1.0 & F & Generador de celdas bidimensionales.\\
+ \hline
+\texttt{voronoi} & 1.0 & F & Generador de Nanoestructuras utilizando m\'etodo de voronoi.\\
+ \hline
+ \texttt{skewstart} & 1.0 & F & Generador de celdas con m\'etodo skewstart, desarrollado por \textit{K. Refson}, para el programa de din\'amica molecular \textbf{moldy}.\\
  \hline
  \end{tabular}
 \label{tab:modinout}
 \caption{Tabla con los m\'odulos de entrada y salida utilizados por {\lpmd} y sus utilitarios.}
 \end{table}
+
+\section{Manejadores de Celda}
+Determinan como es la forma de interactuar entre los \'atomos pertenecientes a la celda de simulaci\'on.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{linkedcell} & 2.0 & S & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo \textit{Linked Cell}.\\
+ \hline
+ \texttt{minimumimage} & 2.0 & S & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{m\'inima im\'agen}.\\
+ \hline
+ \texttt{lcbinary} & 1.0 & S & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{Linked Cell} con \'un \'atomo por celda.\\
+ \hline
+ \texttt{verletlist} & 1.0 & U & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{Verlet List}.\\
+ \hline
+ \end{tabular}
+\label{tab:modmanager}
+\caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
+\end{table}
+
+\section{Filtros}
+Act\'uan sobre la celda de simulaci\'on y son capaces de seleccionar \'atomos de la celda en distinta forma.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{box} & 1.0 & S & Selecciona \'atomos fuera o dentro de una caja de largos espec\'ificos.\\
+ \hline
+ \texttt{element} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su s\'imbolo at\'omico.\\
+ \hline
+ \texttt{index} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su \'indice.\\
+ \hline
+ \texttt{sphere} & 1.0 & S & Selecciona \'atomos fuera y dentro de una esfera.\\
+ \hline
+ \texttt{tag} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su tag.\\
+ \hline
+ \end{tabular}
+\label{tab:modmanager}
+\caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
+\end{table}
+
 
 \section{Modificadores}
 Son los m\'odulos que alteran propiedades de la celda, tales como tama\~no, forma, o bien modifican los \'atomos que se encuentran dentro de ella.
@@ -94,64 +114,103 @@ Son los m\'odulos que alteran propiedades de la celda, tales como tama\~no, form
  \begin{tabular}{|l|c|c|p{10cm}|}\hline
  M\'odulo & Versi\'on & Calidad & Descripci\'on \\
  \hline\hline
- \texttt{tempscaling} & 5.0 & F & Escalamiento de temperatura.\\
+ \texttt{berendsen} & 2.0 & S & Escalamiento de temperatura usando algoritmo de berendsen.\\
  \hline
- \texttt{berendsen} & 5.0 & F & Termostato de berendsen para escalar la temperatura del sistema.\\
+ \texttt{cellcaling} & 2.0 & S & Escalamiento din\'amico de Celda.\\
  \hline
- \texttt{cellscaling} & 5.0 & F & Escala la celda, modificando los vectores base de la muestra.\\
+ \texttt{displace} & 2.0 & S & Desplazamiento de \'atomos.\\
  \hline
- \texttt{displace} & 5.0 & F & M\'odulo que puede modificar la posici\'on de los \'atomos, desplazandolos.\\
+ \texttt{moleculecm} & 2.0 & S & .\\
  \hline
- \texttt{rotate} & 5.0 & F & M\'odulo que puede modificar la posici\'on at\'omica, rotando los atomos en torno a un origen y en un cierto \'angulo.\\
+ \texttt{propertycolor} & 1.0 & S & Colorea \'atomos seg\'un propiedad.\\
  \hline
- \texttt{quenchedmd} & 5.0 & F & M\'odulo que minimiza la muestra a temperatura cero.\\
+ \texttt{quenchedmd} & 2.0 & S & Modificaci\'on estructural usando \textit{Quenched MD}.\\
+ \hline
+ \texttt{randomatom} & 2.0 & S & Eliminaci\'on/Selecci\'on de \'atomos al azar.\\
+ \hline
+ \texttt{replicate} & 2.0 & S & Replica celda original.\\
+ \hline
+ \texttt{rotate} & 2.0 & S & Rotaci\'on de \'atomos.\\
+ \hline
+ \texttt{setcolor} & 2.0 & S & Setea color de los \'atomos.\\
+ \hline
+ \texttt{settag} & 2.0 & S & Setea tag de los \'atomos.\\
+ \hline
+ \texttt{setvelocity} & 2.0 & S & Setea velocidad de los \'atomos.\\
+ \hline
+ \texttt{shear} & 2.0 & S & Modifica la celda realizando cizalle.\\
+ \hline
+ \texttt{temperature} & 2.0 & S & Asignaci\'on de temperatura a grupos de \'atomos.\\
+ \hline
+ \texttt{tempscaling} & 2.0 & S & Escalamiento de temperatura.\\
+ \hline
+ \texttt{thermalneedle} & 2.0 & S & Aguja t\'ermica - obsoleto.\\
+ \hline
+ \texttt{undopbc} & 2.0 & S & Deshacer periodicidad en los ejes.\\
  \hline
  \end{tabular}
 \label{tab:modmodify}
 \caption{Tabla con los m\'odulos modificadores del sistema utilizado por {\lpmd}.}
 \end{table}
 
-\section{Visualizadores}
-Utilizados para obtener imagenes de la simulaci\'on.
+\section{Propiedades Instant\'aneas}
+Calculan caracteristicas propias del sistema at\'omico en estudio, son porpiedades que pueden ser calculadas en cada instante de tiempo, además de la posibilidad de ser promediadas sobre intervalos. Estas propiedades pueden ser calculadas durante la simulaci\'on o bien ser calculadas en forma independiente a posteriori.
 
 \begin{table}[h!]
  \begin{tabular}{|l|c|c|p{10cm}|}\hline
  M\'odulo & Versi\'on & Calidad & Descripci\'on \\
- \hline\hline
- \texttt{povray} & 5.0 & B & Generador de archivos \textbf{pov} para generar im\'agenes de alta resoluci\'on.\\
+ \hline
+ \texttt{angdist} & 2.0 & S & Calcula la distribuci\'on angular de la muestra.\\
+ \hline
+ \texttt{atomtrail} & 1.0 & S & .\\
+ \hline
+ \texttt{cna} & 2.0 & S & Realiza un \textit{Common Nieghbor Analysis} de la muestra.\\
+ \hline
+ \texttt{cordnumfunc} & 2.0 & S & Calcula la \textit{funci\'on n\'umero de coordinaci\'on} de la muestra.\\
+ \hline
+ \texttt{cordnum} & 2.0 & S & Calcula el n\'umero de coordinaci\'on en forma de histograma.\\
+ \hline
+ \texttt{densityprofile} & 2.0 & S & Genera un perfil de la densidad de la muestra.\\
+ \hline
+ \texttt{gdr} & 2.0 & S & Calcula la funci\'on de distribuci\'on de pares de la muestra.\\
+ \hline
+ \texttt{localpressure} & 2.0 & T & Genera un perfil de presiones locales.\\
+ \hline
+ \texttt{overlap} & 2.0 & S & .\\
+ \hline
+ \texttt{pairdistances} & 2.0 & S & Busca la distancias entre los pares de una muestra.\\
+ \hline
+ \texttt{rvcorr} & 2.0 & S & .\\
+ \hline
+ \texttt{sitecoord} & 2.0 & S & .\\
+ \hline
+ \texttt{tempprofile} & 2.0 & S & Perfil de temperaturas de la muestra.\\
+ \hline
+ \texttt{veldist} & 2.0 & S & Dsitribuci\'on de velocidades de la muestra.\\
  \hline
  \end{tabular}
-\label{tab:modgvisual}
-\caption{Tabla con los m\'odulos visualizadores de lpmd.}
+\label{tab:modproper}
+\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
 \end{table}
 
-
-\section{Potenciales}
-Son los que determinan como interactuan los \'atomos durante la simulaci\'on.
+\section{Propiedades Temporales}
+Calculan caracteristicas temporales del sistema, estas propiedades no pueden ser calculadas \textit{durante} la simulaci\'on, pero si pueden calcularse utilizando \verb|lpmd-analyzer| para los archivos de salida de las simulaciones previas.
 
 \begin{table}[h!]
  \begin{tabular}{|l|c|c|p{10cm}|}\hline
  M\'odulo & Versi\'on & Calidad & Descripci\'on \\
- \hline\hline
- \texttt{lennardjones} & 5.0 & F & Interacci\'on at\'omica con potencial de Lennard-Jones.\\
  \hline
- \texttt{fastlj} & 5.0 & F & Interacci\'on at\'omica con potencial de Lennard-Jones Tabulado.\\
+ \texttt{dispvol} & 2.0 & S & Calcula el volumen desplazado de los \'atomos.\\
  \hline
- \texttt{morse} & 5.0 & F & Interacci\'on at\'omica con potencial de Morse.\\
+ \texttt{mobility} & 2.0 & S & Calcula la mobilidad at\'omica.\\
  \hline
- \texttt{constantforce} & 5.0 & F & Interacci\'on at\'omica con potencial de fuerza constante.\\
+ \texttt{msd} & 2.0 & S & Calcula el desplazamiento cuadr\'atico medio.\\
  \hline
- \texttt{harmonic} & 5.0 & F & Interacci\'on at\'omica con potencial Arm\'onico.\\
- \hline
- \texttt{buckingham} & 5.0 & F & Interacci\'on at\'omica con potencial de Buckingham.\\
- \hline
- \texttt{suttonchen} & 5.0 & F & Interacci\'on at\'omica con potencial de Sutton y Chen.\\
- \hline
- \texttt{gupta} & 5.0 & F & Interacci\'on at\'omica con potencial de Gupta.\\
+ \texttt{vacf} & 2.0 & S & Calcula la funci\'on de autocorrelaci\'on de velocidades.\\
  \hline
  \end{tabular}
-\label{tab:modpotentials}
-\caption{Tabla con los Potenciales interat\'omicos con los que cuenta {\lpmd}.}
+\label{tab:modproper}
+\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
 \end{table}
 
 \section{Integradores}
@@ -161,26 +220,93 @@ Resuelven las ecuaciones de movimiento del sistema.
  \begin{tabular}{|l|c|c|p{10cm}|}\hline
  M\'odulo & Versi\'on & Calidad & Descripci\'on \\
  \hline\hline
- \texttt{beeman} & 5.0 & F & Integrador de Beeman.\\
+ \texttt{beeman} & 2.0 & S & Integrador de Beeman.\\
+ \hline
+ \texttt{euler} & 2.0 & S & Integrador de euler.\\
+ \hline
+ \texttt{hardspheres} & 1.0 & T & M\'etodo de esferas duras para \textit{mover} los \'atomos.\\
+ \hline
+ \texttt{leapfrog} & 2.0 & S & Integrador de leapfrog.\\
+ \hline
+ \texttt{metropolis} & 2.0 & T & M\'etodo de metropolis, usado en minimizaci\'on de estructuras.\\
+ \hline
+ \texttt{nosehoover} & 2.0 & T & Integrador de nosehoover para ensambles NPT.\\
+ \hline
+ \texttt{nullintegrator} & 2.0 & S & No mueve los \'atomos.\\
+ \hline
+ \texttt{velocityverlet} & 2.0 & S & Integrador de VelocityVerlet.\\
+ \hline
+ \texttt{verlet} & 2.0 & S & Integrador de Verlet.\\
  \hline
  \end{tabular}
 \label{tab:modginteg}
 \caption{Tabla con los m\'odulos generales utilizados por lpmd.}
 \end{table}
 
-\section{Propiedades}
-Calculan caracteristicas propias del sistema, tanto como propiedades temporales as\'i como instantaneas.
+\section{Potenciales de Pares}
+Plugins especializados en la interacci\'on de pares que llevan a cabo los \'atomos involucrados.
 
 \begin{table}[h!]
  \begin{tabular}{|l|c|c|p{10cm}|}\hline
  M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{buckingham} & 2.0 & S & Interacci\'on at\'omica con potencial de Buckingham.\\
  \hline
- \texttt{angdist} & 5.0 & F & Calcula la distribuci\'on angular de la muestra.\\
+ \texttt{harmonic} & 2.0 & S & Interacci\'on at\'omica con potencial Arm\'onico.\\
+ \hline
+ \texttt{lennardjones} & 2.0 & S & Interacci\'on at\'omica con potencial de Lennard-Jones.\\
+ \hline
+ \texttt{morse} & 2.0 & S & Interacci\'on at\'omica con potencial de Morse.\\
+ \hline
+ \texttt{nullpairpotential} & 2.0 & F & Interacci\'on at\'omica nula.\\
  \hline
  \end{tabular}
-\label{tab:modproper}
-\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\label{tab:modpotentials}
+\caption{Tabla con los Potenciales interat\'omicos con los que cuenta {\lpmd}.}
 \end{table}
+
+\section{Potenciales Metalicos}
+Son los que determinan como interactuan los \'atomos durante la simulaci\'on.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{finnissinclair} & 2.0 & T & Interacci\'on at\'omica con potencial de Finnis-Sinclair.\\
+ \hline
+ \texttt{gupta} & 2.0 & T & Interacci\'on at\'omica con potencial de Gupta.\\
+ \hline
+ \texttt{nullmetalpotential} & 2.0 & S & Interacci\'on at\'omica nula.\\
+ \hline
+ \texttt{suttonchen} & 2.0 & S & Interacci\'on at\'omica con potencial de Sutton-Chen.\\
+ \hline
+ \end{tabular}
+\label{tab:modpotentials}
+\caption{Tabla con los Potenciales interat\'omicos con los que cuenta {\lpmd}.}
+\end{table}
+
+
+\section{Visualizadores}
+Utilizados para obtener imagenes de la simulaci\'on.
+
+\begin{table}[h!]
+ \begin{tabular}{|l|c|c|p{10cm}|}\hline
+ M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \hline\hline
+ \texttt{average} & 2.0 & S & Visualizador de promedios de datos de simulaci\'on.\\
+ \hline
+ \texttt{lpvisual} & 2.0 & S & Visualizador de archivos de din\'amica molecular basado en openGL.\\
+ \hline
+ \texttt{monitor} & 2.0 & S & Visualizador de datos instant\'aneos de la simulaci\'on.\\
+ \hline
+ \texttt{printatoms} & 2.0 & S & .\\
+ \hline
+ \end{tabular}
+\label{tab:modgvisual}
+\caption{Tabla con los m\'odulos visualizadores de lpmd.}
+\end{table}
+
+
 
 \chapter{API - liblpmd}
 \label{ap:API}
