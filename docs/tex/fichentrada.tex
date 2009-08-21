@@ -47,7 +47,7 @@ A partir de {\lpmd} 0.6.0, existe un nuevo formato 2.0 para los ficheros \verb|.
 \end{tabular}
 \end{center}
 
-Al igual que el \verb|xyz|, los ficheros de tipos \verb|lpmd| cuentan con niveles (0,1 y 2) junto con flags extras tales como color del \'atomo o alguna propiedad que se puede o no guardar, seg\'un los requerimientos del mismo usuario.
+Al igual que el \verb|xyz|, los ficheros de tipos \verb|lpmd| cuentan con niveles (0,1 y 2) junto con flags extras tales como color del \'atomo o alguna propiedad que se puede o no guardar, seg\'un los requerimientos del mismo usuario. Adem\'as a partir de la version 0.6.1 de {\lpmd} el plugin \verb|lpmd| cuenta con soporte de compresi\'on para leer y escribir archivos comprimidos, lo que son el antiguo formato \verb|zlp|.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -218,9 +218,9 @@ La lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de con
 
 \subsubsection{output}
 
-Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo a partir de la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, pese a esto es \textit{importante} notar que \textbf{cada m\'odulo posee configuraciones independientes}, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz} o \textbf{zlp}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos generales principales del par\'ametro \verb|output| son:
+Con el par\'ametro \verb|output| se especifican las opciones de salida de las configuraciones at\'omicas de nuestra simulaci\'on, los formatos de salidas son complementamente modulares y pueden ser implementados por los usuarios, sin embargo a partir de la version 0.5.2 del set de plugins \verb|lpmd-plugins| ya se encuentran disponibles muchos m\'odulos, pese a esto es \textit{importante} notar que \textbf{cada m\'odulo posee configuraciones independientes}, por ejemplo \verb|level| es utilizado por m\'odulos como \textbf{xyz}, \textbf{dlpoly} o \textbf{lpmd}, sin embargo no es requerido para \textbf{mol2}, para m\'as informaci\'on refierase a la secci\'on ~\ref{chap:modulos:entradasalida}. Los argumentos generales principales del par\'ametro \verb|output| son:
 
-\fb{ 
+\fb{
 \begin{tabular}{lcl}
  module & = & indica el m\'odulo (formato) de \\
 &&salida de la simulaci\'on.\\
@@ -289,8 +289,20 @@ Forma de uso
 
 \begin{itemize}
  \item Seteando las cargas de los atomos de O y Ge.
-\control{charge O=XX \\ charge Ge=XX}
+\control{charge O XX \\ charge Ge XX}
 \end{itemize}
+
+\subsubsection{mass}
+Seting de la masa en \verb|a.u.| para las especies at\'omicas. Estos valores, son seteados principalmente para utilizaci\'on de potenciales interat\'omicos en los cuales se desea modificar la masa de los \'atomos involucrados.
+
+
+Forma de uso
+
+\begin{itemize}
+ \item Seteando las cargas de los atomos de O y Ge.
+\control{mass O XX \\ mass Ge XX}
+\end{itemize}
+
 
 \subsubsection{periodic}
 Indica la periodicidad de la celda, en cada eje. Al bloquear la periodicidad en un eje, este se ve ``modificado'' en ambos lados de la celda, revise con cuidado estas opciones.
@@ -333,7 +345,7 @@ Entre las opciones de monitor, cuentan :
 Si queremos ir chequeando, los valores de la energ\'ia durante la simulaci\'on, cada 10 pasos, utilizamos la l\'inea, (note que \verb|\\| indica que la l\'inea contin\'ua)
 
 \begin{verbatim}
-monitor start=0 end=1000 each=10 properties=step,kinetik-energy,/
+monitor start=0 end=1000 each=10 properties=step,kinetik-energy,\\
         potential-energy,total-energy output=salida.out
 \end{verbatim}
 
@@ -373,7 +385,7 @@ Aparecen en versiones posteriores a 0.6.0, son m\'odulos cuya caracter\'istica p
 index &:& Filtrado de atomos seg\'un sus \'indices.\\
 box &:& Filtrado de \'atomos pernetecientes a paralelep\'ipedo.\\
 sphere &:& Filtrado de \'atomos seg\'un esfera.\\  
-symbol &:& Filtrado de \'atomos seg\'un simbolo at\'omico.\\
+element &:& Filtrado de \'atomos seg\'un simbolo at\'omico.\\
 \end{tabular}
 \end{center}
 \vspace{1cm}
@@ -392,6 +404,7 @@ Los m\'odulos son de distintos tipos en general, y los de un tipo en com\'un com
  Generadores de celda & : & Tales como \verb|xyz|, \verb|pdb|, \verb|crystalfcc|, etc. \\
  Manejadores de celda & : &\verb|minimumimage|, \verb|linkedcell|, etc. \\
  Modificadores de celda & : &\verb|cellscale|, \verb|tempscalling|, etc.\\
+ Filtros & : &\verb|sphere|, \verb|box|, etc.\\
  Calculadores de Propiedades & : & \verb|gdr|, \verb|angdist|, \verb|msd|, etc. \\
  Integradores & : & \verb|verlet|, \verb|euler|, etc. \\
  Potenciales & : & \verb|LennardJones|, \verb|SuttonChen|, \verb|Morse|, etc. \\
@@ -402,7 +415,7 @@ En general, siempre a un m\'odulo se le puede asignar un \textbf{alias} para su 
 
 \control{use MODULO as ALIAS \\ ... \\enduse}
 
-De esta forma el m\'odulo \texttt{MODULO} puede ser llamado en forma posterior con el nombre \texttt{ALIAS}, lo que da una ventaja para reutilizar, combinar y simplificar la utilizaci\'on de m\'odulos.
+De esta forma el m\'odulo \texttt{MODULO} puede ser llamado en forma posterior con el nombre \texttt{ALIAS}, lo que da una ventaja para reutilizar, combinar y simplificar la utilizaci\'on de un m\'odulo en m\'as ocaciones.
 
 Entonces dentro de un archivo de \textbf{control}, debemos cargar los m\'odulos necesarios para un posterior llamado.
 
@@ -462,6 +475,7 @@ el fichero \verb|salida.out| tiene toda la informaci\'on que deb\'ia salir a pan
  \item Informacion de \verb|startinfo|
  \item Informaci\'on de m\'odulos utilizados y variables de cada uno de ellos.
  \item Energ\'ias, Temperatura, Presi\'on y Vol\'umen, seg\'un \verb|monitor|. En caso de que monitor no utilize un valor propio para el valor de la variable \verb|output|.
+ \item \textit{Debugger Information} : Informaci\'on sobre aplicaciones y otras cosas que se realizan durante la simulaci\'on usualmente dirigida a \verb|std::cer|.
 \end{itemize}
 
 
@@ -472,10 +486,10 @@ Este fichero se gener\'o con el nombre entregado en el fichero de control a la l
 
 Todas las propiedades instantaneas pueden calcularse \textit{\textbf{durante la simulaci\'on misma}}, sin embargo {\lpmd} tambi\'en cuenta con herramientas propias de an\'alisis como se puede ver en la secci\'on~\ref{chap:utilidades}.
 
-Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores. Por ejemplo si se adquiere un archivo \verb|xyz| con \verb|level=0| no es el ideal para calcular por ejemplo la \textit{Velocity autocorrelation Function} (\verb|vacf|) ya que en caso de que el nivel sea menor a uno algunos plugins determinar\'an la velocidad utilizando configuraciones at\'omicas sucesivas de forma autom\'atica.
+Es importante definir un buen formato de salida ya que es la clave para simplificar o dificultar los an\'alisis posteriores. Por ejemplo si se adquiere un archivo \verb|xyz| con \verb|level=0| no es el ideal para calcular por ejemplo la \textit{Velocity autocorrelation Function} (\verb|vacf|) ya que en caso de que el nivel sea menor a uno algunos plugins determinar\'an la velocidad utilizando configuraciones at\'omicas sucesivas de forma autom\'atica lo que reducira un poco el tiempo de an\'alisis, que pudo aver sido aprovechado durante la simulaci\'on grabando con \verb|level=1|.
 
 \subsubsection{Ficheros generados por m\'odulos}
-Muchos m\'odulos de lpmd que realizan an\'alisis generan ficheros de informaci\'on de manera independiente, además los plugins en general manejan dos \textit{est\'andares} de salidas asignados con el flag \verb|average|. Por ejemplo si deseamos calcular la \textit{Funci\'on de distribuci\'on de pares} sobre nuestras configuraciones, podemos calcular \'esta sobre cada una de las muestras e imprimirlas o bien generar un promedio de cada una.
+Muchos m\'odulos de lpmd que realizan an\'alisis generan ficheros de informaci\'on de manera independiente, además los plugins en general manejan dos \textit{est\'andares} de salidas asignados con el flag \verb|average|. Por ejemplo si deseamos calcular la \textit{Funci\'on de distribuci\'on de pares} sobre nuestras configuraciones, podemos calcular \'esta sobre cada una de las muestras e imprimirlas o bien generar un promedio sobre todas las configuraciones.
 
 \begin{itemize}
 \item \verb|average true|
