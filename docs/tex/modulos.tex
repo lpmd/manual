@@ -1,59 +1,9 @@
 \chapter{M\'odulos}
 \label{chap:modulos}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Propiedades del sistema}
-Estos m\'odulos corresponden principalmente a \textbf{informaci\'on} del set de part\'iculas con el cu\'al se esta trabajando, as\'i como tambi\'en a aquellos m\'odulos que tienen la capacidad de \textbf{modificar} y \textbf{manejar} este set, o alguna propiedad de ellas.
-\subsection{cell}
-Devuelve informaci\'on del sistema, se utiliza principalmente en \verb|monitor| para entregar esta informaci\'on. \textbf{NO} es necesario cargar este m\'odulo ya que se carga por \textit{default} al correr {\lpmd}.
+En \'este cap\'itulo se dar\'a una descripci\'on general de los m\'odulos con los que cuenta lpmd, as\'i como tambi\'en propiedades de los mismos, no todos tendr\'an ejemplos, m\'as bien se pretende dar una descripci\'on de lo que es capaz de realizar cada m\'odulo, sin embargo puede encontrar muchos ejemplos en el cap\'itulo~\ref{chap:exa}.
 
-\fb{
-\begin{tabular}{lcl}
- volume & = & Retorna el volumen de la celda.\\
- density & = & Retorna la densidad de la celda.\\
- cell-n & = & n=a,b,c Retorna el largo de cada eje.\\
- particledensity & = & Retorna la densidad por particula. \\
- volumeperatom & = & Retorna el volumen por \'atomo. \\
-\end{tabular}
-}
-
-\subsection{energy}
-Entrega informaci\'on sobre la energ\'ia en el sistema, al igual que \verb|cell|, \textbf{no} es necesario cargar el m\'odulo \verb|energy| ya que es cargo autom\'aticamente al correr {\lpmd}. La informaci\'on que entrega el m\'odulo a trav\'es de \verb|monitor| es:
-
-\fb{
-\begin{tabular}{lcl}
- kinetic-energy & = &Retorna el valor de la Energ\'ia \\
-                   &&cin\'etica [eV].\\
- potential-energy & = &Retorna la energ\'ia potencial[eV].\\
- total-energy & = &Retorna la energ\'ia total [eV].\\
- momentum & = &Retorna el momentum [uma*A/fs]. \\
- p-n & = &n=x,y,z Retorna el momentum\\
-                   && para cada eje. \\
- temperature & = &Retorna el valor de la \\
-                 &&temperatura [K].\\
-\end{tabular}
-}
-
-\subsection{pressure}
-
-Entrega informaci\'on sobre la presi\'on en el sistema y el stress. Este m\'odulo \textbf{SI} es necesario cargarlo antes de llamar a la informaci\'on requerida. Basta llamarlo con,
-
-\control{use pressure \\enduse}
-
-para luego utilizar en \verb|monitor| los llamados posibles de pressure. Es recomendable que primero ``cargue'' el m\'odulo \verb|pressure| y luego especif\'ique el monitor que har\'a menci\'on a alguna de sus propiedades.
-
-\fb{
-\begin{tabular}{lcl}
- pressure & = & Retorna el valor de la Presi\'on [MPa].\\
- virial-pressure & = & Retorna la contribuci\'on \\
-                     &&virial a la presi\'on [MPa].\\
- kinetic-pressure & = & Retorna la contribuci\'on \\
-                     &&cin\'etica a la presi\'on [MPa].\\
- sij & = & i,j=x,y,z Retorna los valores del tensor \\
-                     &&de stress[MPa]. \\
-\end{tabular}
-}
+A continuaci\'on veremos los m\'odulos y sus detalles dependiendo de su tipo, en cada una de las secciones siguientes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,9 +11,10 @@ para luego utilizar en \verb|monitor| los llamados posibles de pressure. Es reco
 \label{chap:modulos:entradasalida}
 Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que los argumentos necesitan ser entregados en esta misma linea. Es decir la instrucci\'on ser\'a siempre de la forma:
 
-\control{input module=nombre opc1=.. opc2=.. ...  opcN=...}
+\control{input module=mod file=.. opc1=.. ...  opcN=...}
+\control{output module=mod file=.. opc1=.. ... opcN=...}
 
-en donde \verb|opcX| son las opciones de cada m\'odulo en paticular. Y de igual forma para \verb|output|.
+en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo \verb|file| una opci\'on com\'un a la mayot\'ia de los m\'opdulos de entrada/salida.
 
 \subsection{xyz}
 \'Este es el m\'odulo que se utiliza para cargar/escribir archivos de configuraci\'on en formato \verb|xyz|, las opciones actuales de este m\'odulo son :
@@ -96,13 +47,19 @@ No todas las opciones son necesarias, muchas de ellas ya tienen valores por defe
 
 \subsection{lpmd}
 
-Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios.
+Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comrpimidos con zlib. Entre las opciones principales destacan
 
 \fb{
 \begin{tabular}{lcl}
  file & = & archivo de entrada/salida.\\
  level & = & indica el nivel del fichero, estos pueden ser \\
            &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
+ extra & = & Informaci\'on extra en el fichero sobre los \'atomos \\
+           &&rgb, type, etc.\\
+ type & = & Especif\'ica el tipo de fichero, \texttt{lpmd}(default) o \\
+           &&\texttt{zlp}.\\
+ blocksize & = & tamaño del \textit{block} de compresi\'on cuando es \\
+           &&del tipo \texttt{zlp}.\\ 
 \end{tabular}
 }
 
@@ -115,31 +72,89 @@ La forma com\'un de uso en lpmd es,
        \control{output module=lpmd file=salida.lpmd level=1}
 \end{itemize}
 
-\subsection{zlp}
+\subsection{dlpoly}
+Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de entrada que el usuario ya posee en \verb|dlpoly| y que el trabajo de migrar estos archivos a otras configuraciones podria implicar una inversion de tiempo.
 
-Es un formato similar a \verb|lpmd| sin embargo, este formato utiliza las librerias \textbf{zlib} (para su compilaci\'on), por lo que es un formato binario que utiliza, a diferencia de lpmd, una cantidad de espacio muy reducida en comparaci\'on a los archivos de entrada de tipo \verb|ASCII|.
-
-Las opciones y el uso es similar al formato \verb|lpmd|, salvo algunas opciones de compresi\'on, 
+Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
 
 \fb{
 \begin{tabular}{lcl}
- file & = & archivo de entrada/salida.\\
- level & = & indica el nivel del fichero, estos pueden ser \\
-           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
- blocksize & = & Tamano del buffer interno de compresi\'on\\
- level & = & Nivel de compresion, 1..6. \\
+ file & = & Archivo que contiene la configuraci\'on \\
+ &&de \textbf{dlpoly}\\
+ level & = & Nivel del archivo (0,1,2).\\
+ preiodicity & = & Especifica \textit{key} de periodicidad del \\
+ &&fichero CONFIG.\\
+ ftype & = & Especif\'ica el typo de archivo, \texttt{HISTORY} o\\
+ &&\texttt{CONFIG}, a ser le\'ido.\\
 \end{tabular}
 }
 
-La forma de uso, es similar a \verb|lpmd|.
+\subsection{vasp}
+El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero de configuracion inicial, o bien para otro prop\'osito, entre las opciones del m\'odulo, estan:
 
-\subsection{crystalfcc}
-Genera una celda cristalina del tipo fcc. Este m\'odulo se utiliza en lugar de un fichero de entrada, para entregar las posiciones at\'omicas de la red cristalina, 
+\fb{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
+ species & = & lista de las especies (en orden) del fichero \\
+ &&POSCAR.\\
+ level & = & Especif\'ica el nivel del archivo.\\
+ type & = & Tipo de posiciones, direct/cartesian.\\
+\end{tabular}
+}
+
+\subsection{rawbinary}
+Utilizado para lectura/escritura de archivos de tipo binario, son eficientes para grandes set de configuraciones, es similar al antiguo formato \verb|lpmd 1.0| pero escrito de forma binaria, lo que agiliza cualquier an\'alisis que se desee llevar a cabo.
+
+Entre las opciones t\'ipicas de \verb|rawbinary| est\'an :
+
+\fb{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion at\'omica\\
+ level & = & Especif\'ica el nivel del archivo.\\
+\end{tabular}
+}
+
+Generalmente este archivo es utilizado para analisis sobre configuraciones muy grandes, para reducir el tiempo de an\'alisis.
+
+\subsection{pdb}
+Utilizado para lectura/escritura de archivos de tipo \verb|pdb|, el soporte actual de este tipos de ficheros es b\'asico, sin embargo puede ser \'util para convertir ficheros para la visualizaci\'on con otros programas.
+
+Entre las opciones t\'ipicas de \verb|pdb| est\'an :
+
+\fb{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion at\'omica\\
+\end{tabular}
+}
+
+\subsection{mol2}
+Utilizado para lectura/escritura de fichefros de tipo \verb|mol2|, el soporte, al igual que el formato \verb|pdb| es b\'asico sin embargo es \'util para convertir nuestras configuraciones.
+
+entre las opciones t\'ipicas de \verb|mol2| encontramos :
+
+\fb{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion at\'omica\\
+\end{tabular}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{M\'odulos Generadores de Celda}
+\label{chap:modulos:generadores}
+Estos m\'odulos pueden ser cargados por \verb|input|, por lo que los argumentos necesitan ser entregados en esta misma linea. Es decir la instrucci\'on ser\'a siempre de la forma:
+
+\control{input module=mod opc1=.. ...  opcN=...}
+
+en donde \verb|opcX| son las opciones de cada m\'odulo en paticular. Estos m\'odulos s\'olo \textit{generan} celdas de simulaci\'on, su intenci\'on es hacer celdas de distintos tipos de manera f\'acil y amigable para el usuario. A continuaci\'on listamos los principales generadores de celda.
+
+\subsection{crystal3d}
+Genera una celda cristalina tridimiensional. Este m\'odulo se utiliza en lugar de un fichero de entrada, para entregar las posiciones at\'omicas de la red cristalina, 
 
 \fb{
 \begin{tabular}{lcl}
  symbol & = & S\'imbolo at\'omico de la especie.\\
- n$\alpha$ & = & $\alpha=x,y,z$ El inverso sobre el largo del cristal.\\
+ n$\alpha$ & = & $\alpha=x,y,z$ El n\'umero de replicas de la celda base.\\
+ type & = & Tipo de celda, fcc, bcc, hcp, etc.\\
 \end{tabular}
 }
 
@@ -149,18 +164,10 @@ Consideremos por ejemplo una celda c\'ubica de \textbf{Fe} con un tama\~no de 10
  \item \textbf{Especificamos el detalle del cristal}
        \control{cell crystall a=10 b=10 c=10 alpha=90 beta=90 gamma=90}
  \item \textbf{Generamos una celda  fcc dentro del cristal}
-       \control{input module=crystalfcc symbol=Fe nx=2 ny=2 nz=2}
+       \control{input module=crystal3d type=fcc symbol=Fe nx=3 ny=3 nz=3}
 \end{itemize}
 
-Esto generar\'a entonces una celda cristalina \verb|fcc| para comenzar la simulaci\'on.
-
-\subsection{Otros tipos de crystal}
-Al igual que el caso de \textbf{crystalfcc}, existen otros crystales que pueden generarse al comenzar la simulaci\'on, o bien para cualquier otro uso, estos son:
-\begin{itemize}
- \item crystalbcc : Generador de redes \verb|bcc|.
- \item crystalsc : Generador de redes \verb|sc|.
- \item crystalhcp : Generador de redes \verb|hcp|.
-\end{itemize}
+Esto generar\'a entonces una celda cristalina \verb|fcc| con par\'ametro de red $10/3 = 3.33$, para comenzar la simulaci\'on.
 
 \subsection{crystal2d}
 A diferencia de los generadores de cristalprevios, este m\'odulo genera cristales simples bidimensionales, los argumentos requeridos para generar son:
@@ -184,6 +191,40 @@ Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano 
        \control{input module=crystal2d a=2 b=2 symbol=Fe gamma=60 nx=2 ny=2}
 \end{itemize}
 
+\subsection{voronoi}
+Utiliza la construcci\'on de \textbf{voronoi} para generar nanoestructuras de materiales, entre sus principales caracter\'isticas para la generaci\'on de estas nanoestructuras, est\'an :
+
+\fb{
+\begin{tabular}{lcl}
+ symbol & = & S\'imbolo at\'omico de la especie.\\
+ type & = & Especif\'ica el tipo de grano cristalino, fcc, bcc, etc.\\
+ a & = & Constante de red del cristal.\\
+ grains & = & Cantidad de granos generados dentro de la celda.\\
+\end{tabular}
+}
+
+Al igual que los m\'etodos generadores de celda previos, el detalle general del cristal es entregado con la orden \verb|cell|, y el resto es especificado por el m\'odulo, consideremos un ejemplo que para hacerlo m\'as vistoso utilizar\'a el plugin lpvisual y el \textit{quick-mode}
+
+\begin{verbatim}
+ lpmd-visualizer -i voronoi:symbol=Fe,type=fcc,a=3.62,grains=6 -u lpvisual -L 50,50,50
+\end{verbatim}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[scale=.35]{voronoi-1.png}
+ \label{fig:voronoi-1}
+ \caption{Screenshoot de \texttt{lpmd-visusalizer} mostrando una celda generada con voronoi.}
+\end{figure}
+
+Podemos ver el resultado de la figura~\ref{fig:voronoi-1}, si esta celda quisieramos guardarla en un formato \verb|lpmd| incluyendo los colores bastar\'ia ejecutarlo con :
+
+ \begin{verbatim}
+ lpmd-visualizer -i voronoi:symbol=Fe,type=fcc,a=3.62,grains=6 \
+ -u lpvisual -L 50,50,50 -o lpmd:file=new.lpmd,extra=rgb
+\end{verbatim}
+
+
+
 \subsection{skewstart}
 M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regulr para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
 
@@ -204,32 +245,6 @@ Al igual que los m\'etodos generadores de celda previos, el detalle general del 
        \control{input module=skewstart symbol=Ar}
 \end{itemize}
 
-\subsection{dlpoly}
-Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de entrada que el usuario ya posee en \verb|dlpoly| y que el trabajo de migrar estos archivos a otras configuraciones podria implicar una inversion de tiempo.
-
-Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
-
-\fb{
-\begin{tabular}{lcl}
- file & = & Archivo que contiene la configuraci\'on \\
- &&de \textbf{dlpoly}\\
- level & = & Nivel del archivo (0,1,2).\\
- preiodicity & = & Especifica \textit{key} de periodicidad del \\
- &&fichero CONFIG.\\
-\end{tabular}
-}
-
-\subsection{vasp}
-El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero de configuracion inicial, o bien para otro prop\'osito, entre las opciones del m\'odulo, estan:
-
-\fb{
-\begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
- species & = & lista de las especies (en orden) del fichero \\
- &&POSCAR.\\
- type & = & Tipo de posiciones, direct/cartesian.\\
-\end{tabular}
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modificadores}
