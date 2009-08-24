@@ -47,7 +47,7 @@ A partir de {\lpmd} 0.6.0, existe un nuevo formato 2.0 para los ficheros \verb|.
 \end{tabular}
 \end{center}
 
-Al igual que el \verb|xyz|, los ficheros de tipos \verb|lpmd| cuentan con niveles (0,1 y 2) junto con flags extras tales como color del \'atomo o alguna propiedad que se puede o no guardar, seg\'un los requerimientos del mismo usuario. Adem\'as a partir de la version 0.6.1 de {\lpmd} el plugin \verb|lpmd| cuenta con soporte de compresi\'on para leer y escribir archivos comprimidos, lo que son el antiguo formato \verb|zlp|.
+Al igual que el \verb|xyz|, los ficheros de tipos \verb|lpmd| cuentan con niveles (0,1 y 2) junto con flags extras tales como color del \'atomo o alguna propiedad que se puede o no guardar, seg\'un los requerimientos del mismo usuario. Adem\'as a partir de la version 0.6.1 de {\lpmd} el plugin \verb|lpmd| cuenta con soporte de compresi\'on para leer y escribir archivos comprimidos, es decir el antiguo plugin \verb|zlp| ahora est\'a dentro del plugin lpmd.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,7 +58,6 @@ Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \
 \section{El Fichero de configuraci\'on .control}
 
 Es el fichero principal para realizar la simulaci\'on computacional. Es por eso que en primer lugar se har\'a una descripci\'on general de cada una de sus partes principales y luego veremos \'estas de forma mucho m\'as detallada.
-
 
 Entre los puntos generales a considerar en un fichero de control, est\'an:
 
@@ -433,8 +432,9 @@ Los m\'odulos son llamados en la parte final de nuestro fichero de \textbf{contr
   \control{apply <apply-options> over <filter-options>}
   \control{filter module-alias <options>}
  \item \textbf{Calculadores de Propiedades}
-  Estos siempre son llamados a ser evaluados cada cierto tiempo entre un rango de intervalos. Aplicados con:
+  Estos siempre son llamados a ser evaluados cada cierto tiempo entre un rango de intervalos. A partir de la versi\'on 0.6.0 de {\lpmd} se pueden adem\'as calcular propiedades sobre un \textit{set} de \'atomos filtrados con \verb|over|.
   \control{property module-alias start=0 end=1000 each=10}
+  \control{property gdr start=0 end=-1 each=5 over <filter-options>}
  \item \textbf{Integradores}
   Estos son llamados facilmente con:
   \control{integrator module-alias}
