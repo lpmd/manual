@@ -244,10 +244,161 @@ Al igual que los m\'etodos generadores de celda previos, el detalle general del 
  \item \textbf{Generamos una celda  fcc dentro del cristal}
        \control{input module=skewstart symbol=Ar}
 \end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Manejadores de Celda}
+Estos m\'odulos son los encargados de generar las \textbf{lista inteligentes} para poder realizar simulaciones o c\'alculos de Din\'amica Molecular, \'estas listas ayudan a reducir el tiempo de c\'alculo utilizado por las simulaciones.
+
+\subsection{minimumimage}
+Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que otros m\'etodos, pero en el s\'olo se necesita ingresar el radio de corte del sistema. Este m\'etodo no es bueno cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
+
+\begin{itemize}
+ \item \textbf{Cargando el M\'odulo}
+       \control{use minimumimage \\ cutoff 2.0 \\enduse}
+ \item \textbf{Aplicando el M\'odulo}
+       \control{cellmanager minimumimage}
+\end{itemize}
+
+Con \'esto nuestra simulaci\'on utilizar\'a el m\'etodo de m\'inima imagen para un \verb|cutoff| de 2.0 \AA.
+
+\subsection{linkedcell}
+Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido que el m\'etodo de m\'inima imagen, y de por s\'i es el m\'as utilizado en la mayor\'ia de los c\'odigos de \textbf{DM}, se puede subdividir la celda a voluntad, sin embargo es recomendable que el tama\~no de subdivisi\'on de la celda no sea menor que la distancia m\'inima de interacci\'on entre las part\'iculas, con algun potencial. Tambi\'en posee el modo \verb|auto| para simplificar la subdivision de la celda.
+
+\begin{itemize}
+ \item \textbf{Cargando el M\'odulo}
+       \control{use linkedcell \\ cutoff 2.0 \\ nx 10\\ ny 10\\ nz 10\\enduse}
+ \item \textbf{Cargando en modo} \texttt{auto}.
+       \control{use linkedcell \\ cutoff 2.0 \\ mode auto\\enduse}
+ \item \textbf{Aplicando el M\'odulo}
+       \control{cellmanager linkedcell}
+\end{itemize}
+
+\subsection{lcbinary}
+Utiliza el m\'etodo de listas linkeadas, pero a diferencia del anterior, este adapta la subdivisi\'on asignada de manera autom\'atica haciendo que no permanezcan m\'as de un \'atomo por celda, pese a ser un metodo simple y \textit{utilizable}, es recomendable que considere el excesivo consumo de \verb|RAM| que \'este acarrea.
+
+\begin{itemize}
+ \item \textbf{Cargando el M\'odulo}
+       \control{use lcbinary \\ cutoff 2.0 \\ mode auto\\enduse}
+ \item \textbf{Aplicando el M\'odulo}
+       \control{cellmanager linkedcell}
+\end{itemize}
+
+Si usted no tiene claro que tipo de subdivision debe usar recomenadmos encarecidamente que utilize \verb|linkedcell| en modo \verb|auto|.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Filtros}
+Estos m\'odulos son los encargados de modificar de cierta forma la celda de simulaci\'on original, pueden ser utilizados para la generaci\'on de celdas complejas. Su intenci\'on es seleccionar \'atomos bajo cierta caracter\'istica.
+
+Es importante destacar que todos los filtros pueden seleccionar adm\'as de forma inversa, por ejemplo en vez de seleecionar los \'atomos que se encuentran dentro de una regi\'on podemos, utilizando la misma regi\'on, seleccionar los \'atomos que no pertenecen a la regi\'on con el flag :
+
+\control{inverse=true}
+
+dentro de las opciones del filtro. Adem\'as estos filtros pueden ser aplicados con excepciones (\verb|except|) lo que les da una flexibilidad a\'un mayor, ejemplos sobre filtros pueden contrarse en el cap\'itulo~\ref{chap:exa}.
+
+\subsection{box}
+Selecciona los \'atomos que se encuentran dentro de una regi\'on rectangular definida por el plugin. Las opciones del plugin son
+
+\fb{
+\begin{tabular}{lcl}
+ x & = & Rango en la direcci\'on \texttt{x}.\\
+ y & = & Rango en la direcci\'on \texttt{y}.\\
+ x & = & Rango en la direcci\'on \texttt{z}.\\
+\end{tabular}
+}
+
+Veamos un filtrado t\'ipico utilizando \verb|box|.
+
+\begin{itemize}
+ \item \textbf{Eliminando todo excepto los \'atomos pretenecientes a una regi\'on.}
+       \control{filter box x=0-5 y=0-6 z=10-15}
+\end{itemize}
+
+Con \'esto podemos seleccionar los \'atomos que se encuentran dentro de la regi\'on del espacio definida para cada uno de los ejes de nuestros vectores base.
+
+\subsection{element}
+Selecciona a los \'atomos segun el elemento al que pertenecen. Las opciones del plugin \verb|element| est\'an dadas por,
+
+\fb{
+\begin{tabular}{lcl}
+ symbol & = & S\'imbolo \'atomico de los \'atomos a eliminar.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo eliminar los \'atomos de \verb|H| de una muestra original, para ello :
+
+\begin{itemize}
+ \item \textbf{Eliminando \'atomos de} \texttt{H}.
+       \control{filter species symbol=H}
+\end{itemize}
+
+As\'i subdividimos la celda en una grilla de 10x10x10. Para generar las listas de vecinos de cada \'atomo.
+
+\subsection{index}
+Selecciona a los \'atomos seg\'un su indice, muy utilizado para igualar configuraciones antiguas en donde el orden de los \'atomos señalaba alguna caracter\'istica. Las opciones del plugin \verb|element| est\'an dadas por,
+
+\fb{
+\begin{tabular}{lcl}
+ index & = & Lista de \'indices at\'omicos.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo eliminar los atomos del 1 al 3 o bien del 1 al 50:
+
+\begin{itemize}
+ \item \textbf{Eliminando \'atomos del 1 al 3}.
+       \control{filter index index=1,2,3}
+ \item \textbf{Eliminando \'atomos del 1 al 50}.
+       \control{filter index index=1-50}
+\end{itemize}
+
+\subsection{sphere}
+Selecciona a los \'atomos ubicados dentro de una regi''on esf\'erica, las opciones del plugin son :
+
+\fb{
+\begin{tabular}{lcl}
+ radius & = & Radio de la esfera en \AA.\\
+ center & = & Centro de la esfera, anotado como vector <a,b,c>.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo seleccionar s\'olo los \'atomos pertenecientes a una regi\'on esf\'erica.
+
+\begin{itemize}
+ \item \textbf{Selecci\'on esf\'erica} \texttt{H}.
+       \control{filter sphere radius=10 center=<50,50,50>}
+\end{itemize}
+
+\subsection{tag}
+Selecciona a los \'atomos segun alg\'un \verb|tag| que los caracterize, es decir alguna etiqueta propia de los \'atomos, uno puede aplicarle tag a los \'atomos seg\'un nuestras propias necesidades, sin embargo tambi''en existen \verb|tag| propios de {\lpmd}, tales como \verb|fixedpos|, \verb|fixedvel|, etc. Las opciones del plugin son :
+
+\fb{
+\begin{tabular}{lcl}
+ name & = & Nombre del tag.\\
+ value & = & Booleano true o flase, sobre estado del tag.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo seleccionar los \'atomos que tienen posicion fija
+
+\begin{itemize}
+ \item \textbf{Seleccionando \'atomos de posici\'on fija} \texttt{H}.
+       \control{filter tag name=fixedpos value=true}
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modificadores}
+
+Los plugins modificadores alteran ciertas caracter\'isticas de un set de \'atomos o de la celda de simulaci\'on completa, es decir las modificaciones pueden aplicarse de forma filtrada, por ejemplo :
+
+\control{apply modify-module start=... end=... each=... over filter-module <filter-options>}
+
+Lo que nos da mayor flexibilidad en el manejo de la simulaci\'on. Sin embargo si queremos modificar la celda en su totalidad, podemos usar simplemente :
+
+\control{apply modify-module start=... end=... each=...}
+
+Casos como el escalamiento de celda, solo pueden aplicar de forma \textit{general} sobre la simulaci\'on.
+
 \subsection{tempscaling}
 
 Utilizado para controlar y escalar la temperatura de la muestra, utilizando rescalamiento de velocidades en las part\'iculas. \'Este es uno de los m\'etodos m\'as utilizados en muchos c\'odigos de din\'amica molecular.
@@ -257,6 +408,15 @@ El escalamiento consiste en modificar las velocidades at\'omicas cada cierto int
 $$s=\sqrt{\frac{gk_BT}{2\mathcal{K}}}$$
 
 Es importante tener en cuenta, qu el proceso de control o escalamiento de la temperatura, no entregan promedios termodin\'amicos reales, es necesario que estos sean evaluados luego de haber realizado el escalamiento.
+
+los argumentos necesarios para el plugin son :
+
+\fb{
+\begin{tabular}{lcl}
+ from & = & Temperatura inicial del escalamiento.\\
+ to & = & Temperatura final del escalamiento.\\
+\end{tabular}
+}
 
 Consideremos ahora un ejemplo de utilizaci\'on del m\'odulo \textbf{tempscaling}, en donde calentamos una muestra de Ar a 300K y luego mantenemos la temperatura fija durante un peri\'odo de tiempo, para finalmente liberar el sistema:
 
@@ -281,7 +441,13 @@ Ahora, que el m\'odulo fue cargado, es necesario, en la parte final del archivo 
 De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un proceso de \textit{calentamiento} de la celda inicial.
 
 \subsection{berendsen}
-\'Este m\'odulo controla o escala la temperatura, al igual que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. Los argumentos requeridos por el m\'odulo son:
+\'Este m\'odulo controla o escala la temperatura, al igual que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. 
+
+La ecuaci\'on que describe el termostato de berendsen es :
+
+$$\frac{dT}{dt} = \frac{T_0 - T}{\tau}$$
+
+Los argumentos requeridos por el m\'odulo son:
 
 \fb{
 \begin{tabular}{lcl}
@@ -291,7 +457,6 @@ De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un
 \end{tabular}
 }
 
-\textbf{Berendsen} puede aplicarse de igual forma que \verb|tempscaling|.
 
 \subsection{cellscaling}
 \'Este m\'odulo es un modificador de la celda, en particular, tiene la propiedad de cambiar el tama\~no de la celda durante la simulaci'on, lo que lo hace una herramienta muy util para ver, por ejemplos, comportamiento de materiales bajo distintas densidades durante una sola simulaci\'on. El m\'odulo tiene las siguientes opciones:
@@ -307,10 +472,10 @@ De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un
 \end{tabular}
 }
 
-Para un detalle m\'as acabado en el uso de cellscaling, vea el cap\'itulo~\ref{chap:exa}.
+Con \'este m\'odulo entonces pdoemos realizar compresi\'on hidrost\'atica o unidireccional, adem\'as de mantener constante o no el intervalo de escalamiento.
 
-\subsection{displacement}
-M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desplazamiento vectorial de los \'atomos de la muestra. Su funcionalidad esta enfocada principalmente en la construcci\'on de sistemas nanoestructurados a futuro.
+\subsection{displace}
+M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desplazamiento vectorial de los \'atomos de la muestra. Las caractr\'isticas del m\'odulo son :
 
 \fb{
 \begin{tabular}{lcl}
@@ -321,50 +486,353 @@ M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desp
 }
 
 \subsection{rotate}
-M\'odulo que modifica las posiciones, rotando los \'atomos cierto grado en torno a un origen. Al igual que el m\'odulo \verb|displace|, est\'a desarrollado para la futura creaci\'on de estructuras m\'as complejas.
+M\'odulo que modifica las posiciones, rotando los \'atomos cierto grado en torno a un origen. Al igual que el m\'odulo \verb|displace|, est\'a desarrollado para la creaci\'on de estructuras m\'as complejas.
 
 \fb{
 \begin{tabular}{lcl}
  x & = & Coordenada x del eje de rotaci\'on.\\
  y & = & Coordenada y del eje de rotaci\'on.\\
  z & = & Coordenada z del eje de rotaci\'on.\\
- angle & = & \'Angulo de rotaci\'on en grados.\\
+ angle & = & \'Angulo de rotaci\'on en \textbf{grados}.\\
 \end{tabular}
 }
 
 \subsection{quenchedmd}
-M\'odulo que m\'inimiza la estructura, utilizando el m\'etodo \textit{Quenched Molecular Dynamics}. Durante el proceso, el integrador no actua, como una din\'amica molecular simple, ya que erifica la proyeccion entre fuerza y velocidad, la que se ve forzada si la energ\'ia es incrementada.
+M\'odulo que m\'inimiza la estructura, utilizando el m\'etodo \textit{Quenched Molecular Dynamics}. Durante el proceso, el integrador no actua como una din\'amica molecular simple, ya que verifica la proyeccion entre fuerza y velocidad, la que se ve forzada si la energ\'ia se incrementa.
 
-El m\'odulo no necesita argumentos especiales, solo ser llamado y aplicado.
+\fb{
+\begin{tabular}{lcl}
+ debug & = & Informaci\'on de debug.\\
+\end{tabular}
+}
+
+El m\'odulo no necesita argumentos especiales, solo ser llamado y aplicado. Ya que debug es la informaci\'on de depuraci\'on con la que siempre cuentan todos los plugins.
+
+\subsection{moleculecm}
+M\'odulo que selecciona moleculas?????? Que hacía este módulo, alguien la puede documentar :).
+
+
+
+\subsection{propertycolor}
+M\'odulo que asigna colores a los \'atomos segun cierta condici\'on, las opciones principales del plugin son :
+
+\fb{
+\begin{tabular}{lcl}
+ property & = & Propiedad que se desea colorear.(temperature, velocity, acceleration, neighbours)\\
+ min & = & Valor m\'inimo del rango de valores.\\
+ max & = & Valor m\'aximo del rango de valores.\\
+ cutoff & = & Algunas propiedades necesitan cutoff.\\
+ filterby & = & Filtrado por.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo que deseamos colorear los \'atomos seg\'un su temperatura, y le asociaremos a 300 la temperatura m\'inima y 500 a la m\'axima que ser\'ian los colores del azul al rojo, entonces :
+
+\begin{itemize}
+ \item \textbf{Cargamos el modulo}
+       \control{use propertycolor as temp\\ min 300\\ max 300\\enduse}
+ \item \textbf{Aplicamos coloreado en la simulaci\'on.}
+       \control{apply temp start=1 end=1000 each=2}
+\end{itemize}
+
+\subsection{randomatom}
+M\'odulo que elimina o modifica de forma aleatoria \'atomos de una muestra, sus principales opciones son : 
+
+\fb{
+\begin{tabular}{lcl}
+ type & = & Tipo de acci\'on delete/replace.\\
+ value & = & Valor porcentual de atomos a reemplazar.\\
+ symbol & = & S\'imbolo at\'omico, en el caso de reemplazar.\\
+ density & = & fixed/free para fijar o no la densidad de la muestra, \'util en modo eliminaci\'on.\\
+\end{tabular}
+}
+
+Consideremos por ejemplo que deseamos remover \'atomos al azar dentro de un cristal, entonces :
+
+\begin{itemize}
+ \item \textbf{Cargamos el m\'odulo}
+       \control{use randomatom\\ type delete\\ value 5\\ density fixed\\enduse}
+ \item \textbf{Aplicamos coloreado en la simulaci\'on.}
+       \control{apply randomatom}
+\end{itemize}
+
+la aplicaci\'on tambi\'en puede llevarse acabo en pasos espec\'ificos de la simulaci\'ion, por ejemplo usando \texttt{start=10 end=10 each=1} llevara la eliminaci\'on de \'atomos en ese instante espec\'ifico de la simulaci\'on.
+
+\subsection{replicate}
+M\'odulo que replica la celda se simulaci\'on en los distintos ejes, sus opciones principales son
+
+\fb{
+\begin{tabular}{lcl}
+ nx & = & N\'umero de replicas en la direcci\'on \texttt{x}.\\
+ ny & = & N\'umero de replicas en la direcci\'on \texttt{y}.\\
+ nz & = & N\'umero de replicas en la direcci\'on \texttt{z}.\\
+\end{tabular}
+}
+
+Las replicas son n\'umeros enteros de la celda, usualmente este m\'odulo s\'olo se utiliza al comienzo de la simulaci\'on y puede ser llamado con \verb|prepare| para setear previamente la celda. Es importante destacar que la mayor\'ia de las ocaciones que \textbf{utilizan \texttt{prepare replicate}} necesitan desactivar la optimizaci\'on de la celda, por ejemplo :
+
+\begin{itemize}
+ \item \textbf{Desactivando optimizaci\'on}
+       \control{set optimize-simulation false}
+ \item \textbf{Aplicamos replicaci\'on de celda.}
+       \control{prepare replicate 2 2 2}
+\end{itemize}
+
+Con eso entonces replicamos nuestra celda original dos veces en cada direcci\'on.
+
+\subsection{setcolor}
+M\'odulo que asigna colores a los \'atomos, es necesario definir colores y con eso aplicarselo a un grupo de \'atomos o bien a todos los \'atomos. 
+
+\fb{
+\begin{tabular}{lcl}
+ color & = & Vector del color.\\
+\end{tabular}
+}
+
+Entonces, veamos por ejemplo como asignan un color a todos los \'atomos, recuerde que puede ser aplicado utilizando filtros.
+
+\begin{itemize}
+ \item \textbf{Carga el m\'odulo}
+       \control{use setcolor as red\\ color <1.0,0.0,0.0>\\enduse}
+ \item \textbf{Aplicamos el color}
+       \control{apply setcolor}
+\end{itemize}
+
+\subsection{settag}
+Al igual que la forma de asignar colores a un \'atomo, es posible asignar \verb|tag| o etiquetas a los \'atomos. Entr las opciones del plugin settag estan :
+
+\fb{
+\begin{tabular}{lcl}
+ name & = & Nombre del tag\\
+ value & = & Boleano que indica actividad del tag true/false\\
+\end{tabular}
+}
+
+De esta forma podemos asignar cualquier tag a los \'atomos. Veamos por ejemplo como asignar \verb|fixedpos| a un set de \'atomos, ser\'ia :
+
+\begin{itemize}
+ \item \textbf{Carga el m\'odulo}
+       \control{use settag as pos\\ name fixedpos\\ value true\\enduse}
+ \item \textbf{Aplicamos el color}
+       \control{apply fixedpos}
+\end{itemize}
+
+Usualmente las aplicaciones de \verb|settag| o \verb|setcolor| se utilizan fitlrados sobre los \'atomos para llo recuerdo que basta con especificar el filtro dentro de \verb|apply|.
+
+\subsection{setvelocity}
+Setea las velocidades de un grupo de \'atomos, los argumentos son :
+
+\fb{
+\begin{tabular}{lcl}
+ velocity & = & Velocidad a asignar.\\
+\end{tabular}
+}
+
+Al igual que \verb|setcolor| este plugin puede asignar la velocidad de toda la muestra o de un grupo de \'atomos pertenecientes a ella.
+
+\subsection{shear}
+M\'odulo que realiza \textit{shear} (cizalle) sobre la muestra, modificando la forma de la celda, los argumentos principales son :
+
+\fb{
+\begin{tabular}{lcl}
+ axis & = & Eje en el que se produce el cizalle.\\
+ normal & = & Eje perpendicular al eje del cizalle.\\
+ strain & = & Desplazamiento m\'aximo a aplicar es strain*L(normal)\\
+\end{tabular}
+}
+
+Con esto entonces podemos aplicar cizalle a la simulaci\'on, por ejemplo consideremos que en lugar de aplicar el cizalle durante la simulac\'on queremos aplicarlo en la celda de entrada original, entonces usamos.
+
+\control{prepare shear axis=X normal=Y strain=0.01}
+
+Recuerde que en general los m\'odulos var\'ian su aplicaci\'on seg\'un la forma en que se quieran aplicar.
+
+\subsection{temperature}
+M\'odulo que aplica una temperatura a un grupo de \'atomos, su opci\'on principal es
+
+\fb{
+\begin{tabular}{lcl}
+ t & = & Temperatura que se le desea asignar al grupo de \'atomos.\\
+\end{tabular}
+}
+
+usualmente se utiliza mucho para la temperatura inicial de la celda de simulaci\'on es decir :
+
+\control{prepare temperature t=300}
+
+Eso asignar\'a las velocidades iniciales de la muestra para esa temperatura.
+
+\subsection{undopbc}
+M\'odulo que deshace las condiciones peri\'odicas de borde de una celda, se utiliza principalmente para deshacer configuraciones de DM.
+
+El m\'odulo no necesita argumentos especiales, solo ser llamado y aplicado. Veamos por ejemplo como quitar la periodicidad en una celda de configuraci\'on de forma directa ser\'ia utilizando.
+
+\begin{itemize}
+ \item \textbf{Carga el m\'odulo}
+       \control{use undopbc \\enduse}
+ \item \textbf{Aplicamos el color}
+       \control{apply undopbc start=.. end=.. each=..}
+\end{itemize}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Manejadores de Celda}
-Estos m\'odulos son los encargados de generar las \textbf{lista inteligentes} para poder realizar simulaciones o c\'alculos de Din\'amica Molecular, los dos plugins implementados a la fecha son:
+\section{Propiedades Instant\'aneas}
+Las propiedades instant\'aneas son aquellas que se pueden evaluar en cualquier instante de tiempo sobre una configuraci\'on at\'omica, las que se listan a continuaci\'on son las que se han implementado a la fecha en {\lpmd}.
 
-\subsection{minimumimage}
-Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que el m'etodo linkedcell, pero en el s'olo se necesita ingresar el radio de corte del sistema. Est\'e m\'etodo no es bueno cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
+Estas propiedades adem\'as de ser analizadas \textit{post-simulaci\'on} pueden lelvarse acabo durante la simulaci\'on misma.
 
-\begin{itemize}
- \item \textbf{Cargando el M\'odulo}
-       \control{use minimumimage \\ cutoff 2.0 \\enduse}
- \item \textbf{Aplicando el M\'odulo}
-       \control{cellmanager minimumimage}
-\end{itemize}
+\subsection{angdist}
+Calcula la distribucion angular de la celda de simulaci\'on. Para determinar los \'angulos caracter\'isticos de una celda de simulaci\'on es necesario entender el esquema o preocedimiento:
+\begin{enumerate}
+ \item Se selecciona un \'atomo $i$.
+ \item Se busca un \'atomo $j$ que se encuentre dentro del radio de corte $r_{ij}$
+ \item Se busca un \'atomo $k$ que se enceuntre dentro del radio de corte $r_{ik}$
+ \item Se calcula el \'angulo  $\angle j-i-k$ y se a\~nade en la cuenta
+\end{enumerate}
 
-Con \'esto nuestra simulaci\'on utilizar\'a el m\'etodo de m\'inima imagen para un \verb|cutoff| de 2.0 \AA.
+De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra cuales son los principales angulos de ``enlace'' o ``distancia'' de los \'atomos. Las opciones de uso son:
 
-\subsection{linkedcell}
-Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido que el m\'etodo de m\'inima imagen, y de por s\'i es el m\'as utilizado en la mayor\'ia de los c\'odigos de \textbf{DM}, se puede subdividir la celda a voluntad, sin embargo es recomendable que el tama\~no de subdivisi\'on de la celda no sea menor que la distancia m\'inima de interacci\'on entre las part\'iculas, con algun potencial.
+\fb{
+\begin{tabular}{lcl}
+ bins & = & N\'umero de intervalos entre 0 y 180 grados. \\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
+ rcut & = & Se especifican 2 especies at\'omicas y su radio\\
+&&de corte.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
 
-\begin{itemize}
- \item \textbf{Cargando el M\'odulo}
-       \control{use linkedcell \\ cutoff 2.0 \\ nx 10\\ ny 10\\ nz 10\\enduse}
- \item \textbf{Aplicando el M\'odulo}
-       \control{cellmanager linkedcell}
-\end{itemize}
+\subsection{cordnum}
+Calcula el n\'umero de cordinaci\'on de la celda, informandonos a modo de histograma, como se han encontrado los n\'umeros de vecinos asociados a la muestra. La manera de calcular este numero de coordinacion es:
+\begin{enumerate}
+ \item Se genera un arreglo entre 0 y el m\'aximo n\'umero de vecinos posibles.
+ \item Para cada \'atomo $i$, se ve cuantos vecinos $j$ tiene dentro de un radio d corte $r_{ij}$.
+ \item Se entrega un valor porcentual del conteo previo.
+\end{enumerate}
 
-As\'i subdividimos la celda en una grilla de 10x10x10. Para generar las listas de vecinos de cada \'atomo.
+\fb{
+\begin{tabular}{lcl}
+ maxn & = & N\'umero m\'aximo d vecinos para el histograma.\\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
+ rcut & = & Se especifican 2 especies at\'omicas y su radio\\
+&&de corte.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+
+\subsection{cordnumfunc}
+Calcula el n\'umero de cordinaci\'on de la celda, en este caso es la funci\'on m\'as usada n publicaciones, pero en ocaciones puede ser m\'as simple de analizar, el m\'etodo \textbf{cordnum}. Corresponde tambi\'en a la integraci\'on de la funci\'on de distribuci\'on de pares.
+\begin{enumerate}
+ \item Se selecciona una distancia m\'axima y se divide en intervalos.
+ \item Se selecciona un \'atomo $i$.
+ \item Se analiza cuantos atomos $j$ caen en la distancia asociada al intervalo.
+ \item Se continua de forma acumulativa, hasta un valor rasonable.
+\end{enumerate}
+
+La forma de utilizar el m\'etodo esta dada por:
+
+\fb{
+\begin{tabular}{lcl}
+ bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
+ rcut & = & Radio de corte m\'aximo para an\'alisis.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{gdr}
+Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
+\begin{enumerate}
+ \item Se selecciona un \'atomo $i$.
+ \item Se ve cuantos atomos $j$ estan dentro de un cascar\'on esf\'erico centrado en $i$.
+ \item Se promedia sobre los \'atomos asociados.
+\end{enumerate}
+
+\fb{
+\begin{tabular}{lcl}
+ bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
+ rcut & = & Radio de corte m\'aximo para an\'alisis.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{densityprofile}
+Calc\'ula un perfil de densidades bidimensional. Este m\'etodo divide la celda de simulaci\'on en cajas pequenas, en una direccion privilegiada y calcula las densidades en cada una de ellas, da una idea muy clara de la densidad ``por secci\'on'' de la celda de simulaci\'on.
+
+La forma de utilizarla es:
+
+\fb{
+\begin{tabular}{lcl}
+ axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
+ bins & = & N\'umero de intervalos para dividir el eje.\\
+ range & = & Rango espacial de cada uno de los ejes, con \\
+ && formato: nombre del eje, m\'inimo y m\'aximo.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{tempprofile}
+Calc\'ula un perfil de temperaturas bidimensional. Al igual que el m\'etodo anterior, se divide la caja en celdas pequenas, en donde calculamos la temperatura de cada una de ellas.
+
+La forma de utilizar esto es:
+
+\fb{
+\begin{tabular}{lcl}
+ axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
+ bins & = & N\'umero de intervalos para dividir el eje.\\
+ range & = & Rango espacial de cada uno de los ejes, con formato:\\
+&&nombre del eje, m\'inimo y m\'aximo.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{veldist}
+Muestra como estan distribuidas las velocidades del sistema. La salida es un histograma de velocidades. La forma de uso es:
+
+\fb{
+\begin{tabular}{lcl}
+ bins & = & N\'umero de intervalos para dividir el histograma.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{localpressure}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\fb{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Propiedades Din\'amicas}
+Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para {\lpmd}. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
+\subsection{vacf}
+Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
+\subsection{msd}
+Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Potenciales Interat\'omicos de pares}
@@ -664,156 +1132,3 @@ Ac\'a las opciones son en el orden requerido. El t\'itulo puede ser cualquier te
 % 
 % Luego de que los archivos son creados en el directorio ``movie'', es importante que coloque en ese directorio el logo al que los archivos hacen referencia \verb|logo-v2.gif|.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Propiedades Est\'aticas}
-Las propiedades est\'aticas, son aquellas que se pueden evaluar en cualquier instante de tiempo, las que se listan a continuaci\'on, son las que se han implementado a la fecha.
-\subsection{angdist}
-Calcula la distribucion angular de la celda de simulaci\'on. Para determinar los \'angulos caracter\'isticos de una celda de simulaci\'on es necesario entender el esquema o preocedimiento:
-\begin{enumerate}
- \item Se selecciona un \'atomo $i$.
- \item Se busca un \'atomo $j$ que se encuentre dentro del radio de corte $r_{ij}$
- \item Se busca un \'atomo $k$ que se enceuntre dentro del radio de corte $r_{ik}$
- \item Se calcula el \'angulo  $\angle j-i-k$ y se a\~nade en la cuenta
-\end{enumerate}
-
-De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra cuales son los principales angulos de ``enlace'' o ``distancia'' de los \'atomos. Las opciones de uso son:
-
-\fb{
-\begin{tabular}{lcl}
- bins & = & N\'umero de intervalos entre 0 y 180 grados. \\
- atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
-&&asociados a cada una.\\
- rcut & = & Se especifican 2 especies at\'omicas y su radio\\
-&&de corte.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-\subsection{cordnum}
-Calcula el n\'umero de cordinaci\'on de la celda, informandonos a modo de histograma, como se han encontrado los n\'umeros de vecinos asociados a la muestra. La manera de calcular este numero de coordinacion es:
-\begin{enumerate}
- \item Se genera un arreglo entre 0 y el m\'aximo n\'umero de vecinos posibles.
- \item Para cada \'atomo $i$, se ve cuantos vecinos $j$ tiene dentro de un radio d corte $r_{ij}$.
- \item Se entrega un valor porcentual del conteo previo.
-\end{enumerate}
-
-\fb{
-\begin{tabular}{lcl}
- maxn & = & N\'umero m\'aximo d vecinos para el histograma.\\
- atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
-&&asociados a cada una.\\
- rcut & = & Se especifican 2 especies at\'omicas y su radio\\
-&&de corte.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-
-\subsection{cordnumfunc}
-Calcula el n\'umero de cordinaci\'on de la celda, en este caso es la funci\'on m\'as usada n publicaciones, pero en ocaciones puede ser m\'as simple de analizar, el m\'etodo \textbf{cordnum}. Corresponde tambi\'en a la integraci\'on de la funci\'on de distribuci\'on de pares.
-\begin{enumerate}
- \item Se selecciona una distancia m\'axima y se divide en intervalos.
- \item Se selecciona un \'atomo $i$.
- \item Se analiza cuantos atomos $j$ caen en la distancia asociada al intervalo.
- \item Se continua de forma acumulativa, hasta un valor rasonable.
-\end{enumerate}
-
-La forma de utilizar el m\'etodo esta dada por:
-
-\fb{
-\begin{tabular}{lcl}
- bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
- atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
-&&asociados a cada una.\\
- rcut & = & Radio de corte m\'aximo para an\'alisis.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-\subsection{gdr}
-Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
-\begin{enumerate}
- \item Se selecciona un \'atomo $i$.
- \item Se ve cuantos atomos $j$ estan dentro de un cascar\'on esf\'erico centrado en $i$.
- \item Se promedia sobre los \'atomos asociados.
-\end{enumerate}
-
-\fb{
-\begin{tabular}{lcl}
- bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
- rcut & = & Radio de corte m\'aximo para an\'alisis.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-\subsection{densityprofile}
-Calc\'ula un perfil de densidades bidimensional. Este m\'etodo divide la celda de simulaci\'on en cajas pequenas, en una direccion privilegiada y calcula las densidades en cada una de ellas, da una idea muy clara de la densidad ``por secci\'on'' de la celda de simulaci\'on.
-
-La forma de utilizarla es:
-
-\fb{
-\begin{tabular}{lcl}
- axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
- bins & = & N\'umero de intervalos para dividir el eje.\\
- range & = & Rango espacial de cada uno de los ejes, con \\
- && formato: nombre del eje, m\'inimo y m\'aximo.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-\subsection{tempprofile}
-Calc\'ula un perfil de temperaturas bidimensional. Al igual que el m\'etodo anterior, se divide la caja en celdas pequenas, en donde calculamos la temperatura de cada una de ellas.
-
-La forma de utilizar esto es:
-
-\fb{
-\begin{tabular}{lcl}
- axis & = & Valor del eje preferencial, o direcci\'on, del c\'alculo.\\
- bins & = & N\'umero de intervalos para dividir el eje.\\
- range & = & Rango espacial de cada uno de los ejes, con formato:\\
-&&nombre del eje, m\'inimo y m\'aximo.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-\subsection{veldist}
-Muestra como estan distribuidas las velocidades del sistema. La salida es un histograma de velocidades. La forma de uso es:
-
-\fb{
-\begin{tabular}{lcl}
- bins & = & N\'umero de intervalos para dividir el histograma.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-\subsection{localpressure}
-
-Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
-
-La forma de utilizar el plugin es:
-\fb{
-\begin{tabular}{lcl}
- rcut & = & Radio de corte.\\
- n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Propiedades Din\'amicas}
-Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para {\lpmd}. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
-\subsection{vacf}
-Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
-\subsection{msd}
-Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
