@@ -16,6 +16,63 @@ Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que
 
 en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo \verb|file| una opci\'on com\'un a la mayot\'ia de los m\'opdulos de entrada/salida.
 
+\subsection{dlpoly}
+Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de entrada que el usuario ya posee en \verb|dlpoly| y que el trabajo de migrar estos archivos a otras configuraciones podria implicar una inversion de tiempo.
+
+Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
+
+\fb{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuraci\'on \\
+ &&de \textbf{dlpoly}\\
+ level & = & Nivel del archivo (0,1,2).\\
+ preiodicity & = & Especifica \textit{key} de periodicidad del \\
+ &&fichero CONFIG.\\
+ ftype & = & Especif\'ica el typo de archivo, \texttt{HISTORY} o\\
+ &&\texttt{CONFIG}, a ser le\'ido.\\
+\end{tabular}
+}
+
+\subsection{lpmd}
+
+Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comrpimidos con zlib. Entre las opciones principales destacan
+
+\fb{
+\begin{tabular}{lcl}
+ file & = & archivo de entrada/salida.\\
+ level & = & indica el nivel del fichero, estos pueden ser \\
+           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
+ extra & = & Informaci\'on extra en el fichero sobre los \'atomos \\
+           &&rgb, type, etc.\\
+ type & = & Especif\'ica el tipo de fichero, \texttt{lpmd}(default) o \\
+           &&\texttt{zlp}.\\
+ blocksize & = & tamaño del \textit{block} de compresi\'on cuando es \\
+           &&del tipo \texttt{zlp}.\\ 
+\end{tabular}
+}
+
+La forma com\'un de uso en lpmd es,
+
+\begin{itemize}
+ \item \textbf{Cargando un fichero lpmd}
+       \control{input module=lpmd file=archivo.lpmd}
+ \item \textbf{Escribiendo la salida en un fichero lpmd con velocidades}
+       \control{output module=lpmd file=salida.lpmd level=1}
+\end{itemize}
+
+\subsection{vasp}
+El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero de configuracion inicial, o bien para otro prop\'osito, entre las opciones del m\'odulo, estan:
+
+\fb{
+\begin{tabular}{lcl}
+ file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
+ species & = & lista de las especies (en orden) del fichero \\
+ &&POSCAR.\\
+ level & = & Especif\'ica el nivel del archivo.\\
+ type & = & Tipo de posiciones, direct/cartesian.\\
+\end{tabular}
+}
+
 \subsection{xyz}
 \'Este es el m\'odulo que se utiliza para cargar/escribir archivos de configuraci\'on en formato \verb|xyz|, las opciones actuales de este m\'odulo son :
 
@@ -45,60 +102,25 @@ Muchas de estas opciones no son utilizadas en una corrida con {\lpmd}, sin embar
 
 No todas las opciones son necesarias, muchas de ellas ya tienen valores por defecto, vease \verb|lpmd -p xyz| para m\'as informaci\'on.
 
-\subsection{lpmd}
+\subsection{mol2}
+Utilizado para lectura/escritura de fichefros de tipo \verb|mol2|, el soporte, al igual que el formato \verb|pdb| es b\'asico sin embargo es \'util para convertir nuestras configuraciones.
 
-Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comrpimidos con zlib. Entre las opciones principales destacan
+entre las opciones t\'ipicas de \verb|mol2| encontramos :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & archivo de entrada/salida.\\
- level & = & indica el nivel del fichero, estos pueden ser \\
-           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
- extra & = & Informaci\'on extra en el fichero sobre los \'atomos \\
-           &&rgb, type, etc.\\
- type & = & Especif\'ica el tipo de fichero, \texttt{lpmd}(default) o \\
-           &&\texttt{zlp}.\\
- blocksize & = & tamaño del \textit{block} de compresi\'on cuando es \\
-           &&del tipo \texttt{zlp}.\\ 
+ file & = & Archivo que contiene la configuracion at\'omica\\
 \end{tabular}
 }
 
-La forma com\'un de uso en lpmd es,
+\subsection{pdb}
+Utilizado para lectura/escritura de archivos de tipo \verb|pdb|, el soporte actual de este tipos de ficheros es b\'asico, sin embargo puede ser \'util para convertir ficheros para la visualizaci\'on con otros programas.
 
-\begin{itemize}
- \item \textbf{Cargando un fichero lpmd}
-       \control{input module=lpmd file=archivo.lpmd}
- \item \textbf{Escribiendo la salida en un fichero lpmd con velocidades}
-       \control{output module=lpmd file=salida.lpmd level=1}
-\end{itemize}
-
-\subsection{dlpoly}
-Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de entrada que el usuario ya posee en \verb|dlpoly| y que el trabajo de migrar estos archivos a otras configuraciones podria implicar una inversion de tiempo.
-
-Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
+Entre las opciones t\'ipicas de \verb|pdb| est\'an :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuraci\'on \\
- &&de \textbf{dlpoly}\\
- level & = & Nivel del archivo (0,1,2).\\
- preiodicity & = & Especifica \textit{key} de periodicidad del \\
- &&fichero CONFIG.\\
- ftype & = & Especif\'ica el typo de archivo, \texttt{HISTORY} o\\
- &&\texttt{CONFIG}, a ser le\'ido.\\
-\end{tabular}
-}
-
-\subsection{vasp}
-El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero de configuracion inicial, o bien para otro prop\'osito, entre las opciones del m\'odulo, estan:
-
-\fb{
-\begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
- species & = & lista de las especies (en orden) del fichero \\
- &&POSCAR.\\
- level & = & Especif\'ica el nivel del archivo.\\
- type & = & Tipo de posiciones, direct/cartesian.\\
+ file & = & Archivo que contiene la configuracion at\'omica\\
 \end{tabular}
 }
 
@@ -116,27 +138,6 @@ Entre las opciones t\'ipicas de \verb|rawbinary| est\'an :
 
 Generalmente este archivo es utilizado para analisis sobre configuraciones muy grandes, para reducir el tiempo de an\'alisis.
 
-\subsection{pdb}
-Utilizado para lectura/escritura de archivos de tipo \verb|pdb|, el soporte actual de este tipos de ficheros es b\'asico, sin embargo puede ser \'util para convertir ficheros para la visualizaci\'on con otros programas.
-
-Entre las opciones t\'ipicas de \verb|pdb| est\'an :
-
-\fb{
-\begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion at\'omica\\
-\end{tabular}
-}
-
-\subsection{mol2}
-Utilizado para lectura/escritura de fichefros de tipo \verb|mol2|, el soporte, al igual que el formato \verb|pdb| es b\'asico sin embargo es \'util para convertir nuestras configuraciones.
-
-entre las opciones t\'ipicas de \verb|mol2| encontramos :
-
-\fb{
-\begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion at\'omica\\
-\end{tabular}
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{M\'odulos Generadores de Celda}
@@ -249,18 +250,6 @@ Al igual que los m\'etodos generadores de celda previos, el detalle general del 
 \section{Manejadores de Celda}
 Estos m\'odulos son los encargados de generar las \textbf{lista inteligentes} para poder realizar simulaciones o c\'alculos de Din\'amica Molecular, \'estas listas ayudan a reducir el tiempo de c\'alculo utilizado por las simulaciones.
 
-\subsection{minimumimage}
-Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que otros m\'etodos, pero en el s\'olo se necesita ingresar el radio de corte del sistema. Este m\'etodo no es bueno cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
-
-\begin{itemize}
- \item \textbf{Cargando el M\'odulo}
-       \control{use minimumimage \\ cutoff 2.0 \\enduse}
- \item \textbf{Aplicando el M\'odulo}
-       \control{cellmanager minimumimage}
-\end{itemize}
-
-Con \'esto nuestra simulaci\'on utilizar\'a el m\'etodo de m\'inima imagen para un \verb|cutoff| de 2.0 \AA.
-
 \subsection{linkedcell}
 Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido que el m\'etodo de m\'inima imagen, y de por s\'i es el m\'as utilizado en la mayor\'ia de los c\'odigos de \textbf{DM}, se puede subdividir la celda a voluntad, sin embargo es recomendable que el tama\~no de subdivisi\'on de la celda no sea menor que la distancia m\'inima de interacci\'on entre las part\'iculas, con algun potencial. Tambi\'en posee el modo \verb|auto| para simplificar la subdivision de la celda.
 
@@ -272,6 +261,18 @@ Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido q
  \item \textbf{Aplicando el M\'odulo}
        \control{cellmanager linkedcell}
 \end{itemize}
+
+\subsection{minimumimage}
+Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que otros m\'etodos, pero en el s\'olo se necesita ingresar el radio de corte del sistema. Este m\'etodo no es bueno cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
+
+\begin{itemize}
+ \item \textbf{Cargando el M\'odulo}
+       \control{use minimumimage \\ cutoff 2.0 \\enduse}
+ \item \textbf{Aplicando el M\'odulo}
+       \control{cellmanager minimumimage}
+\end{itemize}
+
+Con \'esto nuestra simulaci\'on utilizar\'a el m\'etodo de m\'inima imagen para un \verb|cutoff| de 2.0 \AA.
 
 \subsection{lcbinary}
 Utiliza el m\'etodo de listas linkeadas, pero a diferencia del anterior, este adapta la subdivisi\'on asignada de manera autom\'atica haciendo que no permanezcan m\'as de un \'atomo por celda, pese a ser un metodo simple y \textit{utilizable}, es recomendable que considere el excesivo consumo de \verb|RAM| que \'este acarrea.
@@ -399,47 +400,6 @@ Lo que nos da mayor flexibilidad en el manejo de la simulaci\'on. Sin embargo si
 
 Casos como el escalamiento de celda, solo pueden aplicar de forma \textit{general} sobre la simulaci\'on.
 
-\subsection{tempscaling}
-
-Utilizado para controlar y escalar la temperatura de la muestra, utilizando rescalamiento de velocidades en las part\'iculas. \'Este es uno de los m\'etodos m\'as utilizados en muchos c\'odigos de din\'amica molecular.
-
-El escalamiento consiste en modificar las velocidades at\'omicas cada cierto intervalo, en un factor:
-
-$$s=\sqrt{\frac{gk_BT}{2\mathcal{K}}}$$
-
-Es importante tener en cuenta, qu el proceso de control o escalamiento de la temperatura, no entregan promedios termodin\'amicos reales, es necesario que estos sean evaluados luego de haber realizado el escalamiento.
-
-los argumentos necesarios para el plugin son :
-
-\fb{
-\begin{tabular}{lcl}
- from & = & Temperatura inicial del escalamiento.\\
- to & = & Temperatura final del escalamiento.\\
-\end{tabular}
-}
-
-Consideremos ahora un ejemplo de utilizaci\'on del m\'odulo \textbf{tempscaling}, en donde calentamos una muestra de Ar a 300K y luego mantenemos la temperatura fija durante un peri\'odo de tiempo, para finalmente liberar el sistema:
-
-En primer lugar debemos cargar los modulos para cada una de las etapas de la simulaci\'on:
-
-\begin{itemize}
- \item \textbf{Cargamos el proceso de calentamiento de la muestra.}
-       \control{use cellscaling as uptemp \\   from 84.0\\   to 300.0\\enduse}
- \item \textbf{Cargamos un proceso para mantener la temperatura fija.}
-       \control{use cellscaling as fixtemp \\   from 300.0\\   to 300.0\\enduse}
-\end{itemize}
-
-Ahora, que el m\'odulo fue cargado, es necesario, en la parte final del archivo de control, especificar entre que intervalos de tiempo van a ser aplicados estos escalamientos:
-
-\begin{itemize}
- \item \textbf{Aplicamos \textbf{uptemp} desde 1 hasta 10000, cada 50 pasos.}
-       \control{apply uptemp start=1 end=10000 each=50}
- \item \textbf{Mantenemos la temperatura fija entre 10000 y 15000.}
-       \control{apply fixtemp start=10000 end=15000 each=50}
-\end{itemize}
-
-De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un proceso de \textit{calentamiento} de la celda inicial.
-
 \subsection{berendsen}
 \'Este m\'odulo controla o escala la temperatura, al igual que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. 
 
@@ -456,7 +416,6 @@ Los argumentos requeridos por el m\'odulo son:
  tau & = & Intervalo del termostato.\\
 \end{tabular}
 }
-
 
 \subsection{cellscaling}
 \'Este m\'odulo es un modificador de la celda, en particular, tiene la propiedad de cambiar el tama\~no de la celda durante la simulaci'on, lo que lo hace una herramienta muy util para ver, por ejemplos, comportamiento de materiales bajo distintas densidades durante una sola simulaci\'on. El m\'odulo tiene las siguientes opciones:
@@ -485,33 +444,8 @@ M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desp
 \end{tabular}
 }
 
-\subsection{rotate}
-M\'odulo que modifica las posiciones, rotando los \'atomos cierto grado en torno a un origen. Al igual que el m\'odulo \verb|displace|, est\'a desarrollado para la creaci\'on de estructuras m\'as complejas.
-
-\fb{
-\begin{tabular}{lcl}
- x & = & Coordenada x del eje de rotaci\'on.\\
- y & = & Coordenada y del eje de rotaci\'on.\\
- z & = & Coordenada z del eje de rotaci\'on.\\
- angle & = & \'Angulo de rotaci\'on en \textbf{grados}.\\
-\end{tabular}
-}
-
-\subsection{quenchedmd}
-M\'odulo que m\'inimiza la estructura, utilizando el m\'etodo \textit{Quenched Molecular Dynamics}. Durante el proceso, el integrador no actua como una din\'amica molecular simple, ya que verifica la proyeccion entre fuerza y velocidad, la que se ve forzada si la energ\'ia se incrementa.
-
-\fb{
-\begin{tabular}{lcl}
- debug & = & Informaci\'on de debug.\\
-\end{tabular}
-}
-
-El m\'odulo no necesita argumentos especiales, solo ser llamado y aplicado. Ya que debug es la informaci\'on de depuraci\'on con la que siempre cuentan todos los plugins.
-
 \subsection{moleculecm}
 M\'odulo que selecciona moleculas?????? Que hacía este módulo, alguien la puede documentar :).
-
-
 
 \subsection{propertycolor}
 M\'odulo que asigna colores a los \'atomos segun cierta condici\'on, las opciones principales del plugin son :
@@ -534,6 +468,17 @@ Consideremos por ejemplo que deseamos colorear los \'atomos seg\'un su temperatu
  \item \textbf{Aplicamos coloreado en la simulaci\'on.}
        \control{apply temp start=1 end=1000 each=2}
 \end{itemize}
+
+\subsection{quenchedmd}
+M\'odulo que m\'inimiza la estructura, utilizando el m\'etodo \textit{Quenched Molecular Dynamics}. Durante el proceso, el integrador no actua como una din\'amica molecular simple, ya que verifica la proyeccion entre fuerza y velocidad, la que se ve forzada si la energ\'ia se incrementa.
+
+\fb{
+\begin{tabular}{lcl}
+ debug & = & Informaci\'on de debug.\\
+\end{tabular}
+}
+
+El m\'odulo no necesita argumentos especiales, solo ser llamado y aplicado. Ya que debug es la informaci\'on de depuraci\'on con la que siempre cuentan todos los plugins.
 
 \subsection{randomatom}
 M\'odulo que elimina o modifica de forma aleatoria \'atomos de una muestra, sus principales opciones son : 
@@ -579,6 +524,19 @@ Las replicas son n\'umeros enteros de la celda, usualmente este m\'odulo s\'olo 
 \end{itemize}
 
 Con eso entonces replicamos nuestra celda original dos veces en cada direcci\'on.
+
+
+\subsection{rotate}
+M\'odulo que modifica las posiciones, rotando los \'atomos cierto grado en torno a un origen. Al igual que el m\'odulo \verb|displace|, est\'a desarrollado para la creaci\'on de estructuras m\'as complejas.
+
+\fb{
+\begin{tabular}{lcl}
+ x & = & Coordenada x del eje de rotaci\'on.\\
+ y & = & Coordenada y del eje de rotaci\'on.\\
+ z & = & Coordenada z del eje de rotaci\'on.\\
+ angle & = & \'Angulo de rotaci\'on en \textbf{grados}.\\
+\end{tabular}
+}
 
 \subsection{setcolor}
 M\'odulo que asigna colores a los \'atomos, es necesario definir colores y con eso aplicarselo a un grupo de \'atomos o bien a todos los \'atomos. 
@@ -647,6 +605,7 @@ Con esto entonces podemos aplicar cizalle a la simulaci\'on, por ejemplo conside
 
 Recuerde que en general los m\'odulos var\'ian su aplicaci\'on seg\'un la forma en que se quieran aplicar.
 
+
 \subsection{temperature}
 M\'odulo que aplica una temperatura a un grupo de \'atomos, su opci\'on principal es
 
@@ -661,6 +620,47 @@ usualmente se utiliza mucho para la temperatura inicial de la celda de simulaci\
 \control{prepare temperature t=300}
 
 Eso asignar\'a las velocidades iniciales de la muestra para esa temperatura.
+
+\subsection{tempscaling}
+
+Utilizado para controlar y escalar la temperatura de la muestra, utilizando rescalamiento de velocidades en las part\'iculas. \'Este es uno de los m\'etodos m\'as utilizados en muchos c\'odigos de din\'amica molecular.
+
+El escalamiento consiste en modificar las velocidades at\'omicas cada cierto intervalo, en un factor:
+
+$$s=\sqrt{\frac{gk_BT}{2\mathcal{K}}}$$
+
+Es importante tener en cuenta, qu el proceso de control o escalamiento de la temperatura, no entregan promedios termodin\'amicos reales, es necesario que estos sean evaluados luego de haber realizado el escalamiento.
+
+los argumentos necesarios para el plugin son :
+
+\fb{
+\begin{tabular}{lcl}
+ from & = & Temperatura inicial del escalamiento.\\
+ to & = & Temperatura final del escalamiento.\\
+\end{tabular}
+}
+
+Consideremos ahora un ejemplo de utilizaci\'on del m\'odulo \textbf{tempscaling}, en donde calentamos una muestra de Ar a 300K y luego mantenemos la temperatura fija durante un peri\'odo de tiempo, para finalmente liberar el sistema:
+
+En primer lugar debemos cargar los modulos para cada una de las etapas de la simulaci\'on:
+
+\begin{itemize}
+ \item \textbf{Cargamos el proceso de calentamiento de la muestra.}
+       \control{use cellscaling as uptemp \\   from 84.0\\   to 300.0\\enduse}
+ \item \textbf{Cargamos un proceso para mantener la temperatura fija.}
+       \control{use cellscaling as fixtemp \\   from 300.0\\   to 300.0\\enduse}
+\end{itemize}
+
+Ahora, que el m\'odulo fue cargado, es necesario, en la parte final del archivo de control, especificar entre que intervalos de tiempo van a ser aplicados estos escalamientos:
+
+\begin{itemize}
+ \item \textbf{Aplicamos \textbf{uptemp} desde 1 hasta 10000, cada 50 pasos.}
+       \control{apply uptemp start=1 end=10000 each=50}
+ \item \textbf{Mantenemos la temperatura fija entre 10000 y 15000.}
+       \control{apply fixtemp start=10000 end=15000 each=50}
+\end{itemize}
+
+De esta forma entonces hemos conseguido una muestra a 300K de temperatura con un proceso de \textit{calentamiento} de la celda inicial.
 
 \subsection{undopbc}
 M\'odulo que deshace las condiciones peri\'odicas de borde de una celda, se utiliza principalmente para deshacer configuraciones de DM.
@@ -705,8 +705,28 @@ De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra cual
 \end{tabular}
 }
 
-\subsection{cordnum}
+\subsection{atomtrail}
+Calcula la ... en 2 y 3 dimensiones.
+\begin{enumerate}
+ \item Se ..
+ \item Se ..
+\end{enumerate}
+
+De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra cuales son los principales angulos de ``enlace'' o ``distancia'' de los \'atomos. Las opciones de uso son:
+
+\fb{
+\begin{tabular}{lcl}
+ nx & = & N\'umero de intervalos en \texttt{x}. \\
+ ny & = & N\'umero de intervalos en \texttt{y}. \\
+ nz & = & N\'umero de intervalos en \texttt{z}. \\
+ plane & = & Plano XY,YZ, etc.\\
+ mode & = & 2D o 3D.\\
+\end{tabular}
+}
+
+\subsection{cna}
 Calcula el n\'umero de cordinaci\'on de la celda, informandonos a modo de histograma, como se han encontrado los n\'umeros de vecinos asociados a la muestra. La manera de calcular este numero de coordinacion es:
+
 \begin{enumerate}
  \item Se genera un arreglo entre 0 y el m\'aximo n\'umero de vecinos posibles.
  \item Para cada \'atomo $i$, se ve cuantos vecinos $j$ tiene dentro de un radio d corte $r_{ij}$.
@@ -724,7 +744,6 @@ Calcula el n\'umero de cordinaci\'on de la celda, informandonos a modo de histog
  average & = & Se promediar\'an o no los calculos.\\
 \end{tabular}
 }
-
 
 \subsection{cordnumfunc}
 Calcula el n\'umero de cordinaci\'on de la celda, en este caso es la funci\'on m\'as usada n publicaciones, pero en ocaciones puede ser m\'as simple de analizar, el m\'etodo \textbf{cordnum}. Corresponde tambi\'en a la integraci\'on de la funci\'on de distribuci\'on de pares.
@@ -748,17 +767,22 @@ La forma de utilizar el m\'etodo esta dada por:
 \end{tabular}
 }
 
-\subsection{gdr}
-Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
+\subsection{cordnum}
+Calcula el n\'umero de cordinaci\'on de la celda, en este caso es la funci\'on m\'as usada n publicaciones, pero en ocaciones puede ser m\'as simple de analizar, el m\'etodo \textbf{cordnum}. Corresponde tambi\'en a la integraci\'on de la funci\'on de distribuci\'on de pares.
 \begin{enumerate}
+ \item Se selecciona una distancia m\'axima y se divide en intervalos.
  \item Se selecciona un \'atomo $i$.
- \item Se ve cuantos atomos $j$ estan dentro de un cascar\'on esf\'erico centrado en $i$.
- \item Se promedia sobre los \'atomos asociados.
+ \item Se analiza cuantos atomos $j$ caen en la distancia asociada al intervalo.
+ \item Se continua de forma acumulativa, hasta un valor rasonable.
 \end{enumerate}
+
+La forma de utilizar el m\'etodo esta dada por:
 
 \fb{
 \begin{tabular}{lcl}
  bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
+ atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
+&&asociados a cada una.\\
  rcut & = & Radio de corte m\'aximo para an\'alisis.\\
  output & = & Archivo de salida.\\
  average & = & Se promediar\'an o no los calculos.\\
@@ -780,6 +804,95 @@ La forma de utilizarla es:
  average & = & Se promediar\'an o no los calculos.\\
 \end{tabular}
 }
+
+
+\subsection{gdr}
+Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
+\begin{enumerate}
+ \item Se selecciona un \'atomo $i$.
+ \item Se ve cuantos atomos $j$ estan dentro de un cascar\'on esf\'erico centrado en $i$.
+ \item Se promedia sobre los \'atomos asociados.
+\end{enumerate}
+
+\fb{
+\begin{tabular}{lcl}
+ bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
+ rcut & = & Radio de corte m\'aximo para an\'alisis.\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{localpressure}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\fb{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{overlap}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\fb{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{pairdistances}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\fb{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{rvcorr}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\fb{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
+\subsection{sitecoord}
+
+Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
+
+La forma de utilizar el plugin es:
+\fb{
+\begin{tabular}{lcl}
+ rcut & = & Radio de corte.\\
+ n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
+ output & = & Archivo de salida.\\
+ average & = & Se promediar\'an o no los calculos.\\
+\end{tabular}
+}
+
 
 \subsection{tempprofile}
 Calc\'ula un perfil de temperaturas bidimensional. Al igual que el m\'etodo anterior, se divide la caja en celdas pequenas, en donde calculamos la temperatura de cada una de ellas.
@@ -808,77 +921,89 @@ Muestra como estan distribuidas las velocidades del sistema. La salida es un his
 \end{tabular}
 }
 
-\subsection{localpressure}
-
-Calcula una presion local de la celda de simulaci\'on, para eso utiliza el stress de los \'atomo en cada ``sub-celda'', los valores entregados, recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
-
-La forma de utilizar el plugin es:
-\fb{
-\begin{tabular}{lcl}
- rcut & = & Radio de corte.\\
- n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Propiedades Din\'amicas}
 Las porpiedades din\'amicas, \textbf{no} pueden ser calculadas durante la simulaci\'ond e din\'amica molecular, ya que poseen correlaci\'on temporal en su an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero de control para {\lpmd}. Sin embargo estas propiedades pueden calcularase a partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|, utilizando \verb|lpmd-analyzer|.
-\subsection{vacf}
-Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
+\subsection{dispvol}
+Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
+\subsection{mobility}
+Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
 \subsection{msd}
 Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
+\subsection{vacf}
+Calcula la funci\'on de autocorrelaci\'on de velocidades de la celda. Por el momento el plugin esta en etapa de mejora y documentaci\'on.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Integradores}
+\subsection{beeman}
+El algoritmo de Beeman es un m\'etodo para integrar num\'ericamente ecuaciones difereciales, para el caso de din\'amica molecular, la posici\'on y velocidad,es similar al m\'etodo de verlet, pero las velocidades son con mejor precisi\'on.
+
+Las f\'ormulas para posici\'on y velocidad estan dadas por:
+
+$$r(t+\Delta t) = r(t) + v(t)\Delta t + \frac{2}{3}a(t)\Delta t^2 - \frac{1}{6}a(t-\Delta t)\Delta t^2 +\mathcal{O}(\Delta t^4)$$
+$$v(t+\Delta t) = v(t) + \frac{1}{3}a(t+\Delta t)\Delta t+\frac{5}{6}a(t)\Delta t-\frac{1}{6}a(t-\Delta t)\Delta t+\mathcal{O}(\Delta t^3)$$
+
+\subsection{euler}
+El integrador de Euler, es el m\'atodo n\'umerico de primer orden para resolver ecuaciones diferenciales ordinarias. Este es el m\'etodo m\'as b\'asico para la integraci\'on num\'erica de las ecuaciones.
+
+Las f\'ormulas para posici\'on esta dada por:
+
+$$r(t+\Delta t) = r(t) + h\times f(t,r(t))$$
+
+\subsection{hardspheres}
+Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de forma alternada. Las posiciones y velocidades estan dadas por:
+
+\subsection{leapfrog}
+Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de forma alternada. Las posiciones y velocidades estan dadas por:
+$$r(t+\Delta t) = r(t) + v(t)\Delta t + a(t)\frac{\Delta t^2}{2}$$
+$$v(t+\Delta t) = v(t) + \frac{a(t)+a(t+\Delta t)}{2}\Delta t$$
+
+\subsection{metropolis}
+Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de forma alternada. Las posiciones y velocidades estan dadas por:
+
+\subsection{nosehoover}
+Es utilizado para simulacion de ensambles de tipo NVT, en general el m\'etodo corresponde a una modificaci\'on de las ecuaciones de movimiento, donde aparece una masa ficticia en las ecuaciones a resolver.
+
+\subsection{nullintegrator}
+Integrador nulo, solo en caso de que no se requiera mover el sistema, es decir las particulas simplemente \textit{congeladas}.
+
+\subsection{velocityverlet}
+M\'etodo similar al de verlet, pero con mejoras respecto a la performance en la integraci\'on, incorporando directamente la velocidad en el sistema, las ecuaciones estan dadas por:
+$$r(t+\Delta t) = r(t) - v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2$$
+$$v(t+\Delta t) = v(t) + \frac{a(t) - a(t + \Delta t)}{2}\Delta t$$
+
+\subsection{verlet}
+Es un m\'etodo utilizado para integrar las ecuaciones de Newton de movimiento, las posiciones y velocidades del sistema estan dadas por:
+$$r(t+\Delta t) = 2r(t) - r(t-\Delta t) + a(t)\Delta t^2 + \mathcal{O}(\Delta t^4)$$
+$$v(t+\Delta t) = \frac{r(t+\Delta t) - r(t)}{\Delta t} + \mathcal{O}(\Delta t)$$
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Potenciales Interat\'omicos de pares}
-\subsection{lennardjones}
-El m\'odulo \textbf{lennardjones} hace referencia al potencial de Lennard-Jones, que es de la forma,
-$$U(r_{ij}) = 4\epsilon\left(\left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^6\right)$$
-En donde $r_{ij}$ es la distancia interat\'omica de los \'atomos $i$ y $j$. 
 
-Para el c\'alculo de Fuerzas, la forma del potencial que nos interesa, es aquella fuerza que siente el \'atomo $i$ producida por el \'atomo $j$, la que debe ser implementada en el plugin, para potentiales de pares, para el caso del potencial de Lennard Jones, la fuerza esta dada por,
+\subsection{buckingham}
+\fb{\begin{minipage}{10cm}Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.\end{minipage}}
 
-$$F_{ij} = \frac{-48.0\epsilon}{r_{ij}^2}\left( \left(\frac{\sigma}{r_{ij}}\right)^{12} + \frac{1}{2}\left(\frac{\sigma}{r_{ij}}\right)^6 \right) \vec{r_{ij}}$$
+Est\'e m\'odulo especif\'ica la interacci\'on de buckingham entre los \'atomos, de esta forma, la energ\'ia producida por la interacci\'on de dos part\'iculas $i$ y $j$, queda
 
-en donde $\vec{r_{ij}}$ es el vector distancia entre los \'atomos $i$ y $j$, y $r_{ij}$ es la distancia entre ellos. 
-Las palabras reservadas por el plugin \textbf{lennardjones}, son :
+$$E(\vec{r}_{ij}) = B1 \exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right) - \frac{B2}{(|\vec{r}_{ij}|)^6}$$
 
-\fb{
-\begin{tabular}{lcl}
- epsilon & = & indica el valor de epsilon.\\
- sigma & = & indica el valor de sigma.\\
- cutoff & = & indica el cutoff del potencial.\\
-\end{tabular}
-}
+y la fuerza,
 
-Las unidades en que deben ser ingresados, las constantes, deben ser basadas en que las distancias estan en [\AA] y la energ\'ia debe ser adquirida en [eV].
+$$\vec{F}(\vec{r}_{ij}) = -\frac{B1\exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right)}{|\vec{r}_{ij}|\rho}\vec{r}_{ij} + \frac{6B2}{|\vec{r}_{ij}|^8}\vec{r}_{ij}$$
 
-%\fb{A continuaci\'on, los otros \textbf{potenciales interat\'omicos de pares} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
-
-\subsection{fastlj}
-Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
-
-\subsection{morse}
-Utiliza Potencial de Morse para la interacci\'on de las especies at\'omicas. La energ\'ia que siente una part\'icula $i$ a causa de la precensia de otra part\'icula $j$, si ambas interactuan con un potencial de este estilo, esta dada por :
-
-$$E(\vec{r}_{ij}) = D_e\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)^2$$
-
-en donde $D_e$ es la profundidad del pozo, $a$ es el ancho del pozi y $r_e$ es la distancia en equilibrio. Y entonces, la fuerza que siente un \'atomo $i$ producto de otro \'atomo $j$ est\'a dada por,
-
-$$\vec{F}_{ij} ( \vec{r}_{ij}) = 2aD_e\exp(-a(\vec{r}_{ij}-\vec{r}_e))\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)\frac{\vec{r}}{|\vec{r}|}$$
-
-Las palabras reservadas por el plugin \textbf{morse}, son :
+Las palabras reservadas por el plugin \textbf{buckingham}, son :
 
 \fb{
 \begin{tabular}{lcl}
- depth & = & indica el valor de profundidad del pozo.\\
- a & = & indica el valor del ancho del pozo.\\
- re & = & indica el largo de enlaze en equilibrio.\\
+ B1 & = & indica el valor de la constante B1.\\
+ B2 & = & indica el valor de la constante B2.\\
+ Ro & = & el valor de rho para el potencial.\\
  cutoff & = & indica el cutoff del potencial.\\
 \end{tabular}
 }
@@ -917,31 +1042,89 @@ Las palabras reservadas por el plugin \textbf{harmonic}, son :
 \end{tabular}
 }
 
-\subsection{buckingham}
-\fb{\begin{minipage}{10cm}Buckingham, no incluye directamente parte coulombiana, para ello es necesario a\~nadir como un potencial adicional a ewald u otro similar que a\~nada la parte coulombiana.\end{minipage}}
+\subsection{lennardjones}
+El m\'odulo \textbf{lennardjones} hace referencia al potencial de Lennard-Jones, que es de la forma,
+$$U(r_{ij}) = 4\epsilon\left(\left(\frac{\sigma}{r_{ij}}\right)^{12}-\left(\frac{\sigma}{r_{ij}}\right)^6\right)$$
+En donde $r_{ij}$ es la distancia interat\'omica de los \'atomos $i$ y $j$. 
 
-Est\'e m\'odulo especif\'ica la interacci\'on de buckingham entre los \'atomos, de esta forma, la energ\'ia producida por la interacci\'on de dos part\'iculas $i$ y $j$, queda
+Para el c\'alculo de Fuerzas, la forma del potencial que nos interesa, es aquella fuerza que siente el \'atomo $i$ producida por el \'atomo $j$, la que debe ser implementada en el plugin, para potentiales de pares, para el caso del potencial de Lennard Jones, la fuerza esta dada por,
 
-$$E(\vec{r}_{ij}) = B1 \exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right) - \frac{B2}{(|\vec{r}_{ij}|)^6}$$
+$$F_{ij} = \frac{-48.0\epsilon}{r_{ij}^2}\left( \left(\frac{\sigma}{r_{ij}}\right)^{12} + \frac{1}{2}\left(\frac{\sigma}{r_{ij}}\right)^6 \right) \vec{r_{ij}}$$
 
-y la fuerza,
-
-$$\vec{F}(\vec{r}_{ij}) = -\frac{B1\exp\left(-\frac{|\vec{r}_{ij}|}{\rho}\right)}{|\vec{r}_{ij}|\rho}\vec{r}_{ij} + \frac{6B2}{|\vec{r}_{ij}|^8}\vec{r}_{ij}$$
-
-Las palabras reservadas por el plugin \textbf{buckingham}, son :
+en donde $\vec{r_{ij}}$ es el vector distancia entre los \'atomos $i$ y $j$, y $r_{ij}$ es la distancia entre ellos. 
+Las palabras reservadas por el plugin \textbf{lennardjones}, son :
 
 \fb{
 \begin{tabular}{lcl}
- B1 & = & indica el valor de la constante B1.\\
- B2 & = & indica el valor de la constante B2.\\
- Ro & = & el valor de rho para el potencial.\\
+ epsilon & = & indica el valor de epsilon.\\
+ sigma & = & indica el valor de sigma.\\
  cutoff & = & indica el cutoff del potencial.\\
 \end{tabular}
 }
 
+Las unidades en que deben ser ingresados, las constantes, deben ser basadas en que las distancias estan en [\AA] y la energ\'ia debe ser adquirida en [eV].
+
+\subsection{morse}
+Utiliza Potencial de Morse para la interacci\'on de las especies at\'omicas. La energ\'ia que siente una part\'icula $i$ a causa de la precensia de otra part\'icula $j$, si ambas interactuan con un potencial de este estilo, esta dada por :
+
+$$E(\vec{r}_{ij}) = D_e\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)^2$$
+
+en donde $D_e$ es la profundidad del pozo, $a$ es el ancho del pozi y $r_e$ es la distancia en equilibrio. Y entonces, la fuerza que siente un \'atomo $i$ producto de otro \'atomo $j$ est\'a dada por,
+
+$$\vec{F}_{ij} ( \vec{r}_{ij}) = 2aD_e\exp(-a(\vec{r}_{ij}-\vec{r}_e))\left(1-\exp(-a(\vec{r}_{ij}-\vec{r}_e))\right)\frac{\vec{r}}{|\vec{r}|}$$
+
+Las palabras reservadas por el plugin \textbf{morse}, son :
+
+\fb{
+\begin{tabular}{lcl}
+ depth & = & indica el valor de profundidad del pozo.\\
+ a & = & indica el valor del ancho del pozo.\\
+ re & = & indica el largo de enlaze en equilibrio.\\
+ cutoff & = & indica el cutoff del potencial.\\
+\end{tabular}
+}
+
+\subsection{nullpairpotential}
+Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
+
+\subsection{tabulatedpair}
+Utiliza Potencial de LJ tabulado. De forma similar al m\'odulo anterior pero porcentualmente m\'as r\'apido. Es recomendable utilizarlo para sistemas con grn n\'umero de part\'iculas.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Potenciales Interat\'omicos Met\'alicos}
+
+\subsection{finnissinclair}
+
+\subsection{Gupta}
+
+Al igual que \verb|suttonchen|, el potencial de \verb|gupta| es utilizado para \'atomos met\'alicos, donde los valores para los terminos de pares est\'a dada por:
+
+$$U(r_{ij}) = A\exp{\left(-p\frac{r_{ij}-r_0}{r_0}\right)}$$
+
+en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de muchos cuerpos esta dado por
+
+$$F(\rho_{i}) = -B\sqrt{\rho_i}$$
+
+en donde,
+
+$$\rho_i = \sum_{j\neq i} \exp{\left(-2q_{ij}\frac{r_{ij}-r_0}{r_0}\right)}$$
+
+lo que corresponde a una densidad local del atomo $i$, que depende de todos los atomos $j$ cercanos a \'el. Para el potencial de Gupta, la correcci\'on de la densidad esta dada por,
+
+$$\delta\rho_i=\frac{2\pi\overline{\rho}r_0}{q_{ij}}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{q_{ij}}\right)+2\left(\frac{r_0}{q_{ij}}\right)^2\right]\exp{\left(-2q_{ij}\frac{r_{met}-r_0}{r_0}\right)}$$
+
+Esta correcci\'on de la densidad debe ser aplicada inmediatamente luego de ser calculada la densidad local. La correcci\'on de la energ\'ia para Gupta, se obtiene de esta forma con :
+
+$$\delta U_1 = \frac{2\pi N\overline{\rho}A r_0}{p}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{p}\right)+2\left(\frac{r_0}{p}\right)^2\right]\exp{\left(-p\frac{r_{met}-r_0}{r_0}\right)}$$
+
+Hay que notar que $\delta U_2$ no es requerido si $\rho_i$ ya fue corregido, con $\delta U_2$ de la forma
+
+$$\delta U_2 = \frac{2\pi\overline{\rho} r_0}{q_{ij}}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{q_{ij}}\right)+2\left(\frac{r_0}{q_{ij}}\right)^2\right]\exp{\left(-2q_{ij}\frac{r_{met}-r_0}{r_0}\right)}\left<\frac{NB}{2\sqrt{\rho_i^0}}\right>$$
+
+\subsection{nullmetalpotential}
+
 \subsection{suttonchen}
 Este potencial, se utiliza para interacciones de atomos met\'alicos, es por eso que el plugin \textbf{suttonchen} implementa los m\'etodos virtuales de \verb|metalpotential|, que cuentan con una parte de pares y otro t\'ermino de muchos cuerpos. La parte asociada al t\'ermino de pares, est\'a dado por,
 
@@ -974,83 +1157,20 @@ y la fuerza asociada al potencial de suttonchen que aplica para un par de atomos
 $$\vec{F}(\vec{r}_{ij}) = -\epsilon\left[n\left(\frac{a}{\vec{r}_{ij}}\right)^n - \frac{Cm}{2}(\rho_j^{(-1/2)}+\rho_i^{(-1/2)})\left(\frac{a}{\vec{r}_{ij}}\right)^m\right]\left(\frac{1}{\vec{r}_{ij}^2}\right)\vec{r}_{ij}$$
 
 
-%\fb{A continuaci\'on, los otros \textbf{potenciales interat\'omicos Met\'alicos} son explicados brevemente, pero el trasfondo es similar al ya planteado hasta ahora.}
-
-\subsection{Gupta}
-
-Al igual que \verb|suttonchen|, el potencial de \verb|gupta| es utilizado para \'atomos met\'alicos, donde los valores para los terminos de pares est\'a dada por:
-
-$$U(r_{ij}) = A\exp{\left(-p\frac{r_{ij}-r_0}{r_0}\right)}$$
-
-en donde $r_ij$ es la distancia entre un atomo $i$ y otro atomo $j$ del sistema. El t\'ermino de muchos cuerpos esta dado por
-
-$$F(\rho_{i}) = -B\sqrt{\rho_i}$$
-
-en donde,
-
-$$\rho_i = \sum_{j\neq i} \exp{\left(-2q_{ij}\frac{r_{ij}-r_0}{r_0}\right)}$$
-
-lo que corresponde a una densidad local del atomo $i$, que depende de todos los atomos $j$ cercanos a \'el. Para el potencial de Gupta, la correcci\'on de la densidad esta dada por,
-
-$$\delta\rho_i=\frac{2\pi\overline{\rho}r_0}{q_{ij}}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{q_{ij}}\right)+2\left(\frac{r_0}{q_{ij}}\right)^2\right]\exp{\left(-2q_{ij}\frac{r_{met}-r_0}{r_0}\right)}$$
-
-Esta correcci\'on de la densidad debe ser aplicada inmediatamente luego de ser calculada la densidad local. La correcci\'on de la energ\'ia para Gupta, se obtiene de esta forma con :
-
-$$\delta U_1 = \frac{2\pi N\overline{\rho}A r_0}{p}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{p}\right)+2\left(\frac{r_0}{p}\right)^2\right]\exp{\left(-p\frac{r_{met}-r_0}{r_0}\right)}$$
-
-Hay que notar que $\delta U_2$ no es requerido si $\rho_i$ ya fue corregido, con $\delta U_2$ de la forma
-
-$$\delta U_2 = \frac{2\pi\overline{\rho} r_0}{q_{ij}}\left[r^2_{met}+2r_{met}\left(\frac{r_0}{q_{ij}}\right)+2\left(\frac{r_0}{q_{ij}}\right)^2\right]\exp{\left(-2q_{ij}\frac{r_{met}-r_0}{r_0}\right)}\left<\frac{NB}{2\sqrt{\rho_i^0}}\right>$$
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Potenciales Interat\'omicos Nulos}
-\subsection{nullpairpotential}
-Potencial de pares nulo entre especies. Se utiliza en caso de que se desea imponer una interaccion nula entre un par de especies especies at\'omicas. 
-\subsection{nullpotential}
-Potencial nulo entre especies. Utilizado para anular la interacion entre especies, retorna inmediatamente \verb|NULL| sin necesidad de verificar paridad.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Integradores}
-\subsection{beeman}
-El algoritmo de Beeman es un m\'etodo para integrar num\'ericamente ecuaciones difereciales, para el caso de din\'amica molecular, la posici\'on y velocidad,es similar al m\'etodo de verlet, pero las velocidades son con mejor precisi\'on.
-
-Las f\'ormulas para posici\'on y velocidad estan dadas por:
-
-$$r(t+\Delta t) = r(t) + v(t)\Delta t + \frac{2}{3}a(t)\Delta t^2 - \frac{1}{6}a(t-\Delta t)\Delta t^2 +\mathcal{O}(\Delta t^4)$$
-$$v(t+\Delta t) = v(t) + \frac{1}{3}a(t+\Delta t)\Delta t+\frac{5}{6}a(t)\Delta t-\frac{1}{6}a(t-\Delta t)\Delta t+\mathcal{O}(\Delta t^3)$$
-
-\subsection{euler}
-El integrador de Euler, es el m\'atodo n\'umerico de primer orden para resolver ecuaciones diferenciales ordinarias. Este es el m\'etodo m\'as b\'asico para la integraci\'on num\'erica de las ecuaciones.
-
-Las f\'ormulas para posici\'on esta dada por:
-
-$$r(t+\Delta t) = r(t) + h\times f(t,r(t))$$
-
-\subsection{leapfrog}
-Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de forma alternada. Las posiciones y velocidades estan dadas por:
-$$r(t+\Delta t) = r(t) + v(t)\Delta t + a(t)\frac{\Delta t^2}{2}$$
-$$v(t+\Delta t) = v(t) + \frac{a(t)+a(t+\Delta t)}{2}\Delta t$$
-\subsection{nullintegrator}
-Integrador nulo, solo en caso de que no se requiera mover el sistema, es decir las particulas simplemente \textit{congeladas}.
-\subsection{verlet}
-Es un m\'etodo utilizado para integrar las ecuaciones de Newton de movimiento, las posiciones y velocidades del sistema estan dadas por:
-$$r(t+\Delta t) = 2r(t) - r(t-\Delta t) + a(t)\Delta t^2 + \mathcal{O}(\Delta t^4)$$
-$$v(t+\Delta t) = \frac{r(t+\Delta t) - r(t)}{\Delta t} + \mathcal{O}(\Delta t)$$
-\subsection{velocityverlet}
-M\'etodo similar al de verlet, pero con mejoras respecto a la performance en la integraci\'on, incorporando directamente la velocidad en el sistema, las ecuaciones estan dadas por:
-$$r(t+\Delta t) = r(t) - v(t)\Delta t + \frac{1}{2}a(t)\Delta t^2$$
-$$v(t+\Delta t) = v(t) + \frac{a(t) - a(t + \Delta t)}{2}\Delta t$$
-\subsection{nosehoover}
-Es utilizado para simulacion de ensambles de tipo NVT, en general el m\'etodo corresponde a una modificaci\'on de las ecuaciones de movimiento, donde aparece una masa ficticia en las ecuaciones a resolver.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visualizadores}
+Los visualizadores ordinarios antes de pasar a \verb|lpvisual|, el gran visualizador.
+\subsection {\index{average}average}
+
+\subsection {\index{monitor}monitor}
+
+\subsection {\index{printatoms}printatoms}
+
 \subsection{\index{lpvisual}lpvisual}
-Es un proyecto independiente, desarrollado por Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se encuentra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura
+
+Es un proyecto independiente, desarrollado por Felipe Gonz\'ales y Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se encuentra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura
 
 \begin{figure}[h!]
  \centering
@@ -1086,49 +1206,3 @@ Para la instalaci\'on y configuraci\'on refierase directamente a la documentaci\
 	\tt r&=&Retorna la celda de simulaci\'on a su posici\'on original (con una cara paralela a la pantalla).\\
 \end{tabular}
 }
-
-\subsection{povray}
-Genera diretorios con ficheros pov para visualizar el sistema. Este m\'odulo genera un set de archivos \verb|pov| los cuales son ubicados dentro de un directorio, para un posterior \textit{rendering} para el dise\'no de peliculas o fotograf\'ias de la simulaci\'on. Hasta la fecha el soporte y las caracteristicas del m\'odulo no son muy buenas, sin embargo espera mejorarse en proximas versiones.
-
-Los argumentos requeridos por el m\'odulo povray, son los siguientes,
-
-\fb{
-\begin{tabular}{lcl}
- header & = & Es un nombre previo al nombre \\
-&&de los ficheros \textbf{pov} que ser\'an generados.\\
- direct & = & Nombre del directorio que se crear\'a.\\
- text & = & Orden para poner texto en \\
-&&diferentes posiciones.\\
- background & = & Color del fondo de la imagen. \\
- rotate & = & Orientaci\'on de la c\'amara.\\
- logo   & = & Si desea anadir una imagen. \\
- box  & = & Muestra o no la \textbf{celda} (True/False).\\
- camera & = & Posici\'on de la c\'amara \\
- &&(recomendamos default).\\
-\end{tabular}
-}
-
-Dentro de cada uno de \'estos argumentos, el que m\'as cabe detallar es \textbf{text}, el formato de ingreso de textos para la visualizaci\'on, es el siguiente,
-
-\control{text "Titulo" <pos> <color> [size] (extra)}
-
-Ac\'a las opciones son en el orden requerido. El t\'itulo puede ser cualquier texto, si se utiliza el s\'imbolo ``\% '' entonces el valor de \verb|extra| ser\'a reemplazado (Actualmente : Temp, Step). Las opciones \verb|<pos>| y \verb|<color>| son vectores que deben ingresarse en el formato \verb|<x,y,z>| y corresponden a la posici\'on del texto y los colores, exiten valores por defecto, tales como \verb|<green>|, \verb|<red>| o posiciones como \verb|<dl>| (abajo a la izquierda) que pueden ser utilizadas. Finalmente [size] es el tama\~no escalado del texto. Para una visi\'on m\'as detallada revise el cap\'itulo~\ref{chap:exa}.
-
-% A continuaci\'on un ejemplo t\'ipico de uso de \verb|povray| en una simulaci\'on.
-% 
-% \begin{verbatim}
-% use povray
-%     header shoot-
-%     direct movie
-%     text "Modelacion de Ar" <dl> <green> [1] ()
-%     text "Step = %" <3,3,3> <red> [1] (Step)
-%     text "Temperatura : % [K]" <uc> <blue> [1] (Temp)
-%     text "http://www.gnm.cl/" <dr> <green> [0.5] ()
-%     background <0.2,0.1,0.4>
-%     rotate <0,0,0>
-%     logo "logo-v2.gif" 1.5 <cr>
-% enduse
-% \end{verbatim}
-% 
-% Luego de que los archivos son creados en el directorio ``movie'', es importante que coloque en ese directorio el logo al que los archivos hacen referencia \verb|logo-v2.gif|.
-
