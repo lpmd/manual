@@ -61,7 +61,7 @@ M\'odulos de {\lpmd} que generan celdas at\'omicas de forma autom\'atica.
  \texttt{skewstart} & 1.0 & F & Generador de celdas con m\'etodo skewstart, desarrollado por \textit{K. Refson}, para el programa de din\'amica molecular \textbf{moldy}.\\
  \hline
  \end{tabular}
-\label{tab:modinout}
+\label{tab:cellgen}
 \caption{Tabla con los m\'odulos de entrada y salida utilizados por {\lpmd} y sus utilitarios.}
 \end{table}
 
@@ -103,7 +103,7 @@ Act\'uan sobre la celda de simulaci\'on y son capaces de seleccionar \'atomos de
  \texttt{tag} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su tag.\\
  \hline
  \end{tabular}
-\label{tab:modmanager}
+\label{tab:filtros}
 \caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
 \end{table}
 
@@ -209,7 +209,7 @@ Calculan caracteristicas temporales del sistema, estas propiedades no pueden ser
  \texttt{vacf} & 2.0 & S & Calcula la funci\'on de autocorrelaci\'on de velocidades.\\
  \hline
  \end{tabular}
-\label{tab:modproper}
+\label{tab:modtempproper}
 \caption{Tabla con los m\'odulos generales utilizados por lpmd.}
 \end{table}
 
@@ -239,7 +239,7 @@ Resuelven las ecuaciones de movimiento del sistema.
  \texttt{verlet} & 2.0 & S & Integrador de Verlet.\\
  \hline
  \end{tabular}
-\label{tab:modginteg}
+\label{tab:modinteg}
 \caption{Tabla con los m\'odulos generales utilizados por lpmd.}
 \end{table}
 
@@ -283,7 +283,7 @@ Son los que determinan como interactuan los \'atomos durante la simulaci\'on.
  \texttt{suttonchen} & 2.0 & S & Interacci\'on at\'omica con potencial de Sutton-Chen.\\
  \hline
  \end{tabular}
-\label{tab:modpotentials}
+\label{tab:modmetalpotentials}
 \caption{Tabla con los Potenciales interat\'omicos con los que cuenta {\lpmd}.}
 \end{table}
 

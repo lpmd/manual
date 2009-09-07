@@ -33,7 +33,7 @@ Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion c
 \end{tabular}
 }
 
-\subsection{lpmd}
+\subsection{lpmd}\label{subsec:lpmdformato}
 
 Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comrpimidos con zlib. Entre las opciones principales destacan
 
@@ -1161,7 +1161,8 @@ $$\vec{F}(\vec{r}_{ij}) = -\epsilon\left[n\left(\frac{a}{\vec{r}_{ij}}\right)^n 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Visualizadores}
-Los visualizadores ordinarios antes de pasar a \verb|lpvisual|, el gran visualizador.
+Los visualizadores ordinarios antes de pasar a \verb|lpvisual|, el gran visualizador, son:
+
 \subsection {\index{average}average}
 
 \subsection {\index{monitor}monitor}
@@ -1170,39 +1171,254 @@ Los visualizadores ordinarios antes de pasar a \verb|lpvisual|, el gran visualiz
 
 \subsection{\index{lpvisual}lpvisual}
 
-Es un proyecto independiente, desarrollado por Felipe Gonz\'ales y Sergio Davis, en el cu\'al se logra visualizar en tiempo real, las posiciones at\'omicas de la simulaci\'on. Hasta el momento se encuentra en etapa de desarrollo, pero ya ha mostrado resultados muy interesantes como se puede observar en la figura
+LPVisual es un proyecto independiente, desarrollado por Felipe Gonz\'alez y Sergio Davis. Consiste en un visualizador basado en OpenGL que permite observar las configuraciones at\'omicas en tiempo real, as\'i como monitorear y graficar propiedades de la configuraci\'on a medida que esta evoluciona.\\
 
-\begin{figure}[h!]
- \centering
- \includegraphics[scale=.25]{lpvisual.png}
- \label{fig:lpvisual}
- \caption{Screenshoot de {\lpmd} ejecutando una simulaci\'on de din\'amica molecular, mientras se observan las configuraciones en tiempo real con \textbf{lpvisual}.}
-\end{figure}
-
-Esta completamente basado en OpenGL, y el soporte es completamente independiente, cualquier duda o consulta respecto al m\'odulo, contacte directamente al autor.
 
 La descarga de \textbf{lpvisual}, se puede realizar a trav\'es de \verb|subversion|, con:
 
 \control{svn co sn://www.gnm.cl/lpmd/lpvisual lpvisual}
 
-Para la instalaci\'on y configuraci\'on refierase directamente a la documentaci\'on del m\'odulo.
+Para la instalaci\'on y configuraci\'on refierase directamente a la documentaci\'on del m\'odulo. Cualquier duda o consulta respecto al m\'odulo, contacte directamente a los autores.\\
 
+En la figura~\ref{fig:lpvisual1} podemos apreciar las principales caracter\'isticas del visualizador:
+\begin{itemize}
+\item En la esquina superior derecha, la ventana principal de simulaci\'on. Aqu\'i se pueden ver los \'atomos en movimiento encerrados en la caja de visualizaci\'on, la cual puede o no tener condiciones de borde peri\'odicas. En la esquina superior derecha de esta pantalla se encuentra el controlador de zoom y de rotaciones, el cual puede ser manejado mediante los click del mouse. Por \'ultimo, los ejes de coordenadas se muestran en una esquina de la caja, los cuales evitan perder el punto de referencia cuando la c\'amara rote.
+\item En la esquina superior izquierda encontramos el graficador, el cual acepta interactivamente, al cargar la simulaci\'on, las propiedades que el usuario desee graficar (temperatura, presi\'on, energ\'ia potencia, energ\'ia cin\'etica, energ\'ia total, etc.).
+\item En la esquina inferior derecha, se encuentra la ventana de datos de simulaci\'on. Cuando el programa es cargado, el usuario puede elegir qu\'e propiedades desea que sean monitoreadas num\'ericamente en esta ventana. Esto es independiente de las propiedades que est\'en siendo monitoreadas en el archivo de control (ver cap.~\ref{chap:input}).
+\item Por \'ultimo, en la esquina inferior izquierda, se encuentra la terminal de texto desde donde se ejecut\'o el programa.
+\end{itemize}
+
+\newpage
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=16cm]{lpvisual1.png}
+ \caption{Captura de pantalla mientras se ejecuta una simulaci\'on de din\'amica molecular con {\tt lpvisual}.}
+ \label{fig:lpvisual1}
+\end{figure}
+
+
+\begin{figure}[h!]
+ \centering
+ \subfigure{\includegraphics[width=8cm]{lpvisual2.png}}
+ \subfigure{\includegraphics[width=8cm]{lpvisual3.png}}
+ \subfigure{\includegraphics[width=8cm]{lpvisual4.png}}
+ \subfigure{\includegraphics[width=8cm]{lpvisual5.png}}
+ \label{fig:lpvisual2}
+ \caption{Impacto de un proyectil sobre una celda fcc de 9000 atomos de cobre.}
+\end{figure}
+
+
+\newpage
 \subsubsection{Opciones lpvisual}
 {\bf lpvisual} ofrece varias opciones durante la visualizaci\'on que son ingresandas tanto del mouse como del teclado:\\
 
-\fb{
-\begin{tabular}[fragile]{lcp{9cm}}
-	LEFT\_MOUSE\_BUTTON&=& Al presionar esta tecla y mover el mouse simult\'aneamente, permite rotar la celda de simulaci\'on.\\
-	RIGHT\_MOUSE\_BUTTON&=& Al presionar esta tecla y mover el mouse simult\'aneamente, permite trasladar la celda de simulaci\'on.\\
-	MIDDLE\_MOUSE\_BUTTON&=&Al presionar esta tecla y mover el mouse simult\'aneamente, permite acercar (hacer $zoom$ a) la celda de simulaci\'on.\\ 
-	\tt q&=&Permite cerrar la ventana de visualizaci\'on (no cierra el archivo que se est\'a ejecutando).\\
-	\tt p&=&Pausa la simulaci\'on.\\
-	\tt c&=&Permite mostrar/ocultar el marco de referencia de la celda de simulaci\'on (encierra la celda de simulaci\'on en un $wirecube$).\\
-	\tt i&=&Permite mostrar/ocultar informaci\'on de la simulaci\'on que se est\'a ejecutando (energ\'ia total del sistema, temperatura, presi\'on y cantidad de \'atomos en la celda.\\
-	\tt l&=&Cambia el tipo de marco de referencia de la celda de simulaci\'on. Los tipos de marcos de referencia son $wirecube$ (placas transparentes) y $solidcube$ (placas opacas).\\
-	\tt a&=&Permite mostrar/ocultar los ejes de coordenadas.\\
-	\tt Z&=&Aumenta el $zoom$ manualmente en una unidad.\\
-	\tt z&=&Disminuye el $zoom$ manualmente en una unidad.\\
-	\tt r&=&Retorna la celda de simulaci\'on a su posici\'on original (con una cara paralela a la pantalla).\\
-\end{tabular}
-}
+\begin{longtable}[fragile]{|lcp{10.5cm}|}\hline
+\multicolumn{3}{|>{\columncolor[rgb]{.45,.45,.45}}c|}{Opciones del Teclado}\\\hline
+\tt a&:&Esconde/muestra los ejes de coordenadas.\\
+\tt c&:&Esconde/muestra los bordes de la celda de simulaci\'on.\\
+\tt f&:&Pantalla completa.\\
+\tt F&:&Escala la ventana a su tama\~no original.\\
+\tt i&:&Esconde/muestra los controladores zoom y rotaciones.\\
+\tt l&:&Cambia los bordes de la celda de simulaci\'on entre placas y espiras.\\
+\tt o&:&Selecci\'on de perspectiva (ortogr\'afica / perspectiva).\\
+\tt p&:&Pausa.\\
+\tt q&:&Salir.\\
+\tt r&:&Reset: Deshace rotaciones, movimientos, zoom (restaura la escena).\\
+\tt s&:&Activa/desactiva la selecci\'on de \'atomos.\\
+\tt t&:&Activa/desactiva la rotaci\'on autom\'atica.\\
+\tt z&:&Comienza/detiene el acercamiento.\\
+\tt Z&:&Comienza/detiene el alejamiento.\\
+\tt +&:&En el modo de selecci\'on de \'atomos, va al \'atomo siguiente.\\
+\tt -&:&En el modo de selecci\'on de \'atomos, va al \'atomo anterior.\\
+ \tt 1->\tt 9&:&En el modo de selecci\'on de \'atomos, va al \'atomo tipeado (p. ej. ``38'').\\
+{\tt CTRL}+{\tt+}&:&Aumenta el factor de zoom (el acercamiento es m\'as r\'apido).\\
+{\tt CTRL}+{\tt-}&:&Disminuye el factor de zoom (el acercamiento es m\'as lento).\\
+$\bs\uparrow$, $\bs\downarrow$&:&Realizan rotaciones verticales.\\
+$\bs\leftarrow$, $\bs\rightarrow$&:&Realizan rotaciones horizontales.\\
+{\tt SHIFT}+$\bs\uparrow$, {\tt SHIFT}+$\bs\downarrow$&:&Realizan rotaciones verticales en 5$^o$.\\
+{\tt SHIFT}+$\bs\leftarrow$, {\tt SHIFT}+$\bs\rightarrow$&:&Realizan rotaciones horizontales en 5$^o$.\\
+{\tt CTRL}+$\bs\uparrow$, {\tt CTRL}+$\bs\downarrow$&:&Realizan traslaciones verticales.\\
+{\tt CTRL}+$\bs\leftarrow$, {\tt CTRL}+$\bs\rightarrow$&:&Realizan traslaciones horizontales.\\
+{\tt F1}&:&Abre esta ventana.\\
+{\tt F2}&:&Abre la ventana de datos de simulaci\'on.\\
+{\tt F3}&:&Abre la ventana de gr\'aficos.\\
+{\tt RePag}&:&Cambia la fuente de las letras a la pr\'oxima disponible.\\
+{\tt AvPag}&:&Cambia la fuente de las letras a la anterior disponible.\\\hline
+\multicolumn{3}{|>{\columncolor[rgb]{.45,.45,.45}}c|}{Opciones del Mouse}\\\hline
+\multicolumn{1}{|p{4.7cm}}{Click en las flechas horizontales}&:& Rota lentamente la escena horizontalmente.\\
+\multicolumn{1}{|p{4.7cm}}{Click en las flechas verticales de la esquina}&:& Rota lentamente la escena verticalmente.\\
+\multicolumn{1}{|p{4.7cm}}{Click en las flechas verticales a la izquierda}&:& La camara se acerca o se aleja de la escena.\\\hline
+\multicolumn{3}{|>{\columncolor[rgb]{.45,.45,.45}}c|}{Opciones de Movimiento del Mouse}\\\hline
+LEFT\_MOUSE\_BUTTON&:& Al presionar esta tecla y mover el mouse simult\'aneamente, permite rotar la celda de simulaci\'on.\\
+RIGHT\_MOUSE\_BUTTON&:& Al presionar esta tecla, se desplega el men\'u de la ventana activa.\\
+MIDDLE\_MOUSE\_BUTTON&:&Al presionar esta tecla y mover el mouse simult\'aneamente, permite acercar (hacer $zoom$ a) la celda de simulaci\'on.\\\hline
+\end{longtable}
+
+\newpage
+\subsubsection{Ejemplos}
+
+\begin{enumerate}
+\item Supongamos que tenemos un archivo \verb+configuracion.lpmd+ en donde se encuentran las posiciones at\'omicas, velocidades y colores de 9703 \'atomos de cobre en formato {\lpmd} (ver sec.~\ref{subsec:lpmdformato}). La cabecera del archivo tendr\'ia el siguiente aspecto:\\
+
+ \begin{verbatim}
+ LPMD 2.0
+ HDR SYM X Y Z VX VY VZ rgb 
+ 9703
+ 70.395 0 0 0 70.395 0 0 0 150
+ Cu 0.474872 0.448718 0.950733 0 0 -0.04 <1,1,1>
+ Cu 0.526154 0.448718 0.950733 0 0 -0.04 <1,1,1>
+ Cu 0.449231 0.474359 0.950733 0 0 -0.04 <1,1,1>
+ Cu 0.474872 0.474359 0.9387 0 0 -0.04 <1,1,1>
+ Cu 0.474872 0.5 0.950733 0 0 -0.04 <1,1,1>
+ Cu 0.500513 0.5 0.9387 0 0 -0.04 <1,1,1>
+ \end{verbatim}
+
+Notamos que los \'atomos de cobre, en lugar de tener su color natural, aparecen con un color modificado por la \'ultima columna: \verb+<1,1,1>+, es decir, blancos. El tama\~no de esta celda es de $70.395\times70.395\times150$. Si quisieramos visualizar la configuraci\'on guardada en este archivo desde la terminal de texto, debemos llamar al manejador de visualizadores \index{lpmd-visualizer}\verb+lpmd-visualizer+ (ver sec.~\ref{sec:lpmd-visualizer}), el cual llama al visualizador \verb+lpvisual+ mediante
+
+\control{lpmd-visualizer -i lpmd:file=configuracion.lpmd -u lpvisual -r}
+
+El conjunto de comandos que precede a \verb+-i+ es propio del formato {\lpmd}, visto en la secci\'on~\ref{subsec:lpmdformato}. A continuaci\'on, se le pide al visualizador que utilice \verb+lpvisual+ con las opciones por defecto (nada adicional fue especificado). Por \'ultimo, el comando \verb+-r+ lee ($reads$) los vectores de celda desde dentro del archivo (el formato {\lpmd} tiene la ventaja de contener los vectores de celda, por lo que el usuario no tiene necesidad de especificarlos).
+
+\item Supongamos que ahora deseamos visualizar una configuraci\'on de \'atomos guardada en el archivo \verb+atomos.xyz+, contenidos en una celda de $50\times20\times40$; pero esta vez queremos que la visualizaci\'on empiece con opciones distintas a las fijadas por defecto, como por ejemplo, el lugar desde donde queremos mirar la celda. En este caso, ejecutamos, por ejemplo,
+
+\control{lpmd-visualizer -i xyz:file=atomos.xyz -u lpvisual:zenith=90,azimuth=45 -L 50,20,40}
+
+Nuevamente, lo que precede a \verb+-i+ es propio del formato del archivo (formato \verb+xyz+ en este caso, lo que significa que debemos dar el tama\~no de celda con la opci\'on \verb+-L+). Al \verb+lpvisual+ le pasamos los \'angulos de visualizaci\'on en coordenadas polares, donde, en la notaci\'on habitual, \verb+azimuth+ es el \'angulo azimutal $\varphi$ y \verb+zenith+ es el \'angulo cenital $\theta$. En este caso, $\theta=90^o$ y $\varphi=45^o$, lo que significa que
+
+\begin{align}
+x&=\sin\theta\cos\varphi=\frac1{\sqrt2}\\
+y&=\sin\theta\sin\varphi=\frac1{\sqrt2}\\
+z&=\cos\theta=0
+\end{align}
+
+por lo tanto, la c\'amara se situar\'a en un vector proporcional al vector unitario $(x,y,z)=\frac{1}{\sqrt2}(1,1,0)$. La constante de proporcionalidad es el m\'odulo de la diagonal de la celda de simulaci\'on.
+
+\item A continuaci\'on mostramos un fichero de control en donde la celda de entrada \verb+input+ (equivalente a \verb+-i+) no es un archivo, sino una celda de oro generada por el \emph{plugin} \verb+crystal3d+. En este fichero se carga \verb+lpvisual+ con todas las disponibles que \'este posee, para visualizar los primeros 10000 pasos de simulaci\'on (\verb+end=10000+):
+
+\begin{multicols}{2}
+\setlength{\columnseprule}{.5pt}
+\begin{verbatim}
+#######################################
+# System file of Au crystal           #
+# using LPMD                          #
+#######################################
+
+cell cubic 32.08
+input crystal3d \
+       type=fcc symbol=Au nx=8 ny=8 nz=8
+output module=lpmd \
+	      file=au.lpmd each=15 level=1
+periodic true true true
+steps 750000
+
+
+monitor properties=step,kinetic-energy,\
+        potential-energy,virial-pressure,\
+	total-energy,temperature \
+	output=au.out start=0 end=750000 each=1
+
+######################################
+########## Integrator ################
+######################################
+
+use velocityverlet
+ dt 1.0
+enduse
+
+######################################
+############ CellManager #############
+######################################
+
+use linkedcell
+ mode auto
+ cutoff 7.5
+enduse
+
+#######################################
+########## Potential ##################
+#######################################
+
+# Parameters for gold
+use suttonchen as sc
+ e 0.013
+ n 10
+ a 4.08
+ m 8
+ c 34.408
+ cutoff 7.1
+enduse
+
+
+
+######################################
+######### Tempscaling ################
+######################################
+
+#Aplicar un escalamiento de t de 300K
+prepare temperature t=300.0
+
+use tempscaling as tmpsc
+ from 300
+ to 300
+enduse
+
+
+######################################
+######### CellScaling ################
+######################################
+
+#Estirar la celda
+use cellscaling as cs
+ percent 1
+enduse
+
+######################################
+######### Visualization ##############
+######################################
+
+#Visualizar la simulacion
+use lpvisual
+ width  640
+ height 480
+ radius 0.5
+ quality 3
+ azimuth 0.0
+ zenith -90.0
+ background white
+ autorotate true
+ perspective false
+ properties potential-energy,kinetic-energy
+ plot total-energy,temperature
+enduse
+
+#--------------------------------------#
+#           use plugins                #
+#--------------------------------------#
+cellmanager linkedcell
+integrator velocityverlet
+potential sc Au Au
+apply cs start=70000 end=700000 each=70000
+apply tmpsc start=0 end=20000 each=50
+visualize lpvisual start=0 end=10000 each=1
+
+
+\end{verbatim}
+\end{multicols}
+
+- Esto visualiza la simulaci\'on cada 50 pasos (each) durante los primeros 10000 pasos (\verb+end+) de simulacion, comenzando desde el paso inicial (\verb+start+).\\
+
+- Los par\'ametros \verb+width+ y \verb+heigh+ dan el ancho de la ventana deseados, mientras que \verb+radius+ y \verb+quality+ dan el radio de los atomos y su calidad (que tan parecidos a una esfera ser\'an), respectivamente.\\
+
+- Con \verb+azimuth+ ($\varphi$) y \verb+zenith+ ($\theta$) podemos dar las coordenadas esf\'ericas angulares que determinan el vector posicion inicial de la camara.\\
+
+- Con \verb+backgroun+, elegimos el fondo de la pantalla blanco (\verb+white+). Fondos disponibles: white, gray, orange, black (default).\\
+
+- Con \verb+autorotate+, iniciamos la simulacion en rotaci\'on automatica.\\
+
+- \verb+perspective+ inicia una visualizaci\'on ortorombica (\verb+perspective=false+).\\
+
+- Finalmente, \verb+properties+ son las propiedades cuyo valor numerico sera monitoreado en una ventana secundaria del visualizador, mientras que \verb+plot+ ser\'an las propiedades que se graficar\'an en otra ventana independiente mientras transcurre la simulaci\'on.                         
+
+\end{enumerate}
+
+

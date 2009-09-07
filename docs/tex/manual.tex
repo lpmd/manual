@@ -2,22 +2,33 @@
 
 \usepackage{graphicx,fancybox,wrapfig}
 \usepackage{fullpage,multicol}
+\usepackage{multirow}
+\usepackage{colortbl}
 \usepackage{subfigure}
 \usepackage{rotating}
 \usepackage{verbatim}
+\usepackage{amssymb}
+\usepackage{amsmath}
 
 \usepackage[spanish]{babel}
 \usepackage{color} %color letters
-\usepackage[colorlinks]{hyperref} %internal links
 \usepackage{makeidx} %makes an index (you must use "makeindex" program first)
 \usepackage[left=2.2cm,right=1.7cm,top=1cm,bottom=3.5cm]{geometry} % Specify page margins
 \usepackage{fancyhdr} % Headers and Footers.
+\usepackage{hyperref} %internal links
+\usepackage{longtable}
+\hypersetup % Setting hyperref options
+{
+ colorlinks=true,
+ urlcolor=blue
+}
 \makeindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%NEWCOMMANDS DEFINITIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\lpmd}{{\bf lpmd}}
+\def\lpmd{{\tt lpmd}}
+\def\bs{\boldsymbol}
 \newcommand{\fumfun}[4]{\begin{center}\begin{tabular}{|c|c|c|c|}\hline
  Flag & Work & Test & Mand\\\hline
 #1 & #2 & #3 & #4 \\\hline
@@ -32,7 +43,7 @@
 \newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
 %\newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[scale=.3]{#1}\caption{#2}\label{fig:#3}\end{minipage}}\end{figure}}
 \newcommand{\cajafi}[3]{\begin{figure}[h!]\centering\includegraphics[scale=.35]{#1}\caption{#2}\label{fig:#3}\end{figure}}
-\newcommand{\control}[1]{\begin{center}\begin{minipage}{10cm}\texttt{#1}\end{minipage}\end{center}}
+\newcommand{\control}[1]{\begin{center}\texttt{#1}\end{center}}
 
 \newcommand {\foto}[4]{\begin{figure}
 %   \begin{framed}
@@ -46,19 +57,22 @@
 %   \end{framed}
    \end{figure}
    }
+%--------------------------------- PAGE STYLE ----------------------------------%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\pagestyle{fancy}																%
-\fancyhf{}																		%
-\fancyhead[LE]{{\bf\thepage}\qquad{\color[rgb]{0.094,.4,0}\small\leftmark}}		%
-\fancyhead[RE,LO]{\scriptsize\sl\rightmark}									%
+\pagestyle{fancy}                                                               %
+\fancyhf{}                                                                      %
+\fancyhead[LE]{{\bf\thepage}\qquad{\color[rgb]{0.094,.4,0}\small\leftmark}}     %
+\fancyhead[RE,LO]{\scriptsize\sl\rightmark}                                     %
 \fancyhead[RO]{{\color[rgb]{0.094,.4,0}\small\leftmark }\qquad{\bf\thepage}}	%
-\fancyfoot[C]{\thepage}															%
-\fancypagestyle{plain}{%														%
-\fancyhf{}																		%
-\fancyfoot[C]{\thepage}															%
-\renewcommand{\headrulewidth}{0mm}}												%
-\renewcommand{\headrulewidth}{.3mm}												%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\fancyfoot[C]{\thepage}                                                         %
+\fancypagestyle{plain}                                                          %
+{                                                                               %
+ \fancyhf{}                                                                     %
+ \fancyfoot[C]{\thepage}                                                        %
+ \renewcommand{\headrulewidth}{0mm}                                             %
+}                                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\headrulewidth}{.3mm}
 \renewcommand{\indexname}{\'Indice Alfab\'etico}
 \renewcommand{\contentsname}{Contenidos}
 \headsep 0.3in
@@ -139,7 +153,7 @@
 \printindex
 \end{document}
 
-%%%%%%%%%%%%%%%%%%5
+%%%%%%%%%%%%%%%%%%
 %%Codigo adicional que no esta listo para ser puesto en el documento
 %%%%%%%%%%%%%%%%%%
 
