@@ -3,7 +3,7 @@
 
 En \'este cap\'itulo se dar\'a una descripci\'on general de los m\'odulos con los que cuenta lpmd, as\'i como tambi\'en propiedades de los mismos, no todos tendr\'an ejemplos, m\'as bien se pretende dar una descripci\'on de lo que es capaz de realizar cada m\'odulo, sin embargo puede encontrar muchos ejemplos en el cap\'itulo~\ref{chap:exa}.
 
-A continuaci\'on veremos los m\'odulos y sus detalles dependiendo de su tipo, en cada una de las secciones siguientes.
+A continuaci\'on veremos los m\'odulos y sus detalles dependiendo de su tipo, en cada una de las secciones siguientes. La intenci\'on principal de este cap\'itulo es tener un punto de referencia para los m\'odulos que vienen incorporados en {\lpmd}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,10 +14,10 @@ Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que
 \control{input module=mod file=.. opc1=.. ...  opcN=...}
 \control{output module=mod file=.. opc1=.. ... opcN=...}
 
-en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo \verb|file| una opci\'on com\'un a la mayot\'ia de los m\'opdulos de entrada/salida.
+en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo \verb|file| una opci\'on com\'un a la mayor\'ia de los m\'odulos de entrada/salida.
 
 \subsection{dlpoly}
-Este plugin, pretende dar una soluci\'on tipica y eficiente a los archivos de entrada que el usuario ya posee en \verb|dlpoly| y que el trabajo de migrar estos archivos a otras configuraciones podria implicar una inversion de tiempo.
+Este plugin, pretende dar una soluci\'on eficiente a los archivos de entrada o salida que el usuario ya posee en alguno de los formatos del programa \verb|dl_poly| (ficheros \verb|HISTORY| y \verb|CONTROL|) y ahorrar el tiempo y trabajo que implica migrar estos archivos a otras configuraciones .
 
 Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
 
@@ -28,14 +28,14 @@ Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion c
  level & = & Nivel del archivo (0,1,2).\\
  preiodicity & = & Especifica \textit{key} de periodicidad del \\
  &&fichero CONFIG.\\
- ftype & = & Especif\'ica el typo de archivo, \texttt{HISTORY} o\\
+ ftype & = & Especif\'ica el tipo de archivo, \texttt{HISTORY} o\\
  &&\texttt{CONFIG}, a ser le\'ido.\\
 \end{tabular}
 }
 
 \subsection{lpmd}\label{subsec:lpmdformato}
 
-Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comrpimidos con zlib. Entre las opciones principales destacan
+Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comprimidos con zlib. Entre las opciones principales destacan
 
 \fb{
 \begin{tabular}{lcl}
@@ -82,7 +82,7 @@ El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero
  level & = & indica el nivel del fichero, estos pueden ser \\
            &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
  coords & = & utilizado para ``posicionar'' una celda que \\
-           &&ha sido leida, sus valores pueden ser \\
+           &&ha sido le\'ida, sus valores pueden ser \\
            &&centered/uncentered.\\
  inside & = & Puede ser true/false, indica si los \'atomos que \\
           &&est\'an fuera de una celda se deben reubicar.\\
@@ -163,15 +163,15 @@ Consideremos por ejemplo una celda c\'ubica de \textbf{Fe} con un tama\~no de 10
 
 \begin{itemize}
  \item \textbf{Especificamos el detalle del cristal}
-       \control{cell crystall a=10 b=10 c=10 alpha=90 beta=90 gamma=90}
+       \control{cell crystall a=10 b=10 c=10 alpha=90\textbackslash beta=90 gamma=90}
  \item \textbf{Generamos una celda  fcc dentro del cristal}
-       \control{input module=crystal3d type=fcc symbol=Fe nx=3 ny=3 nz=3}
+       \control{input module=crystal3d type=fcc symbol=Fe\textbackslash nx=3 ny=3 nz=3}
 \end{itemize}
 
 Esto generar\'a entonces una celda cristalina \verb|fcc| con par\'ametro de red $10/3 = 3.33$, para comenzar la simulaci\'on.
 
 \subsection{crystal2d}
-A diferencia de los generadores de cristalprevios, este m\'odulo genera cristales simples bidimensionales, los argumentos requeridos para generar son:
+A diferencia de los generadores de cristalprevios, este m\'odulo genera cristales simples bidimensionales, los argumentos requeridos para generar estos, son:
 
 \fb{
 \begin{tabular}{lcl}
@@ -189,7 +189,7 @@ Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano 
  \item \textbf{Especificamos el detalle del cristal}
        \control{cell crystall a=10 b=10 c=0 alpha=90 beta=90 gamma=90}
  \item \textbf{Generamos una estructura bidimensional dentro del cristal}
-       \control{input module=crystal2d a=2 b=2 symbol=Fe gamma=60 nx=2 ny=2}
+       \control{input module=crystal2d a=2 b=2 symbol=Fe gamma=60\textbackslash nx=2 ny=2}
 \end{itemize}
 
 \subsection{voronoi}
@@ -227,7 +227,7 @@ Podemos ver el resultado de la figura~\ref{fig:voronoi-1}, si esta celda quisier
 
 
 \subsection{skewstart}
-M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regulr para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
+M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular \textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no perdi\'odica suficientemente regular para garantizar una separaci\'on m\'inima entre los \'atomos. Las opciones junto con la forma de generar una celda con \textit{skewstart}, se describe a continuaci\'on:
 
 \fb{
 \begin{tabular}{lcl}
@@ -237,7 +237,7 @@ M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular 
 \end{tabular}
 }
 
-Al igual que los m\'etodos generadores de celda previos, el detalle general del cristal es entregado con la orden \verb|cell|, y el resto specificadio por el m\'odulo, consideremos una cleda de arg\'on de 108 \'atomos con un tamano de 20 \AA y que inicializacmos las posiciones at\'omicas con el m\'etodo \textit{skewstart}
+Al igual que los m\'etodos generadores de celda previos, el detalle general del cristal es entregado con la orden \verb|cell|, y el resto especificadio por el m\'odulo, consideremos una celda de arg\'on de 108 \'atomos con un tama\~no de 20 \AA~ y que inicializamos las posiciones at\'omicas con el m\'etodo \textit{skewstart}
 
 \begin{itemize}
  \item \textbf{Especificamos el detalle del cristal}
@@ -263,7 +263,7 @@ Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido q
 \end{itemize}
 
 \subsection{minimumimage}
-Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que otros m\'etodos, pero en el s\'olo se necesita ingresar el radio de corte del sistema. Este m\'etodo no es bueno cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
+Uiliza el m\'etodo de m\'inima imagen para realizar los procesos. Es mucho m\'as lento que otros m\'etodos, pero en el s\'olo se necesita ingresar el radio de corte del sistema. Este m\'etodo no sirve cuando el radio de corte es del orden del tama\~no de la mitad de la celda de simulaci\'on.
 
 \begin{itemize}
  \item \textbf{Cargando el M\'odulo}
@@ -303,7 +303,7 @@ Selecciona los \'atomos que se encuentran dentro de una regi\'on rectangular def
 \begin{tabular}{lcl}
  x & = & Rango en la direcci\'on \texttt{x}.\\
  y & = & Rango en la direcci\'on \texttt{y}.\\
- x & = & Rango en la direcci\'on \texttt{z}.\\
+ z & = & Rango en la direcci\'on \texttt{z}.\\
 \end{tabular}
 }
 
@@ -314,7 +314,7 @@ Veamos un filtrado t\'ipico utilizando \verb|box|.
        \control{filter box x=0-5 y=0-6 z=10-15}
 \end{itemize}
 
-Con \'esto podemos seleccionar los \'atomos que se encuentran dentro de la regi\'on del espacio definida para cada uno de los ejes de nuestros vectores base.
+Con \'esto podemos seleccionar los \'atomos que se encuentran dentro de la regi\'on del espacio definida para cada uno de los ejes de nuestros vectores base en los largos espec\'ificos.
 
 \subsection{element}
 Selecciona a los \'atomos segun el elemento al que pertenecen. Las opciones del plugin \verb|element| est\'an dadas por,
@@ -325,17 +325,16 @@ Selecciona a los \'atomos segun el elemento al que pertenecen. Las opciones del 
 \end{tabular}
 }
 
-Consideremos por ejemplo eliminar los \'atomos de \verb|H| de una muestra original, para ello :
+Consideremos por ejemplo seleccionar los \'atomos de \verb|H| de una muestra original, para ello :
 
 \begin{itemize}
  \item \textbf{Eliminando \'atomos de} \texttt{H}.
        \control{filter species symbol=H}
 \end{itemize}
 
-As\'i subdividimos la celda en una grilla de 10x10x10. Para generar las listas de vecinos de cada \'atomo.
 
 \subsection{index}
-Selecciona a los \'atomos seg\'un su indice, muy utilizado para igualar configuraciones antiguas en donde el orden de los \'atomos señalaba alguna caracter\'istica. Las opciones del plugin \verb|element| est\'an dadas por,
+Selecciona a los \'atomos seg\'un su indice, muy utilizado para igualar configuraciones antiguas en donde el orden de los \'atomos se\~nalaba alguna caracter\'istica. Las opciones del plugin \verb|index| est\'an dadas por,
 
 \fb{
 \begin{tabular}{lcl}
@@ -353,12 +352,12 @@ Consideremos por ejemplo eliminar los atomos del 1 al 3 o bien del 1 al 50:
 \end{itemize}
 
 \subsection{sphere}
-Selecciona a los \'atomos ubicados dentro de una regi''on esf\'erica, las opciones del plugin son :
+Selecciona a los \'atomos ubicados dentro de una regi\'on esf\'erica, las opciones del plugin son :
 
 \fb{
 \begin{tabular}{lcl}
  radius & = & Radio de la esfera en \AA.\\
- center & = & Centro de la esfera, anotado como vector <a,b,c>.\\
+ center & = & Centro de la esfera, anotado como vector $\langle a,b,c\rangle$.\\
 \end{tabular}
 }
 
@@ -370,7 +369,7 @@ Consideremos por ejemplo seleccionar s\'olo los \'atomos pertenecientes a una re
 \end{itemize}
 
 \subsection{tag}
-Selecciona a los \'atomos segun alg\'un \verb|tag| que los caracterize, es decir alguna etiqueta propia de los \'atomos, uno puede aplicarle tag a los \'atomos seg\'un nuestras propias necesidades, sin embargo tambi''en existen \verb|tag| propios de {\lpmd}, tales como \verb|fixedpos|, \verb|fixedvel|, etc. Las opciones del plugin son :
+Selecciona a los \'atomos segun alg\'un \verb|tag| que los caracterize, es decir alguna etiqueta propia de los \'atomos, uno puede asignar tag a los \'atomos seg\'un nuestras propias necesidades, sin embargo tambi\'en existen \verb|tag| propios de {\lpmd}, tales como \verb|fixedpos|, \verb|fixedvel|, etc que son manejados por la \verb|API|. Las opciones del plugin son :
 
 \fb{
 \begin{tabular}{lcl}
@@ -392,7 +391,7 @@ Consideremos por ejemplo seleccionar los \'atomos que tienen posicion fija
 
 Los plugins modificadores alteran ciertas caracter\'isticas de un set de \'atomos o de la celda de simulaci\'on completa, es decir las modificaciones pueden aplicarse de forma filtrada, por ejemplo :
 
-\control{apply modify-module start=... end=... each=... over filter-module <filter-options>}
+\control{apply modify-module start=... end=... each=... over\textbackslash filter-module <filter-options>}
 
 Lo que nos da mayor flexibilidad en el manejo de la simulaci\'on. Sin embargo si queremos modificar la celda en su totalidad, podemos usar simplemente :
 
@@ -401,7 +400,7 @@ Lo que nos da mayor flexibilidad en el manejo de la simulaci\'on. Sin embargo si
 Casos como el escalamiento de celda, solo pueden aplicar de forma \textit{general} sobre la simulaci\'on.
 
 \subsection{berendsen}
-\'Este m\'odulo controla o escala la temperatura, al igual que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. 
+\'Este m\'odulo controla o escala la temperatura, de igual forma que \textbf{tempscaling}, su diferencia es que el m\'etodo es un escalamiento menos \textbf{brusco}, por lo que en ocaciones se consiguen muy buenos resultados y se logra termalizar de manera m\'as eficiente las muestras. 
 
 La ecuaci\'on que describe el termostato de berendsen es :
 
@@ -431,7 +430,7 @@ Los argumentos requeridos por el m\'odulo son:
 \end{tabular}
 }
 
-Con \'este m\'odulo entonces pdoemos realizar compresi\'on hidrost\'atica o unidireccional, adem\'as de mantener constante o no el intervalo de escalamiento.
+Con \'este m\'odulo entonces podemos realizar compresi\'on hidrost\'atica o unidireccional, adem\'as de mantener constante o no el intervalo de escalamiento.
 
 \subsection{displace}
 M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desplazamiento vectorial de los \'atomos de la muestra. Las caractr\'isticas del m\'odulo son :
@@ -460,7 +459,7 @@ M\'odulo que asigna colores a los \'atomos segun cierta condici\'on, las opcione
 \end{tabular}
 }
 
-Consideremos por ejemplo que deseamos colorear los \'atomos seg\'un su temperatura, y le asociaremos a 300 la temperatura m\'inima y 500 a la m\'axima que ser\'ian los colores del azul al rojo, entonces :
+Consideremos por ejemplo que deseamos colorear los \'atomos seg\'un su temperatura, y le asociaremos a 300 la temperatura m\'inima y 500 a la m\'axima que usa escala de colores del azul al rojo, entonces :
 
 \begin{itemize}
  \item \textbf{Cargamos el modulo}
@@ -501,7 +500,7 @@ Consideremos por ejemplo que deseamos remover \'atomos al azar dentro de un cris
        \control{apply randomatom}
 \end{itemize}
 
-la aplicaci\'on tambi\'en puede llevarse acabo en pasos espec\'ificos de la simulaci\'ion, por ejemplo usando \texttt{start=10 end=10 each=1} llevara la eliminaci\'on de \'atomos en ese instante espec\'ifico de la simulaci\'on.
+la aplicaci\'on tambi\'en puede llevarse acabo en pasos espec\'ificos de la simulaci\'ion, por ejemplo usando \texttt{start=10 end=10 each=1} llevara la eliminaci\'on de \'atomos en ese instante espec\'ifico de la simulaci\'on, recuerde que todos los modificadores pueden asignarse as\'i.
 
 \subsection{replicate}
 M\'odulo que replica la celda se simulaci\'on en los distintos ejes, sus opciones principales son
@@ -557,7 +556,7 @@ Entonces, veamos por ejemplo como asignan un color a todos los \'atomos, recuerd
 \end{itemize}
 
 \subsection{settag}
-Al igual que la forma de asignar colores a un \'atomo, es posible asignar \verb|tag| o etiquetas a los \'atomos. Entr las opciones del plugin settag estan :
+Al igual que la forma de asignar colores a un \'atomo, es posible asignar \verb|tag| o etiquetas a los \'atomos. Entre las opciones del plugin settag estan :
 
 \fb{
 \begin{tabular}{lcl}
@@ -575,7 +574,7 @@ De esta forma podemos asignar cualquier tag a los \'atomos. Veamos por ejemplo c
        \control{apply fixedpos}
 \end{itemize}
 
-Usualmente las aplicaciones de \verb|settag| o \verb|setcolor| se utilizan fitlrados sobre los \'atomos para llo recuerdo que basta con especificar el filtro dentro de \verb|apply|.
+Usualmente las aplicaciones de \verb|settag| o \verb|setcolor| se utilizan fitlrados sobre los \'atomos para ello recuerdemos que basta con especificar el filtro dentro de \verb|apply|.
 
 \subsection{setvelocity}
 Setea las velocidades de un grupo de \'atomos, los argumentos son :
@@ -599,12 +598,11 @@ M\'odulo que realiza \textit{shear} (cizalle) sobre la muestra, modificando la f
 \end{tabular}
 }
 
-Con esto entonces podemos aplicar cizalle a la simulaci\'on, por ejemplo consideremos que en lugar de aplicar el cizalle durante la simulac\'on queremos aplicarlo en la celda de entrada original, entonces usamos.
+Con esto entonces podemos aplicar cizalle a la simulaci\'on, por ejemplo consideremos que en lugar de aplicar el cizalle durante la simulaci\'on queremos aplicarlo en la celda de entrada original, entonces usamos.
 
 \control{prepare shear axis=X normal=Y strain=0.01}
 
-Recuerde que en general los m\'odulos var\'ian su aplicaci\'on seg\'un la forma en que se quieran aplicar.
-
+Recuerde que en general los m\'odulos var\'ian como son llamados seg\'un la forma en que se quiera usar.
 
 \subsection{temperature}
 M\'odulo que aplica una temperatura a un grupo de \'atomos, su opci\'on principal es
@@ -629,7 +627,7 @@ El escalamiento consiste en modificar las velocidades at\'omicas cada cierto int
 
 $$s=\sqrt{\frac{gk_BT}{2\mathcal{K}}}$$
 
-Es importante tener en cuenta, qu el proceso de control o escalamiento de la temperatura, no entregan promedios termodin\'amicos reales, es necesario que estos sean evaluados luego de haber realizado el escalamiento.
+Es importante tener en cuenta, que el proceso de control o escalamiento de la temperatura, no entregan promedios termodin\'amicos reales, es necesario que estos sean evaluados luego de haber realizado el escalamiento.
 
 los argumentos necesarios para el plugin son :
 
