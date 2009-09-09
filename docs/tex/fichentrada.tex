@@ -53,7 +53,7 @@ Al igual que el \verb|xyz|, los ficheros de tipos \verb|lpmd| cuentan con nivele
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Otros Formatos Soportados}
 
-Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados para lectura/escritura de configuraciones at\'omicas, algunos de ellos son listados en la tabla~\ref{tab:modinout} y~\ref{tab:modgen}. Si tiene dudas con respecto a alg\'un formato, as\'i como sugerencias o requerimientos, no dude en contactarnos.
+Pese a que los formatos principales de entrada recomendados son \textbf{xyz} y \textbf{lpmd}, existen actualmente otros formatos que son soportados para lectura/escritura de configuraciones at\'omicas. Algunos de ellos son listados en la tabla~\ref{tab:modinout} y~\ref{tab:cellgen}. Si tiene dudas con respecto a alg\'un formato, as\'i como sugerencias o requerimientos, no dude en contactarnos.
 
 \section{El Fichero de configuraci\'on .control}
 
@@ -214,7 +214,7 @@ Veamos algunas formas de uso para la orden \verb|input| :
 \control{input module=skewstart atoms=108 symbol=Ar}
 \end{itemize}
 
-La lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de configuraciones, se pueden observar en la tabla~\ref{tab:modinout} y~\ref{tab:modgen}.
+La lista de los m\'odulos soportados a la fecha para lectura/generaci\'on de configuraciones, se pueden observar en la tabla~\ref{tab:modinout} y~\ref{tab:cellgen}.
 
 \subsubsection{output}
 
@@ -246,8 +246,7 @@ Algunas formas de uso,
 
 La lista de los m\'odulos soportados a la fecha para escritura de configuraciones, pude verse en la tabla~\ref{tab:modinout}.
 
-\subsubsection{restore}
-\cite{fich:restauracion}
+\subsubsection{restore}\label{fich:restauracion}
 Es utilizado para restaurar una simulaci\'on a partir de un punto en que se produjo un corte de energ\'ia el\'ectrica o cualquier otro tipo de falla f\'isica en un centro de c\'alculo. El punto de restauraci\'on es a partir de el \'ultimo dumping realizado por la simulacion, dado por la orden ``dumping'' dentro del fichero de control, indicando el nombre del archivo \verb|dump|. Es recomendable que antes de reiniciar una corrida, respalde los datos en otro directorio, o efectue la \textit{reiniciaci\'on} de la corrida en un directorio distinto, para evitar da\~nar, perder o sobreescribir los datos previos de la simulaci\'on.
 
 Actualmente no se han realizado pruebas exhaustivas de este punto, pero deber\'ia funcionar sin problemas, por favor si encuentra alg\'un bug, reportelo y \textbf{recuerde usar esta opci\'on con precauci\'on}.

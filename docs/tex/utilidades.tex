@@ -151,7 +151,7 @@ En general casi cualquier caracter\'istica puede ser asignada a la celda, siempr
 \control{prepare replicate 2 2 2}
 \control{filter sphere radius=5 center=<10,10,10>}
 
-con eso entonces replicamos la celda y luego seleccionamos una esfera centrada en \verb|<10,10,10>| con radio de 5, es decir todos los otros \'atomos del sistema son eliminados.
+Con eso entonces replicamos la celda y luego seleccionamos una esfera centrada en \verb|<10,10,10>| con radio de 5, es decir todos los otros \'atomos del sistema son eliminados.
 
 \subsubsection{Ficheros de salida}
 En esta secci\'on podemos especificar uno o m\'as ficheros de salida para realizar la transformaci\'on de nuestra celda inicial. La orden, de modo similar a {\lpmd}, es dada por la palabra clave \verb|output|.
@@ -240,7 +240,14 @@ username@machine:~$lpmd-visualizer
 LPMD Visualizer version 0.6.1pre
 Using liblpmd version 2.0.0
 
-Usage: lpmd-visualizer [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles | -A <alpha,beta,gamma>] [--vector | -V <ax,ay,az,bx,by,bz,cx,cy,cz>] [--scale | -S <value>] [--option | -O <option=value,option=value,...>] [--input | -i plugin:opt1,opt2,...] [--output | -o plugin:opt1,opt2,...] [--use | -u plugin:opt1,opt2,...] [--cellmanager | -c plugin:opt1,opt2,...] [--replace-cell | -r] [file.control]
+Usage: lpmd-visualizer [--verbose | -v ] [--lengths | -L <a,b,c>]
+                       [--angles | -A <alpha,beta,gamma>]
+                       [--vector | -V <ax,ay,az,bx,by,bz,cx,cy,cz>] [--scale | -S <value>]
+                       [--option | -O <option=value,option=value,...>]
+                       [--input | -i plugin:opt1,opt2,...] [--output | -o plugin:opt1,opt2,...]
+                       [--use | -u plugin:opt1,opt2,...]
+                       [--cellmanager | -c plugin:opt1,opt2,...]
+                       [--replace-cell | -r] [file.control]
        lpmd-visualizer [--pluginhelp | -p <pluginname>]
        lpmd-visualizer [--help | -h]
 username@machine:~$lpmd-visualizer
@@ -248,8 +255,6 @@ username@machine:~$lpmd-visualizer
 
 Entonces podemos visualizar una configuraci\'on en formato \verb|lpmd| utilizando el comando
 
-\begin{verbatim}
- lpmd-visualizer -i lpmd:file=fichero.lpmd -u lpvisual -r
-\end{verbatim}
+\control{lpmd-visualizer -i lpmd:file=fichero.lpmd -u lpvisual -r}
 
 Para m\'as ejemplos del uso de \verb|lpmd-visualizer| refierase al cap\'itulo~\ref{chap:exa}.

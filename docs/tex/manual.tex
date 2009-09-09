@@ -43,7 +43,15 @@
 \newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
 %\newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[scale=.3]{#1}\caption{#2}\label{fig:#3}\end{minipage}}\end{figure}}
 \newcommand{\cajafi}[3]{\begin{figure}[h!]\centering\includegraphics[scale=.35]{#1}\caption{#2}\label{fig:#3}\end{figure}}
-\newcommand{\control}[1]{\begin{center}\texttt{#1}\end{center}}
+%\newcommand{\control}[1]{\begin{center}\begin{minipage}{10cm}\texttt{#1}\end{minipage}\end{center}}
+\newcommand{\control}[1]
+{
+\begin{center}\tt
+\begin{tabular}{l}
+#1
+\end{tabular}
+\end{center}
+}
 
 \newcommand {\foto}[4]{\begin{figure}
 %   \begin{framed}
@@ -81,13 +89,26 @@
 \author{\includegraphics[scale=.35]{logo-lpmd.pdf}}
 \title{``Las Palmeras'' Molecular Dynamics - \textbf{LPMD}.}
 \maketitle
-\newpage
 
-\vspace{10cm}
+
+\chapter*{Agradecimientos}
+
+Agradecemos al Proyecto Anillo ACT/24 por el constante apoyo econ\'omico que ha brindado a nuestro equipo, el cual ha hecho posible la tranquila realizaci\'on de nuestros proyectos a corto y largo plazo, ya que con \'este hemos podido obtener equipamiento de primera calidad para la realizaci\'on de nuestras tareas. Agradecemos tambi\'en a los Doctores en F\'isica, nuestros tutores y amigos, Gonzalo Guti\'errez, Eduardo Men\'endez y Carlos Esparza, por todos los consejos y sugerencias que realizaron y siguen realizando a nuestro proyecto, ya que su deseo por llevar a cabo este programa fue una de las principales motivaciones para seguir adelante y mejorar cada vez m\'as el mismo.
+
+\vfill
+\begin{center}
+\begin{figure}[!hbt]\centering
+\includegraphics[height=3cm]{gnm.pdf}\hskip2cm
+\includegraphics[height=1.5cm]{conicyt.jpg}
+\includegraphics[height=1.5cm]{gob-chile.jpeg}
+\end{figure}
+\end{center}
 \begin{flushright}
  Este trabajo est\'a realizado gracias a\\
  Proyecto Anillo ACT/24
 \end{flushright}
+
+
 
 \newpage\pagestyle{empty}\tableofcontents\newpage
 \pagestyle{fancy}
