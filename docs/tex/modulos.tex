@@ -163,7 +163,7 @@ Consideremos por ejemplo una celda c\'ubica de \textbf{Fe} con un tama\~no de 10
 
 \begin{itemize}
  \item \textbf{Especificamos el detalle del cristal}
-       \control{cell crystall a=10 b=10 c=10 alpha=90\textbackslash beta=90 gamma=90}
+       \control{cell crystal a=10 b=10 c=10 alpha=90\textbackslash beta=90 gamma=90}
  \item \textbf{Generamos una celda  fcc dentro del cristal}
        \control{input module=crystal3d type=fcc symbol=Fe\textbackslash nx=3 ny=3 nz=3}
 \end{itemize}
@@ -187,7 +187,7 @@ Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano 
 
 \begin{itemize}
  \item \textbf{Especificamos el detalle del cristal}
-       \control{cell crystall a=10 b=10 c=0 alpha=90 beta=90 gamma=90}
+       \control{cell crystal a=10 b=10 c=0 alpha=90 beta=90 gamma=90}
  \item \textbf{Generamos una estructura bidimensional dentro del cristal}
        \control{input module=crystal2d a=2 b=2 symbol=Fe gamma=60\textbackslash nx=2 ny=2}
 \end{itemize}
@@ -241,7 +241,7 @@ Al igual que los m\'etodos generadores de celda previos, el detalle general del 
 
 \begin{itemize}
  \item \textbf{Especificamos el detalle del cristal}
-       \control{cell crystall a=20 b=20 c=20 alpha=90 beta=90 gamma=90}
+       \control{cell crystal a=20 b=20 c=20 alpha=90 beta=90 gamma=90}
  \item \textbf{Generamos una celda  fcc dentro del cristal}
        \control{input module=skewstart symbol=Ar}
 \end{itemize}
@@ -288,9 +288,9 @@ Si usted no tiene claro que tipo de subdivision debe usar recomenadmos encarecid
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Filtros}
-Estos m\'odulos son los encargados de modificar de cierta forma la celda de simulaci\'on original, pueden ser utilizados para la generaci\'on de celdas complejas. Su intenci\'on es seleccionar \'atomos bajo cierta caracter\'istica.
+Estos m\'odulos son los encargados de modificar de cierta forma la celda de simulaci\'on original. Pueden ser utilizados para la generaci\'on de celdas complejas. Su intenci\'on es seleccionar los \'atomos que se encuentren dentro de una regi\'on espec\'ifica o que posean una caracter\'istica dada, eliminando el resto.
 
-Es importante destacar que todos los filtros pueden seleccionar adm\'as de forma inversa, por ejemplo en vez de seleecionar los \'atomos que se encuentran dentro de una regi\'on podemos, utilizando la misma regi\'on, seleccionar los \'atomos que no pertenecen a la regi\'on con el flag :
+Es importante destacar que todos los filtros pueden, adem\'as, actuar de forma inversa. Por ejemplo en vez de quedarse con los \'atomos que se encuentran dentro de una regi\'on dada, podemos, utilizando la misma regi\'on, seleccionar los \'atomos que no pertenecen a la regi\'on con el flag
 
 \control{inverse=true}
 
@@ -310,11 +310,22 @@ Selecciona los \'atomos que se encuentran dentro de una regi\'on rectangular def
 Veamos un filtrado t\'ipico utilizando \verb|box|.
 
 \begin{itemize}
- \item \textbf{Eliminando todo excepto los \'atomos pretenecientes a una regi\'on.}
+ \item \textbf{Eliminando todos los \'atomos excepto los pertenecientes a una regi\'on.}
        \control{filter box x=0-5 y=0-6 z=10-15}
+Ejecutando este comando, desaparecen todos los \'atomos de la caja, excepto los que se encuentran en el rango $[0,5]$ del eje $X$, $[0,6]$ en el eje $Y$ y $[10,15]$ en el eje $Z$. Esto es \'util cuando queremos cortar una regi\'on de inter\'es dentro de la caja de simulaci\'on.
+
+ 
+ \item \textbf{Eliminando s\'olo los \'atomos pertenecientes a una regi\'on.}
+       \control{filter box x=0-5 y=0-6 z=10-15 inverse=true}
+
+Ejecutando este comando, realizamos la acci\'on anterior, es decir, \'solo eliminamos los \'atomos de la regi\'on especificada (hacemos un ``agujero'' en la caja).
 \end{itemize}
 
-Con \'esto podemos seleccionar los \'atomos que se encuentran dentro de la regi\'on del espacio definida para cada uno de los ejes de nuestros vectores base en los largos espec\'ificos.
+
+
+
+
+
 
 \subsection{element}
 Selecciona a los \'atomos segun el elemento al que pertenecen. Las opciones del plugin \verb|element| est\'an dadas por,
@@ -1007,11 +1018,25 @@ Las palabras reservadas por el plugin \textbf{buckingham}, son :
 }
 
 \subsection{constantforce}
-Mantiene una fuerza constante sobre atomos de cierta especie, se utiliza principalmente para aplicarles fuerzas a especies at\'omicas o bien a atomos seleccionados de alguna forma en especial. Este \textit{potencial}, no retorna una energ\'ia (cero) y solo tiene capacidad de asginar una fuerza constante a un set de atomos.
+Aplica una fuerza constante sobre cada \'atomo. Si $m$ es la masa del \'atomo, la aceleraci\'on del \'atomo provocada por el potencial interat\'omico tendr\'a un t\'ermino adicional $\vec F/m$. Todos los \'atomos seleccionados ser\'an afectados por la misma fuerza, pero no acelerar\'an igual si poseen distinta masa.
 
-Por ejemplo si queremos que algunos \'atomos se vean afectados por la gravedad, podr\'iamos tener algo como :
+Se utiliza principalmente para aplicarles fuerzas a especies at\'omicas o bien a atomos seleccionados de alguna forma en especial. Este \textit{potencial}, no retorna una energ\'ia (cero) y s\'olo tiene capacidad de asignar una fuerza constante a un set de atomos.\\
+                                       
+Cargando el M\'odulo :
+\control{
+  use constantforce as gravity\\
+  force <0.0,0.0,-4.06E-16>\\
+   enduse\\
+}
 
-\control{use constantforce as CF \\   forcevector 0.0 0.0 -9.8 \\enduse}
+Llamando al m\'odulo :
+
+  \control{potential gravity Ar Ar}
+
+En este ejemplo agregamos la aceleraci\'on de gravedad $g=-9.8\left[m\over s^2\right]$ a los \'atomos de arg\'on, de masa $m=39.948 [amu]$, para lo cual se necesita una fuerza de $F=m*a=-391.4904 \left[amu*m\over s^2\right]=-4.06\times10^{-16}\left[eV\over \text\AA\right]$ (el usuario es responsable de discernir si los ordenes de magnitud son razonables).\\
+
+La fuerza debe ser ingresada en unidades de $\left[eV \over \text\AA\right]$ ($E=F\cdot d\ \Rightarrow F=E/d$), la cual es convertida internamente por {\lpmd} a las unidades naturales del programa, $\left[amu*\text\AA\over fs^2\right]$. Esto permite dividir la fuerza ingresada por la masa del elemento (en este caso, arg\'on), la cual est\'a en unidades de masa at\'omica ($amu$), quedando un factor con unidades de aceleraci\'on medida en $\left[\text\AA\over fs^2\right]$, la cual es adicionada a la aceleraci\'on producida por el potencial interat\'omico.
+
 
 Las palabras reservadas por el plugin \textbf{constantforce}, son :
 
