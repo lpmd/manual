@@ -869,7 +869,7 @@ Notamos que los \'atomos de cobre, en lugar de tener su color natural, aparecen 
 
 \control{lpmd-visualizer -i lpmd:file=configuracion.lpmd -u lpvisual -r}
 
-El conjunto de comandos que precede a \verb+-i+ es propio del formato {\lpmd}, visto en la secci\'on~\ref{subsec:lpmdformato}. A continuaci\'on, se le pide al visualizador que utilice \verb+lpvisual+ con las opciones por defecto (nada adicional fue especificado). Por \'ultimo, el comando \verb+-r+ lee ($reads$) los vectores de celda desde dentro del archivo (el formato {\lpmd} tiene la ventaja de contener los vectores de celda, por lo que el usuario no tiene necesidad de especificarlos).
+El conjunto de comandos que sucede a \verb+-i+ es propio del formato {\lpmd}, visto en la secci\'on~\ref{subsec:lpmdformato}. A continuaci\'on, se le pide al visualizador que utilice \verb+lpvisual+ con las opciones por defecto (nada adicional fue especificado). Por \'ultimo, el comando \verb+-r+ lee ($reads$) los vectores de celda desde dentro del archivo (el formato {\lpmd} tiene la ventaja de contener los vectores de celda, por lo que el usuario no tiene necesidad de especificarlos).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Ejemplo2}
@@ -878,7 +878,7 @@ Supongamos que ahora deseamos visualizar una configuraci\'on de \'atomos guardad
 
 \control{lpmd-visualizer -i xyz:file=atomos.xyz -u lpvisual:zenith=90,azimuth=45 -L 50,20,40}
 
-Nuevamente, lo que precede a \verb+-i+ es propio del formato del archivo (formato \verb+xyz+ en este caso, lo que significa que debemos dar el tama\~no de celda con la opci\'on \verb+-L+). Al \verb+lpvisual+ le pasamos los \'angulos de visualizaci\'on en coordenadas polares, donde, en la notaci\'on habitual, \verb+azimuth+ es el \'angulo azimutal $\varphi$ y \verb+zenith+ es el \'angulo cenital $\theta$. En este caso, $\theta=90^o$ y $\varphi=45^o$, lo que significa que
+Nuevamente, lo que sucede a \verb+-i+ es propio del formato del archivo (formato \verb+xyz+ en este caso, lo que significa que debemos dar el tama\~no de celda con la opci\'on \verb+-L+). Al \verb+lpvisual+ le pasamos los \'angulos de visualizaci\'on en coordenadas polares, donde, en la notaci\'on habitual, \verb+azimuth+ es el \'angulo azimutal $\varphi$ y \verb+zenith+ es el \'angulo cenital $\theta$. En este caso, $\theta=90^o$ y $\varphi=45^o$, lo que significa que
 
 \begin{align}
 x&=\sin\theta\cos\varphi=\frac1{\sqrt2}\\

@@ -455,7 +455,15 @@ M\'odulo que modifica las posiciones at\'omicas del sistema, a partir de un desp
 }
 
 \subsection{moleculecm}
-M\'odulo que selecciona moleculas?????? Que hacía este módulo, alguien la puede documentar :).
+
+Crea mol\'eculas diat\'omicas. Para cada \'atomo de la simulaci\'on busca \'atomos que est\'en cerca (en un radio especificado por el usuario) y si los encuentra, los considera enlazados y reemplaza cada par de \'atomos enlazados por un s\'olo \'atomo, ubicado en el centro de masas de ambos.
+
+\fb{
+\begin{tabular}{lcl}
+ radius & = & Radio de busqueda en torno a cada \'atomo.\\
+\end{tabular}
+}
+
 
 \subsection{propertycolor}
 M\'odulo que asigna colores a los \'atomos segun cierta condici\'on, las opciones principales del plugin son :
