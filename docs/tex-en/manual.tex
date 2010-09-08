@@ -1,0 +1,219 @@
+\documentclass[a4paper,10pt]{scrbook}
+
+\usepackage{graphicx,fancybox,wrapfig}
+\usepackage{fullpage,multicol}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{subfigure}
+\usepackage{rotating}
+\usepackage{verbatim}
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage[spanish]{babel}
+\usepackage{color} %color letters
+\usepackage{makeidx} %makes an index (you must use "makeindex" program first)
+\usepackage[left=2.2cm,right=1.7cm,top=1cm,bottom=3.5cm]{geometry} % Specify page margins
+\usepackage{fancyhdr} % Headers and Footers.
+\usepackage{hyperref} %internal links
+\usepackage{longtable}
+\hypersetup % Setting hyperref options
+{
+ colorlinks=true,
+ urlcolor=blue
+}
+\makeindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%NEWCOMMANDS DEFINITIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\lpmd{{\tt lpmd}}
+\def\bs{\boldsymbol}
+\newcommand{\fumfun}[4]{\begin{center}\begin{tabular}{|c|c|c|c|}\hline
+ Flag & Work & Test & Mand\\\hline
+#1 & #2 & #3 & #4 \\\hline
+\end{tabular}
+\end{center}}
+\newcommand{\D}[2]{\frac{\partial #2}{\partial #1}}
+\newcommand{\DD}[2]{\frac{\partial^2 #2}{\partial #1^2}}
+\newcommand{\DC}[2]{\frac{D #2}{D #1}} %derivada conectiva.
+\newcommand{\fb}[1]{\begin{center}\framebox[1.1\width]{#1}\end{center}}
+\newcommand{\cajatx}[1]{\begin{center}\setlength{\fboxsep}{0.2cm}\fbox{\parbox[l]{10cm}{#1}}\end{center}}
+%\newcommand{\cvb}[1]{\begin{center}\begin{verbatim} #1 \end{verbatim}\end{center}}
+\newcommand{\cajaeq}[1]{\begin{center}\setlength{\fboxsep}{0.1cm}\fbox{\parbox[b]{10cm}{#1}}\end{center}}
+%\newcommand{\cajafi}[3]{\begin{figure}\centering\shadowbox{\begin{minipage}{3.5 in}\centering\includegraphics[scale=.3]{#1}\caption{#2}\label{fig:#3}\end{minipage}}\end{figure}}
+\newcommand{\cajafi}[3]{\begin{figure}[h!]\centering\includegraphics[scale=.35]{#1}\caption{#2}\label{fig:#3}\end{figure}}
+%\newcommand{\control}[1]{\begin{center}\begin{minipage}{10cm}\texttt{#1}\end{minipage}\end{center}}
+\newcommand{\control}[1]
+{
+\begin{center}\tt
+\begin{tabular}{l}
+#1
+\end{tabular}
+\end{center}
+}
+
+\newcommand {\foto}[4]{\begin{figure}
+%   \begin{framed}
+      \begin{center}
+      \includegraphics[scale=#2]{#1}
+      \end{center}
+
+      \caption{\emph{#3}}
+
+      \label{#4}
+%   \end{framed}
+   \end{figure}
+   }
+%--------------------------------- PAGE STYLE ----------------------------------%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}                                                               %
+\fancyhf{}                                                                      %
+\fancyhead[LE]{{\bf\thepage}\qquad{\color[rgb]{0.094,.4,0}\small\leftmark}}     %
+\fancyhead[RE,LO]{\scriptsize\sl\rightmark}                                     %
+\fancyhead[RO]{{\color[rgb]{0.094,.4,0}\small\leftmark }\qquad{\bf\thepage}}	%
+\fancyfoot[C]{\thepage}                                                         %
+\fancypagestyle{plain}                                                          %
+{                                                                               %
+ \fancyhf{}                                                                     %
+ \fancyfoot[C]{\thepage}                                                        %
+ \renewcommand{\headrulewidth}{0mm}                                             %
+}                                                                               %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\headrulewidth}{.3mm}
+\renewcommand{\indexname}{\'Indice Alfab\'etico}
+\renewcommand{\contentsname}{Contenidos}
+\headsep 0.3in
+
+\begin{document}
+\author{\includegraphics[scale=.35]{logo-lpmd.pdf}}
+\title{``Las Palmeras'' Molecular Dynamics - \textbf{LPMD}.}
+\maketitle
+
+
+\chapter*{Agradecimientos}
+
+Agradecemos al Proyecto Anillo ACT/24 por el constante apoyo econ\'omico que ha brindado a nuestro equipo, el cual ha hecho posible la tranquila realizaci\'on de nuestros proyectos a corto y largo plazo, ya que con \'este hemos podido obtener equipamiento de primera calidad para la realizaci\'on de nuestras tareas. Agradecemos tambi\'en a los Doctores en F\'isica, nuestros tutores y amigos, Gonzalo Guti\'errez, Eduardo Men\'endez y Carlos Esparza, por todos los consejos y sugerencias que realizaron y siguen realizando a nuestro proyecto, ya que su deseo por llevar a cabo este programa fue una de las principales motivaciones para seguir adelante y mejorar cada vez m\'as el mismo.
+
+\vfill
+\begin{center}
+\begin{figure}[!hbt]\centering
+\includegraphics[height=3cm]{gnm.jpg}\hskip2cm
+\includegraphics[height=1.5cm]{conicyt.jpg}
+\includegraphics[height=1.5cm]{gob-chile.jpeg}
+\end{figure}
+\end{center}
+\begin{flushright}
+ Este trabajo est\'a realizado gracias a\\
+ Proyecto Anillo ACT/24
+\end{flushright}
+
+
+
+\newpage\pagestyle{empty}\tableofcontents\newpage
+\pagestyle{fancy}
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%% THE CHAPTERS %%%%%%%%%%%%%%%%%%%%
+\input{elprograma.tex}                              % 1er Capítulo
+\input{instalacion.tex}                             % 2do Capítulo
+\input{fichentrada.tex}                             % 3er Capítulo
+\input{modulos.tex}                                 % 4o Capítulo
+\input{utilidades.tex}                              % 5o Capítulo
+\input{lpvisual.tex}                                % 6o Capítulo
+\input{ejemplos.tex}                                % 7o Capítulo
+%\input{desmodulos.tex}                             % 8o Capítulo
+%\input{paralelizacion.tex}                         % 9o Capítulo
+\input{gente.tex}                                   % 10o Capítulo
+\input{apendice.tex}                                % 11o Capítulo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\printindex
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%
+%%Codigo adicional que no esta listo para ser puesto en el documento
+%%%%%%%%%%%%%%%%%%
+
+La implementaci\'on del m\'etodo virtual, queda entonces como :
+\begin{verbatim}
+double LennardJones::pairEnergy(const double & r) const
+{
+ double rtmp=sigma/r;
+ double r6 = rtmp*rtmp*rtmp*rtmp*rtmp*rtmp;
+ double r12 = r6*r6;
+ return 4.0e0*epsilon*(r12 - r6);
+}
+\end{verbatim}
+
+La implementaci\'on de la fuerza de pares requerida por la API es :
+
+\begin{verbatim}
+Vector LennardJones::pairForce(const Vector & r) const
+{
+ double rr2 = r.Mod2();
+ double r6 = pow(sigma*sigma / rr2, 3.0e0);
+ double r12 = r6*r6;
+ double ff = -48.0e0*(epsilon/rr2)*(r12 - 0.50e0*r6);
+ Vector fv = r;
+ fv.Scale(ff);
+ return fv;
+}
+\end{verbatim}
+
+La implementaci\'on de esta energ\'ia para el potencial met\'alico, 
+
+\begin{verbatim}
+double SuttonChen::pairEnergy(const double &r) const
+{
+ return e*pow((a/r),n);
+}
+
+double SuttonChen::rhoij(const double &r) const
+{
+ return pow((a/r),m);
+}
+
+double SuttonChen::F(const double &rhoi) const
+{
+ return -c*e*sqrt(rhoi);
+}
+
+double SuttonChen::deltarhoi(const double &rhobar) const
+{
+ return (4*M_PI*rhobar*a*a*a/(m-3))*pow(a/rcut,m-3);
+}
+
+double SuttonChen::deltaU1(const double &rhobar, const int &N) const
+{
+ double f = 2*M_PI*N*rhobar*e*a*a*a/(n-3);
+ return f*pow(a/rcut,n-3);
+}
+\end{verbatim}
+
+Donde la implementaci\'on de la fuerza como m\'etodo virtual de los potenciales met\'alicos queda de la forma,
+
+\begin{verbatim}
+ Vector SuttonChen::PairForce(const Vector &rij) const
+{
+ Vector norm = rij;
+ double rmod = rij.Mod();
+ norm.Norm();
+ return -n*e*pow(a/rmod,n)*(norm/rmod);
+}
+
+Vector SuttonChen::ManyBodies(const Vector &rij, const double &rhoi, \\
+const double &rhoj) const
+{
+ double tmp;
+ double rmod = rij.Mod();
+ tmp=(m/2)*c*e*((1/sqrt(rhoi))+(1/sqrt(rhoj)))*pow(a/rmod,m)*(1.0/rmod);
+ Vector ff = rij;
+ ff.Norm();
+ return tmp*ff;
+}
+\end{verbatim}
+
+

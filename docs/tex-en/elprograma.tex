@@ -1,0 +1,100 @@
+\chapter{The LPMD code}
+\label{chap:lpmd}
+
+\section{Founds.}
+
+El c\'odigo {\lpmd} comenz\'o su desarrollo durante junio del a\~no 2007 como una idea de implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el usuario en el dise\~no de plugins e implementaci\'on de actualizaciones. Los programadores principales durante estos dos a\~nos de desarrollo del c\'odigo han sido: Sergio Davis, Claudia Loyola, Joaqu\'in Peralta y Felipe Gonz\'alez, todos ellos integrantes del \index{GNM}\textit{Grupo de NanoMateriales} (\url{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo\footnote{Ver~cap.\ref{chap:auth}}.
+
+Las versiones que se han lanzado en formato estable son:
+
+\begin{itemize}
+ \item Version 0.6.1 : Lanzada XX de XXXX 2009.
+ \item Version 0.6.0 : Lanzada 12 de Junio 2009.
+ \item Version 0.5.4 : Lanzada 29 de Enero 2009.
+ \item Version 0.5.3 : Lanzado 01 de Noviembre 2008.
+ \item Version 0.5.2 : Lanzada 05 de Agosto 2008.
+ \item Version 0.5.1 : Lanzada 30 de Abril 2008.
+ \item Version 0.5.0 : Lanzada 04 de Abril 2008.
+ \item Version 0.4.0 : Lanzada Julio 2007.
+\end{itemize}
+
+El sistema de actualizaci\'on va siendo administrado completamente por los desarrolladores. A partir de la versi\'on 0.5 de {\lpmd} se cuenta con tres paquetes principales de desarrollo.
+
+\begin{itemize}
+\index{liblpmd} \item liblpmd \\
+\index{API}\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la columna vertebral de todas las caracter\'isticas que presenta {\lpmd}. Por favor refi\'erase a m\'as caracter\'isticas de la API en el ap\'endice ~\ref{ap:API}
+\index{lpmd-plugins} \item lpmd-plugins \\
+Es un set de plugins que han sido implementados, que implementan caracter\'isticas provenientes de la \textbf{API}, son en general potenciales interat\'omicos, integradores, analizadores de celdas de simulaci\'on, as\'i como tambi\'en manejadores de archivos de din\'amica molecular.
+\index{lpmd} \item lpmd \\
+{\lpmd} es un software de din\'amica molecular que utiliza plugins implementados para realizar todo el trabajo de simulaci\'on. Tambi\'en incluye herramientas como \textbf{lpmd-analyzer}, \textbf{lpmd-converter} y \textbf{lpmd-visualizer} que son utilizados para la generaci\'on de configuraciones, as\'i como tambi\'en el an\'alisis a partir de ficheros de simulaci\'on de din\'amica molecular o bien la visualizaci\'on de configuraciones.
+\end{itemize}
+
+\section{Principal Goal}
+
+El esquema principal de {\lpmd}, es la utilizaci\'on de un archivo de control (\verb|fichero.control|) el cual es cargado directamente por el ejecutable \verb|lpmd|.
+
+Por ejemplo, consideremos un sistema de din\'amica molecular en el cual todas las opciones, tales como temperatura inicial, pasos de tiempo a simular, integrador, potencial interat\'omico, posiciones at\'omicas, etc. est\'an especificadas en un fichero llamado ``\verb|simulacion.control|'', entonces lpmd puede ejecutarse simplemente con,
+
+\begin{center}
+ \texttt{lpmd simulacion.control > simulacion.output}
+\end{center}
+\noindent
+
+De esta forma, {\lpmd} carga toda la informaci\'on necesaria ubicada en el fichero \verb|simulacion.control| y toda la informaci\'on de salida es guardada en el fichero \verb|simulacion.output|. Es importante destacar que {\lpmd} adem\'as interact\'ua y genera archivos de salida seg\'un los m\'odulos que hagan referencia a esos archivos. A partir de la versi\'on 0.6.1 durante la ejecuci\'on de {\lpmd} se pueden ver cu\'ales y de que lugar son los plugins cargados.
+
+\section{Characteristics}
+
+Otras caracter\'isticas de {\lpmd} es que cuenta con flags para el manejo de variables internas en un fichero de control, por ejemplo, se pueden correr muchos sistemas con distintas temperaturas iniciales. Para ello consideremos, un fichero de control con una sintaxis del tipo,
+
+\begin{verbatim}
+ ...
+ prepare temperature t=$(TEMP)
+ ...
+\end{verbatim}
+\noindent
+entonces, podemos ejecutar {\lpmd} de la siguiente forma para asignar a \verb|TEMP| un \'unico valor real, dado directamente por l\'inea de comandos, por ejemplo:
+
+\begin{center}
+ \texttt{lpmd -o TEMP=500 simulacion.control > simulacion.output}
+\end{center}
+\noindent
+de esta forma el programa comienza la simulaci\'on del sistema con una temperatura inicial de 500K. 
+
+Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la dificultad de implementar scripts para distintas simulaciones o simulaciones consecutivas de din\'amica molecular. Por ejemplo con un solo comando podemos correr un set de simulaciones con un valor distinto asociado a una variable del archivo de control. Para el caso de la temperatura, el siguiente comando:
+
+\begin{center}
+ \texttt{for i in 300 400 500 ; \\do lpmd -o TEMP=\$i simulacion.control > simulacion-\$i.output ; done}
+\end{center}
+\noindent
+realiza tres simulaciones seguidas con diferentes temperaturas iniciales con un solo fichero de control.
+
+
+Otro de los flags importantes de {\lpmd} es \verb|-p| que brinda informaci\'on acerca de los plugins que se encuentran instalados en el sistema y que identifica directamente {\lpmd}. Pruebe por ejemplo algo como :
+
+\begin{center}
+ \texttt{lpmd -p angdist}
+\end{center}
+\noindent
+donde \verb|angdist| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on. Para m\'as opciones vea \verb|lpmd -h| o \verb|man lpmd|. 
+
+\begin{verbatim}
+username@machine:~$lpmd
+.....
+================================================================================
+===================== LPMD VERSION 0.X.Y =======================================
+================================================================================
+LPMD version 0.X.Y
+Using liblpmd version M.N
+
+Usage: lpmd [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles | -A <alpha,beta,gamma>]
+      [--vector | -V <ax,ay,az,bx,by,bz,cx,cy,cz>] [--scale | -S <value>] [--option | -O
+      <option=value,option=value,...>] [--input | -i plugin:opt1,opt2,...]  
+      [--output | -o plugin:opt1,opt2,...] [--use | -u plugin:opt1,opt2,...] 
+      [--cellmanager | -c plugin:opt1,opt2,...] [--replace-cell | -r] [file.control]
+       lpmd [--pluginhelp | -p <pluginname>]
+       lpmd [--help | -h]
+username@machine:~$ 
+\end{verbatim}
+
+En los cap\'itulos siguientes se dar\'a una descripci\'on mucho m\'as detallada de otras caracter\'isticas de {\lpmd} y sus funcionalidades.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
