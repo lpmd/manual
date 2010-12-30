@@ -1,40 +1,56 @@
-\chapter{El Fichero de Control}
+\chapter{The Control File} % Translation by F. Gonzalez
 \label{chap:input}
 
-Una de las piezas fundamentales en {\lpmd} para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de control, revisaremos de forma general los archivos de posiciones at\'omicas.
+One of the fundamental pieces in {\lpmd} to run a molecular dynamics simulation
+is the configuration file of the system. This file specifies all the requirements
+that the simulation needs to be executed, including the name and type of file where the
+positions and velocities of the atoms are, if needed. Now, before we continue, we
+are going to give a short description of these files: the input files. A more detailed
+information about these files is given in the next chapter.
 
-\section{Fichero con Posiciones At\'omicas}
 
-{\lpmd} puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que se disponga; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz}, \textbf{lpmd}, \textbf{dlpoly} (archivos \verb|CONFIG| o \verb|HISTORY| de dl\_poly), etc.
+\section{The file with the atomic positions}
 
-Esperamos que los usuarios, seg\'un su necesidad, ayuden a implementar o solicitar a los desarrolladores tipos espec\'ificos de sistemas de posiciones at\'omicas para din\'amica molecular. Veamos brevemente en que consisten algunos de ellos. Para informaci\'on espec\'ifica de cada m\'odulo, vea la secci\'on~\ref{chap:modulos:entradasalida}.
+{\lpmd} has many modules (see chapter~\ref{chap:modulos:entradasalida}), and the input/output files are one of them.
+The modules are plugins of the program that, in this case, manage the reading and writing
+of atomic positions and/or velocities. Some available formats (modules) for doing this are
+\textbf{xyz}, \textbf{lpmd}, \textbf{dlpoly} (archivos \verb|CONFIG| o \verb|HISTORY| de dl\_poly), etc.
+
+We expect that the users, depending on their needs, help us to implement (or
+ask the developers to do it) new input/output modules. Now let's see breafly
+what they consist of.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fichero .xyz}
+\subsection{The file type .xyz}
 
-Es el est\'andar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulaci\'on computacional, es un archivo simple que cuenta con la informaci\'on de las posiciones at\'omicas del sistema en cordenadas cartesianas y sus unidades en \AA. La estructura de un fichero es :
+This is the standard format used in the most of the molecular dynamics codes.
+It is an ASCII file that contains the position (in cartesian coordinates)
+and atomic symbol of each atom of the simulation. The structure of the file is:
+
 \begin{center}
 \begin{tabular}{l|l}
- \verb|N| & Especifica el n\'umero de \'atomos en la celda \\
- \verb|comment| & Una l\'inea adicional de comentario, t\'itulo, etc. \\
- \verb|Sym X Y Z| & S\'imbolo at\'omico y las posiciones en coordenadas cartesianas. \\
+ \verb|N| & Specifies the number of atoms in the simulation cell.\\
+ \verb|comment| & A line for comments, title, etc. This line is usually left in blank.\\
+ \verb|Sym X Y Z| & Atomic symbol, X coordinate, Y coordinate and Z coordinate. \\
 \end{tabular}
 \end{center}
 
-Actualmente el m\'odulo \verb|xyz| soporta tres niveles distintos estos son 0,1 y 2 los que indican la informaci\'on que poseen los \'atomos an cada l\'inea. El nivel cero indica las posiciones at\'omicas, el nivel uno a\~nade las velocidades y el nivel 2 las aceleraciones. Es decir :
+Currently, the module \verb|xyz| has three different levels (0,1,2) which indicate the
+amount of information for each atom. The 0 (zero) level indicates that the file contains
+(or will contain) the symbol and the 3-dimensional position of each atom only. The level 1
+indicates that the file contains not only the symbol and position, but the velocity (7 columns
+file). The level 2 is used when the user also needs the aceleration of each atom (3 aditional columns).
 
 \begin{itemize}
-\item 0 : \verb|Sym X Y Z| (valor por defecto).
+\item 0 : \verb|Sym X Y Z| (default value).
 \item 1 : \verb|Sym X Y Z VX VY VZ|.
 \item 2 : \verb|Sym X Y Z VX VY VZ AX AY AZ|.
 \end{itemize}
 
-Cualquiera de estos niveles puede ser le\'ido como un fichero de entrada para el formato \verb|xyz|.
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fichero .lpmd}
+\subsection{The file type .lpmd}
 
 A partir de {\lpmd} 0.6.0, existe el nuevo formato 2.0 para los ficheros \verb|.lpmd| (compatible con la versi\'on 1.0). Este es un fichero con las posiciones escaladas de los \'atomos que forman la celda. Es de tipo ASCII y su estructura principal est\'a dada por:
 

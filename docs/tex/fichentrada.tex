@@ -3,17 +3,38 @@
 
 Una de las piezas fundamentales en {\lpmd} para la corrida de una simulaci\'on molecular son los ficheros iniciales de configuraci\'on del sistema. Para el correcto funcionamiento se necesita un fichero de control, este fichero espec\'ifica casi la totalidad de los requerimientos de la simulaci\'on y en ocasiones el 100\%. Aunque en la mayor\'ia de los casos se requiere un fichero adicional en donde se encuentran las posiciones at\'omicas de los \'atomos pertenecientes a la celda de simulaci\'on. Es por eso que en primer lugar, antes de revisar el fichero de control, revisaremos de forma general los archivos de posiciones at\'omicas.
 
+% FIXME%
+% Simulacion molecular - > sim. de una dinamica molecular
+% Porque casi la totalidad y no el 100%?
+% El Aunque esta demas
+% Deberia decir q se van a revisar en el sgte capitulo
+
 \section{Fichero con Posiciones At\'omicas}
 
 {\lpmd} puede manejar los tipos de fichero de posiciones at\'omicas seg\'un los m\'odulos de los que se disponga; actualmente \textbf{lpmd-plugins} cuenta con varios m\'odulos de formatos de ficheros para especificar las posiciones at\'omicas, entre ellos \textbf{xyz}, \textbf{lpmd}, \textbf{dlpoly} (archivos \verb|CONFIG| o \verb|HISTORY| de dl\_poly), etc.
 
+% FIXME
+% En ninguna parte dice q es un modulo
+% Poner lpmd-plugins hace parecer como si fuera un ejecutable.
+% Lo cambie harto en la version en ingles
+
 Esperamos que los usuarios, seg\'un su necesidad, ayuden a implementar o solicitar a los desarrolladores tipos espec\'ificos de sistemas de posiciones at\'omicas para din\'amica molecular. Veamos brevemente en que consisten algunos de ellos. Para informaci\'on espec\'ifica de cada m\'odulo, vea la secci\'on~\ref{chap:modulos:entradasalida}.
+
+% FIXME
+% La referencia debiera ir en el parrafo anterior
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fichero .xyz}
 
 Es el est\'andar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulaci\'on computacional, es un archivo simple que cuenta con la informaci\'on de las posiciones at\'omicas del sistema en cordenadas cartesianas y sus unidades en \AA. La estructura de un fichero es :
+
+% FIXME
+% Es autoreferente (xyz es el estandar de ficheros xyz???)
+% Cambiaria simple por ASCII
+% Revisar la version en ingles
+
+
 \begin{center}
 \begin{tabular}{l|l}
  \verb|N| & Especifica el n\'umero de \'atomos en la celda \\
@@ -22,7 +43,14 @@ Es el est\'andar de ficheros \verb|xyz| utilizado en muchos c\'odigos de simulac
 \end{tabular}
 \end{center}
 
+% FIXME
+% Poner q la linea 2 en general esta en blanco
+
 Actualmente el m\'odulo \verb|xyz| soporta tres niveles distintos estos son 0,1 y 2 los que indican la informaci\'on que poseen los \'atomos an cada l\'inea. El nivel cero indica las posiciones at\'omicas, el nivel uno a\~nade las velocidades y el nivel 2 las aceleraciones. Es decir :
+
+% FIXME
+% Falta un punto seguido: "...distintos. Estos pueden ser..."
+% Lo cambiaria por la version en ingles q puse.
 
 \begin{itemize}
 \item 0 : \verb|Sym X Y Z| (valor por defecto).
@@ -31,6 +59,11 @@ Actualmente el m\'odulo \verb|xyz| soporta tres niveles distintos estos son 0,1 
 \end{itemize}
 
 Cualquiera de estos niveles puede ser le\'ido como un fichero de entrada para el formato \verb|xyz|.
+
+%FIXME
+% Los niveles no pueden ser leidos como ficheros. Ta raro.
+% Creo que esta frase no es necesaria y deberia sacarse.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
