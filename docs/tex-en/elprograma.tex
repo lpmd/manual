@@ -3,48 +3,75 @@
 
 \section{Founds.}
 
-El c\'odigo {\lpmd} comenz\'o su desarrollo durante junio del a\~no 2007 como una idea de implementar din\'amica molecular de forma modular, tratando de ser lo m\'as amigable para el usuario en el dise\~no de plugins e implementaci\'on de actualizaciones. Los programadores principales durante estos dos a\~nos de desarrollo del c\'odigo han sido: Sergio Davis, Claudia Loyola, Joaqu\'in Peralta y Felipe Gonz\'alez, todos ellos integrantes del \index{GNM}\textit{Grupo de NanoMateriales} (\url{http://www.gnm.cl}). Actualmente existen m\'as colaboradores en el desarollo del c\'odigo\footnote{Ver~cap.\ref{chap:auth}}.
+The {\lpmd} code, start his developed during June in the 2007. This born like
+an idea of implement molecular dynamics in a modular way, trying to be
+user friendly  in the plugins and upgrade developing. the princpal developers
+during the start of the has been: Sergio Davis, Claudia Loyola, Joaqu\'in
+Peralta and Felipe Gonz\'alez, they are all from the \index{GNM}\textit{Grupo de
+NanoMateriales} (\url{http://www.gnm.cl}) group. At this moment more
+colaborators are join to us\footnote{Ver~cap.\ref{chap:auth}}.
 
-Las versiones que se han lanzado en formato estable son:
+The stable versions available of the software are:
 
 \begin{itemize}
- \item Version 0.6.1 : Lanzada XX de XXXX 2009.
- \item Version 0.6.0 : Lanzada 12 de Junio 2009.
- \item Version 0.5.4 : Lanzada 29 de Enero 2009.
- \item Version 0.5.3 : Lanzado 01 de Noviembre 2008.
- \item Version 0.5.2 : Lanzada 05 de Agosto 2008.
- \item Version 0.5.1 : Lanzada 30 de Abril 2008.
- \item Version 0.5.0 : Lanzada 04 de Abril 2008.
- \item Version 0.4.0 : Lanzada Julio 2007.
+ \item Version 0.6.1 : Released 03 de January 2010.
+ \item Version 0.6.0 : Released 12 de June 2009.
+ \item Version 0.5.4 : Released 29 de January 2009.
+ \item Version 0.5.3 : Released 01 de November 2008.
+ \item Version 0.5.2 : Released 05 de August 2008.
+ \item Version 0.5.1 : Released 30 de April 2008.
+ \item Version 0.5.0 : Released 04 de April 2008.
+ \item Version 0.4.0 : Released Julio 2007.
 \end{itemize}
 
-El sistema de actualizaci\'on va siendo administrado completamente por los desarrolladores. A partir de la versi\'on 0.5 de {\lpmd} se cuenta con tres paquetes principales de desarrollo.
+The upgrade system is controled by developers. From the 0.5 version of {\lpmd}
+the software have three principal packages.
 
 \begin{itemize}
 \index{liblpmd} \item liblpmd \\
-\index{API}\textbf{API} principal de programaci\'on desarrollada por el grupo. Esta \textbf{API} es la columna vertebral de todas las caracter\'isticas que presenta {\lpmd}. Por favor refi\'erase a m\'as caracter\'isticas de la API en el ap\'endice ~\ref{ap:API}
+\index{API}Principal programming \textbf{API} developed by the team. This is
+the core of all characteristics that have {\lpmd}. For a more detailed
+description about this take a look in the apendix section ~\ref{ap:API}.
 \index{lpmd-plugins} \item lpmd-plugins \\
-Es un set de plugins que han sido implementados, que implementan caracter\'isticas provenientes de la \textbf{API}, son en general potenciales interat\'omicos, integradores, analizadores de celdas de simulaci\'on, as\'i como tambi\'en manejadores de archivos de din\'amica molecular.
+Is a plugins set that has been developed, and incorporate characteristics from
+the \textbf{API}, usually corresponend to Interatomic Potentials,
+integrators, analyzers, or file managers.
 \index{lpmd} \item lpmd \\
-{\lpmd} es un software de din\'amica molecular que utiliza plugins implementados para realizar todo el trabajo de simulaci\'on. Tambi\'en incluye herramientas como \textbf{lpmd-analyzer}, \textbf{lpmd-converter} y \textbf{lpmd-visualizer} que son utilizados para la generaci\'on de configuraciones, as\'i como tambi\'en el an\'alisis a partir de ficheros de simulaci\'on de din\'amica molecular o bien la visualizaci\'on de configuraciones.
+{\lpmd} Is the molecular dynamics (MD) software that use the plugins developed
+in order to realize the simulations. This include additional tools
+like \textbf{lpmd-analyzer}, \textbf{lpmd-converter} and
+\textbf{lpmd-visualizer} that are used for the generation of structures,
+analyquesis and visualization of atomic configurations.
 \end{itemize}
 
 \section{Principal Goal}
 
-El esquema principal de {\lpmd}, es la utilizaci\'on de un archivo de control (\verb|fichero.control|) el cual es cargado directamente por el ejecutable \verb|lpmd|.
+The principal scheme of {\lpmd}, is the use of a control file
+(\verb|file.control|), file that is load directly from the executable
+\verb|lpmd| or other tools.
 
-Por ejemplo, consideremos un sistema de din\'amica molecular en el cual todas las opciones, tales como temperatura inicial, pasos de tiempo a simular, integrador, potencial interat\'omico, posiciones at\'omicas, etc. est\'an especificadas en un fichero llamado ``\verb|simulacion.control|'', entonces lpmd puede ejecutarse simplemente con,
+Consider by an example, a system of MD in that all options, like initial
+temperature, simulation setp number, integrator, interatomic potential, atomic
+positions, etc. are directly specified in a file ``\verb|simulation.control|'',
+so {\lpmd} could be executed directly using, 
 
 \begin{center}
- \texttt{lpmd simulacion.control > simulacion.output}
+ \texttt{lpmd simulation.control > simulation.output}
 \end{center}
 \noindent
 
-De esta forma, {\lpmd} carga toda la informaci\'on necesaria ubicada en el fichero \verb|simulacion.control| y toda la informaci\'on de salida es guardada en el fichero \verb|simulacion.output|. Es importante destacar que {\lpmd} adem\'as interact\'ua y genera archivos de salida seg\'un los m\'odulos que hagan referencia a esos archivos. A partir de la versi\'on 0.6.1 durante la ejecuci\'on de {\lpmd} se pueden ver cu\'ales y de que lugar son los plugins cargados.
+In this way, {\lpmd} load all the neccesary information located in the file
+\verb|simulation.control| and all output information is saved in the file
+\verb|simulation.output|. Is important note that {\lpmd} even can generate
+additional output file as modules or plugins had been loaded. From the version
+0.6.1 during the {\lpmd} execution, you can see what plugins has been loaded.
 
 \section{Characteristics}
 
-Otras caracter\'isticas de {\lpmd} es que cuenta con flags para el manejo de variables internas en un fichero de control, por ejemplo, se pueden correr muchos sistemas con distintas temperaturas iniciales. Para ello consideremos, un fichero de control con una sintaxis del tipo,
+Other characterisitc of {\lpmd} is that this have additional flags for the
+control of the internal variables of a control file. By example, you can run
+many different systems with different temperatures using a single control file.
+Take the next line inside of a control file like as example
 
 \begin{verbatim}
  ...
@@ -52,30 +79,40 @@ Otras caracter\'isticas de {\lpmd} es que cuenta con flags para el manejo de var
  ...
 \end{verbatim}
 \noindent
-entonces, podemos ejecutar {\lpmd} de la siguiente forma para asignar a \verb|TEMP| un \'unico valor real, dado directamente por l\'inea de comandos, por ejemplo:
+with this, we can run {\lpmd} in order to assign to \verb|TEMP| variable a real
+value, given directly by the command line, for example :
 
 \begin{center}
- \texttt{lpmd -o TEMP=500 simulacion.control > simulacion.output}
+ \texttt{lpmd -o TEMP=500 simulation.control > simulation.output}
 \end{center}
 \noindent
-de esta forma el programa comienza la simulaci\'on del sistema con una temperatura inicial de 500K. 
+In this way the program start the simulation with a real temperature sistem of
+500K.
 
-Una de las ventajas de una caracter\'istica como \'esta es que reduce mucho la dificultad de implementar scripts para distintas simulaciones o simulaciones consecutivas de din\'amica molecular. Por ejemplo con un solo comando podemos correr un set de simulaciones con un valor distinto asociado a una variable del archivo de control. Para el caso de la temperatura, el siguiente comando:
+The advantage of this characteristic is that we can reduce the difficult of
+generate scripts for different simulations or even consecutive simulations of
+molecular dynamics. By example with only one command we can run a set of
+simulations with different values of a specific variable in a control file. For
+a set of different temperatures, for example:
 
 \begin{center}
  \texttt{for i in 300 400 500 ; \\do lpmd -o TEMP=\$i simulacion.control > simulacion-\$i.output ; done}
 \end{center}
 \noindent
-realiza tres simulaciones seguidas con diferentes temperaturas iniciales con un solo fichero de control.
+This realize three simulations with different initial tempreatures with a
+single control file.
 
-
-Otro de los flags importantes de {\lpmd} es \verb|-p| que brinda informaci\'on acerca de los plugins que se encuentran instalados en el sistema y que identifica directamente {\lpmd}. Pruebe por ejemplo algo como :
+Other interesting flag in {\lpmd}lpmd and their utilities is \verb|-p| that give
+us information about the plugins that you have instaled in your system and that
+are identified directly by {\lpmd}. You can check this using, for example:
 
 \begin{center}
  \texttt{lpmd -p angdist}
 \end{center}
 \noindent
-donde \verb|angdist| corresponde al plugin que calcula la distribuci\'on angular de una celda de simulaci\'on. Para m\'as opciones vea \verb|lpmd -h| o \verb|man lpmd|. 
+in this case \verb|angdist| is a plugin that calculate the angular distribution
+function of a simulation cell. For more option of the executable try the
+\verb|-h| option or \verb|man lpmd|.
 
 \begin{verbatim}
 username@machine:~$lpmd
@@ -96,5 +133,7 @@ Usage: lpmd [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles | -A <alpha,bet
 username@machine:~$ 
 \end{verbatim}
 
-En los cap\'itulos siguientes se dar\'a una descripci\'on mucho m\'as detallada de otras caracter\'isticas de {\lpmd} y sus funcionalidades.
+In the next chapters we will give you a more detailed description of other
+characteristics of {\lpmd} and their utilities.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
