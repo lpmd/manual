@@ -1,7 +1,7 @@
 \chapter{M\'odulos}
 \label{chap:modulos}
 
-En \'este cap\'itulo se dar\'a una descripci\'on general de los m\'odulos con los que cuenta lpmd, as\'i como tambi\'en propiedades de los mismos, no todos tendr\'an ejemplos, m\'as bien se pretende dar una descripci\'on de lo que es capaz de realizar cada m\'odulo, sin embargo puede encontrar muchos ejemplos en el cap\'itulo~\ref{chap:exa}.
+En \'este cap\'itulo se dar\'a una descripci\'on general de los m\'odulos con los que cuenta lpmd, as\'i como tambi\'en propiedades de los mismos. No todos tendr\'an ejemplos, m\'as bien se pretende dar una descripci\'on de lo que es capaz de realizar cada m\'odulo, sin embargo puede encontrar muchos ejemplos en el cap\'itulo~\ref{chap:exa}.
 
 A continuaci\'on veremos los m\'odulos y sus detalles dependiendo de su tipo, en cada una de las secciones siguientes. La intenci\'on principal de este cap\'itulo es tener un punto de referencia para los m\'odulos que vienen incorporados en {\lpmd}.
 
@@ -14,50 +14,52 @@ Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que
 \control{input module=mod file=.. opc1=.. ...  opcN=...}
 \control{output module=mod file=.. opc1=.. ... opcN=...}
 
-en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo \verb|file| una opci\'on com\'un a la mayor\'ia de los m\'odulos de entrada/salida.
+en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo \verb|file| una opci\'on com\'un a la mayor\'ia de los m\'odulos de entrada/salida. Recuerde que siempre puede ver la ayuda de un plugin usando
+
+\control{lpmd -p plugin}
 
 \subsection{dlpoly}
-Este plugin, pretende dar una soluci\'on eficiente a los archivos de entrada o salida que el usuario ya posee en alguno de los formatos del programa \verb|dl_poly| (ficheros \verb|HISTORY| y \verb|CONTROL|) y ahorrar el tiempo y trabajo que implica migrar estos archivos a otras configuraciones .
+%Este plugin pretende dar una soluci\'on eficiente a los archivos de entrada o salida que el usuario ya posee en alguno de los formatos del programa \verb|dl_poly| (ficheros \verb|HISTORY| y \verb|CONTROL|) y ahorrar el tiempo y trabajo que implica migrar estos archivos a otras configuraciones .
+Este plugin pretende manejar de manera eficiente los archivos de entrada o salida del programa \verb|dl_poly| (ficheros \verb|HISTORY| y \verb|CONTROL|), de manera de por migrar estos archivos a otras configuraciones o simplemente leerlos directamente.
 
-Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion cristalina de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
+Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly| son:
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuraci\'on \\
- &&de \textbf{dlpoly}\\
- level & = & Nivel del archivo (0,1,2).\\
- preiodicity & = & Especifica \textit{key} de periodicidad del \\
- &&fichero CONFIG.\\
- ftype & = & Especif\'ica el tipo de archivo, \texttt{HISTORY} o\\
- &&\texttt{CONFIG}, a ser le\'ido.\\
+ file & = & Archivo que contiene la configuraci\'on de \textbf{dlpoly}\\
+ each & = & Cada cuantos pasos se debe escribir el archivo.\\
+ level & = & Se especifica el nivel del formato del archivo (0,1,2).\\
+ && 0/1/2 $\leftrightarrow$ pos/pos-vel/pos-vel-acel.\\
+ periodicity & = & Especifica \textit{key} de periodicidad del fichero CONFIG (1 o 0).\\
+ ftype & = & Especif\'ica el tipo de archivo (\texttt{HISTORY} o \texttt{CONFIG}) a ser le\'ido.\\
 \end{tabular}
 }
 
 \subsection{lpmd}\label{subsec:lpmdformato}
 
-Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con opciones muy simples de manejo, encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comprimidos con zlib. Entre las opciones principales destacan
+Es un formato propio del programa {\lpmd}. Tiene la ventaja de que no s\'olo guarda la informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que adem\'as guarda informaci\'on sobre la celda de simulaci\'on y colores de las part\'iculas. Las posiciones, a diferencia del formato \verb|xyz|, se encuentran escaladas (entre 0 y 1), por lo que cuenta con opciones muy simples de manejo. Encarecidamente recomendamos su uso para trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin cuenta con la opcion de trabajar directamente formatos comprimidos con zlib. Entre las opciones principales destacan
 
 \fb{
 \begin{tabular}{lcl}
- file & = & archivo de entrada/salida.\\
- level & = & indica el nivel del fichero, estos pueden ser \\
-           &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
- extra & = & Informaci\'on extra en el fichero sobre los \'atomos \\
-           &&rgb, type, etc.\\
- type & = & Especif\'ica el tipo de fichero, \texttt{lpmd}(default) o \\
-           &&\texttt{zlp}.\\
- blocksize & = & tamaño del \textit{block} de compresi\'on cuando es \\
-           &&del tipo \texttt{zlp}.\\ 
+ file & = & Archivo de entrada/salida.\\
+ each & = & Cada cuantos pasos se debe escribir el archivo.\\
+ level & = & Se especifica el nivel del formato del archivo (0,1,2).\\
+ && 0/1/2 $\leftrightarrow$ pos/pos-vel/pos-vel-acel.\\
+ extra & = & Informaci\'on extra en el fichero sobre los \'atomos (RGB,C,TYPE).\\
+ && RGB: Los \'atomos en el archivo poseen/tendr\'an colores en formato\\&& $<$red,green,blue$>$ en el archivo de entrada/salida.\\
+ && C: Los \'atomos en el archivo poseen/tendr\'an colores en formato\\&& C$\in[0,1]$ en el archivo de entrada/salida.\\
+ type & = & Especif\'ica el tipo de fichero (\texttt{lpmd}(default) o \texttt{zlp}).\\
+ blocksize & = & Tamaño del \textit{block} de compresi\'on cuando el archivo es del tipo \texttt{zlp}.\\ 
 \end{tabular}
 }
 
-La forma com\'un de uso en lpmd es,
+La forma m\'as com\'un del formato lpmd es la siguiente:
 
 \begin{itemize}
  \item \textbf{Cargando un fichero lpmd}
        \control{input module=lpmd file=archivo.lpmd}
- \item \textbf{Escribiendo la salida en un fichero lpmd con velocidades}
-       \control{output module=lpmd file=salida.lpmd level=1}
+ \item \textbf{Escribiendo la salida en un fichero lpmd con velocidades y colores}
+       \control{output module=lpmd file=salida.lpmd level=1 extra=rgb}
 \end{itemize}
 
 \subsection{vasp}
@@ -824,7 +826,7 @@ La forma de utilizarla es:
 
 
 \subsection{gdr}
-Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
+Calcula la funcion de distribucion de pares (\emph{radial distribution function}) de la celda. Es uno de los m\'etodos utilizados para determinar las distancias principales a primeros y segundos vecinos de una celda de simulaci\'on. El procedimiento es el siguiente:
 \begin{enumerate}
  \item Se selecciona un \'atomo $i$.
  \item Se ve cuantos atomos $j$ estan dentro de un cascar\'on esf\'erico centrado en $i$.
@@ -833,10 +835,10 @@ Caulcula la funcion de distribucion de pares de la celda. Es uno de los m\'etodo
 
 \fb{
 \begin{tabular}{lcl}
- bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
  rcut & = & Radio de corte m\'aximo para an\'alisis.\\
+ bins & = & N\'umero m\'aximo de divisiones entre 0 y \textbf{rcut}.\\
  output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
+ average & = & Se promediar\'an o no los calculos (true/false).\\
 \end{tabular}
 }
 
