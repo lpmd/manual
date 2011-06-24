@@ -1,67 +1,94 @@
-\chapter{Instalaci\'on}
+\chapter{Install}
 \label{chap:inst}
 
-{\lpmd} ha sido probado en distintas arquitecturas y compiladores. Sin embargo a partir de la version 0.6.0 s\'olo hemos mantenido pruebas sobre dos arquitecturas principales :
+{\lpmd} had been probed in different architechtures and compilers. However in
+the branch 0.6 and later the developers are only tested the code using two
+principal architechtures :
 
 \begin{itemize}
  \item Linux I686/AMD64
  \item OS/X
 \end{itemize}
 
-Adem\'as actualmente {\lpmd} cuenta con \verb|lpmd-installer|, un programa enfocado a la instalaci\'on sencilla de lpmd en cualquier maquina, que est\'a escrito en python. Nosotros recomendamos a los usuarios no expertos que utilizen \verb|lpmd-installer| para la instalaci\'on de {\lpmd} en sus sistemas.
+On the other hand {\lpmd} have the \verb|lpmd-installer| program, focused in
+the installation of {\lpmd} made simple over different machines, wroted in
+python. We strongly recommend that beginners users use the
+\verb|lpmd-installer| program to install {\lpmd} in the computer.
 
-Los requerimientos para tener lpmd, son :
+The basic request in order to install lpmd are :
 
 \begin{itemize}
- \item Compilador de C++.
- \item Librerias de Desarrollo zlib.
- \item Python 2.5 o superior.
- \item subversion (para versi\'on de desarrollo).
+ \item C++ compiler.(recomended 4.4 or later for GNU and 10.1 or later for
+intel)
+ \item zlib libraries. (recomended the more updated version)
+ \item Python 2.5 or lather. (suggested Python 3.0 for branch 0.7)
+ \item subversion (only for developers).
 \end{itemize} 
 
 \section{lpmd-installer}
 
-Utilidad enfocada para una instalaci\'on amigable de {\lpmd}, llamada \verb|lpmd-installer|. Este programa escrito en python se encarga de instalar de forma automatica los 3 paquetes principales que forman parte de lpmd. Estos son :
+Is an program focused in a friendly installation of {\lpmd}, this program was
+wroted in Python and is the manager in install in an automatic way the three
+principal packages that are part of the lpmd program. These programs are :
 
 \begin{itemize}
- \item liblpmd : API principal del proyecto
- \item plugins : Set de plugins para din\'amica molecular y an\'alisis de estructuras.
- \item lpmd : Programa principal, con utilitarios.
+ \item liblpmd : Principal API of the project.
+ \item plugins : Plugins set for MD and Structure analysis.
+ \item lpmd : Principal program with extra utilities.
 \end{itemize}
 
 \fb{
 \begin{minipage}[l]{10cm}
-Si no se desea utilizar la versi\'on autom\'atica de instalaci\'on basada en \texttt{lpmd-installer} contin\'ue a la secci\'on~\ref{sec:descarga}.
+If you don't like use the automatic installation process with
+\texttt{lpmd-installer} go to the section~\ref{sec:descarga}.
 \end{minipage}
 }
 
-\subsection{Instalando lpmd-installer}
+\subsection{Instaling the lpmd-installer program}
 
-El programa \verb|lpmd-installer| es un script escrito en python por lo que las formas de instalaci\'on son bastantes simples, para funcionar correctamente \verb|lpmd-installer| necesita :
+Because \verb|lpmd-installer| is a python script, the installation process is a
+very simple work, in order to have a correct functionability of
+\verb|lpmd-installer| you will need :
 
 \begin{itemize}
-\item Python 2.5 o superior.
-\item Conecci\'on a internet.
+\item Python 2.5 or later.
+\item Internet connection.
 \end{itemize}
 
-Para instalar \verb|lpmd-installer| en su sistema existen dos formas, la primera es para distribuciones basadas en debian en donde contamos con un repositorio especial para ello, o bien en otro tipo de distribuciones para lo cual es necesario descargar el programa e instalarlo manualmente.
+In order to install \verb|lpmd-installer| in the system you can use two
+different ways. The first one is for distributions based in Debian (like
+Ubuntu), in that we will have a special repository for these process. The
+second way is for different kind of distributions, in this case in necessary
+download the program and install manually.
 
-\subsubsection{Distribuciones basadas en Debian}
+\subsubsection{Debian based distributions}
 
-Se ha probado en distribuciones como Debian/Ubuntu, para proceder, en primer lugar como administrador, edite el fichero \verb|\etc\apt\sources.list| y a\~nada :
+At first place, as administrator, edit the file \verb|\etc\apt\sources.list|
+and add the following lines.
 
 \begin{verbatim}
  #GNM Repositories
- deb http://www.gnm.cl/repos ./
+ deb http://arpa.ciencias.uchile.cl/repo/ gorilla main
 \end{verbatim}
 
-Luego, como administrador nuevamente, ejecute :
+You can make the same procedure in a Ubuntu distribution using directly the
+software center and adding the software source adding :
 
+\begin{itemize}
+ \item Type : Binary
+ \item URL : http://arpa.ciencias.uchile.cl/repo/
+ \item Distribution : gorilla
+ \item Components : main
+ \item Comment : A GNM source/binary distribution.
+\end{itemize}
+
+Finally, as administrator execute :
 \control{
  apt-get update\\
  apt-get install lpmd-installer
 }
-Ahora verifique que tenga el comando
+
+Now check that you have the \verb|lpmd-installer| command :
 \begin{verbatim}
  username@machine:~$ lpmd-installer 
  lpmd-installer [ -i <branch or version> | -u ] [-v] [-p <prefix>] [-P <package>] 
@@ -69,27 +96,32 @@ Ahora verifique que tenga el comando
  username@machine:~$
 \end{verbatim}
 
-Listo ya esta en condiciones de poder instalar {\lpmd} facilmente.
+Great! you are ready to install {\lpmd} easily.
 
-\subsubsection{Otras Distribuciones}
+\subsubsection{Others Distributions}
 
-Para instalar \verb|lpmd-installer| en distribuciones no basadas en Debian, es necesario descargar el programa directamente desde internet, puede encontrarlo en esta direcci\'on :\\
+In order to install \verb|lpmd-installer| in distributions non based on Debian,
+is necessary download the program directly from internet, you can found the
+program here :\\
 
 \url{http://www.gnm.cl/lpmd/uploads/Main/lpmd-installer}\\
 
-Descarge el archivo y asignele permisos de ejecuci\'on :
+Download the file and change the execution permission of the file :
 
 \begin{verbatim}
  chmod 755 lpmd-installer
 \end{verbatim}
 
-Luego de eso, se puede copiar o mover a algun lugar donde se tenga \verb|PATH| del sistema. En la mayor\'ia de los sistemas *nix puede copiarse o moverse a :
+Afther that, you can copy or move the file to some plece where you have set the
+\verb|PATH| envirnment variable. In mostly of the system *nix is enoguh copy to
+:
 
 \begin{verbatim}
  cp lpmd-installer /usr/local/bin/
 \end{verbatim}
 
-Y listo, ahora verifique que tiene el comando \verb|lpmd-installer| disponible en su sistema.
+And this it, now check that you have the \verb|lpmd-installer| command
+available in your system.
 \begin{verbatim}
  username@machine:~$ lpmd-installer 
  lpmd-installer [ -i <branch or version> | -u ] [-v] [-p <prefix>] [-P <package>] 
@@ -97,22 +129,32 @@ Y listo, ahora verifique que tiene el comando \verb|lpmd-installer| disponible e
  username@machine:~$
 \end{verbatim}
 
-\subsection{Probando lpmd-installer}
-El programa cuenta con todo lo necesario para instalar {\lpmd} en un sistema o en cuentas personales, as\'i como tambi\'en facilidades para instalar \textit{plugins} externos, tales como \verb|lpvisual|. Entre las opciones principales de \verb|lpmd-installer| se cuenta con :
+Great! you are ready to install {\lpmd} easily.
+
+\subsection{Testing lpmd-installer}
+
+\verb|lpmd-installer| have all necessary in order to install {\lpmd} in a
+system or in personal accounts, like as facilities fo install external
+\textit{plugins}, like \verb|lpvisual|. Between the principal options of
+\verb|lpmd-installer| we have :
 
 \begin{itemize}
- \item \verb|-l| : Lista las versiones disponibles de instalar asociadas al paquete.
- \item \verb|-p| : Especifica donde se instalar\'a.
- \item \verb|-P| : Especif\'ica que paquete se instalar\'a.
- \item \verb|-d| : Especif\'ica donde quedar\'an los sources, sino se especif\'ica estos son elmiminados despu\'es de la instalaci\'on.
- \item \verb|-u| : Actualiza la versi\'on de {\lpmd} que se encuentra en su sistema.
+ \item \verb|-l| : Show all version available to install.
+ \item \verb|-p| : Espcify the path to install lpmd(prefix).
+ \item \verb|-P| : What package you will install.
+ \item \verb|-d| : Set where the sources will be, if you don't set this values
+the sources are deleted after the installation process.
+ \item \verb|-u| : Update the {\lpmd} version that you have in your system.
 \end{itemize}
 
-A continuaci\'on veremos como se instala {\lpmd} utilizando \verb|lpmd-installer|.
+Below, we will show you how to install {\lpmd} using \verb|lpmd-installer|.
 
-\subsection{Instalando lpmd en el sistema}
+\subsection{Installing lpmd on the system}
 
-Antes de ejecutar la instalaci\'on directa de {\lpmd} en el sistema es conveniente ver la disponibilidad de las versiones en el servidor principal, para ello ejecute \verb|lpmd-installer -l|, y obtendra una lista como la siguiente :
+Before run the installation process of {\lpmd} in the system, we recommend that
+you take a look of the available versions in the principal server, for this
+just run \verb|lpmd-installer -l|, and you will se a list with the packages,
+like this :
 
 \begin{verbatim}
 username@machine:~$ lpmd-installer -l
@@ -120,19 +162,19 @@ These are the available versions of package lpmd:
 
 From branch 0.5: 
     0.5.4-delta2
-    0.5.4-delta2-openmp
-    0.5.4-delta1
     0.5.4
-    0.5.3
 
 From branch 0.6: 
     0.6.1
-    0.6.1pre
-    0.6.0
+
+From branch testing: 
+    svn
 username@machine:~$
 \end{verbatim}
 
-Elegimos de la lista la version que se desea instalar, en este caso la version 0.6.1, si intentamos instalar esta version en el sistema sin ser \textbf{administrador} obtendremos un mensaje como  :
+You have to choose wath version do you want install, in this case we will
+consider the version 0.6.1, if we try to install in the system without
+administrator permissions, you will have a message like this :
 
 \begin{verbatim}
 username@machine:~$ lpmd-installer -i 0.6.1
@@ -141,7 +183,9 @@ Preparing to install lpmd 0.6.1
 username@machine:~$
 \end{verbatim}
 
-Esto ocurre debido a que, por defecto, lpmd se intenta instalar en \verb|/usr/local| y un usuario normal no tiene permisos de escritura en este directorio. La manera correcta de proceder es, instalarlo como \textbf{administrador}. Para ello :
+This happen because, {\lpmd} by default try to be installed in
+\verb|/usr/local| and a normal user have not privileges to write in this
+folder. The right way to proceed is, install as a administrator. For this :
 
 \begin{verbatim}
 username@machine:~$ sudo -s
@@ -149,7 +193,12 @@ username@machine:~$ sudo -s
 root@machine:~# lpmd-installer -i 0.6.1
 \end{verbatim}
 
-Ahora si, el proceso comenzar\'a de forma autom\'atica a descargar desde el servidor principal los paquetes necesarios para la instalaci\'on. Recuerde que se requiere al menos un compilador de \verb|C++| para llevar a cabo la instalaci\'on. Tambien es recomendable contar con las librer\'ias \verb|zlib|, en la manyor\'ia de los sistemas es un paquete con el nombre \verb|zlib1g-dev|, que en distribuci\'ones basadas en Debian ser\'ia :
+Now, the process will begin in automatic way to download from the principal
+server the necessary packages to install {\lpmd}. Remember that you will
+request at least one \verb|C++| compiler in order to realize the installation.
+By the other hand we suggest that you have too installed the \verb|zlib|
+library, in mostly of the *nix system is called \verb|zlib1g-dev|, for to this
+in Debian based dsitribution, the preocedure will be :
 
 \begin{verbatim}
 username@machine:~$ sudo -s
@@ -158,9 +207,14 @@ root@machine:~# apt-get install zlib1g-dev
 \end{verbatim}
 
 
-\subsection{Instalando lpvisual utilizando lpmd-installer}
+\subsection{Installing lpvisual with lpmd-installer}
 
-Con \verb|lpmd-installer| tambi\'en podremos realizar la instalaci\'on de \verb|lpvisual| un plugin independiente basado en OpenGL para la visualizaci\'on de configuraciones at\'omicas de distintos tipos. Para la correcta compilaci\'on del c\'odigo fuente es necesario tener instaladas las librerias principales del proyecto OpenGL, para ello, en distribuciones basadas en Debian se puede utilizar :
+With \verb|lpmd-installer| you can raelize the installation of the
+\verb|lpvisual| plugin, this is a independient plugin based in OpenGL and is
+used for the visualization of atomic configurations of different types. For a
+right compilation of the source code, you will need install the principal
+libraries of the OpenGL project, for this, in Debian based distribution you can
+use :
 
 \begin{verbatim}
 username@machine:~$ sudo -s
@@ -168,7 +222,8 @@ username@machine:~$ sudo -s
 root@machine:~# apt-get install libglut3-dev
 \end{verbatim}
 
-Ahora, para instalar facilmente lpvisual en el sistema podemos utilizar las mismas opciones de \verb|lpmd-installer| utilizadas previamente :
+Now, to install \verb|lpvisual| at the system you can use the same options of
+\verb|lpmd-installer| used previously :
 
 \begin{verbatim}
 username@machine:~$ lpmd-installer -P lpvisual -l
@@ -179,18 +234,24 @@ From branch 2.0:
 username@machine:~$  
 \end{verbatim}
 
-Entonces elegimos la version de \verb|lpvisual| que deseamos instalar y la instalamos facilmente con :
+So, we will choose the version of \verb|lpvisual| that you want install, and
+you install this easly with :
 
 \begin{verbatim}
 username@machine:~$ lpmd-installer -P lpvisual -i 6.0
 ....
 \end{verbatim}
 
-Con esto entonces hemos instalado un \textbf{plugin adicional} utilizando lpmd-installer.
+With this you installed an additional plugin using the lpmd-installer package.
 
-\subsection{Instalando lpmd en una cuenta personal}
+\subsection{Installing lpmd in a personal account}
 
-Si no somos administradores o no tenemos acceso a \'el es posible que nuestra intenci\'on sea instalar {\lpmd} en una cuenta personal, para ello \verb|lpmd-installer| cuenta con flags opcionales para especificar  esto. Consideremos que deseamos instalar {\lpmd} en un directorio \verb|~/local/| para ello es necesario entonces especificar el directorio con el flag \verb|-p| como se muestra a continuaci\'on :
+Sometimes, the user is not an system administrator, under this, you can install
+{\lpmd} in a persinal account, for that \verb|lpmd-installer| have additional
+flags that you can use for this. Take in acount an example, supouse that you
+want install {\lpmd} in a local folder, for example \verb|~/local|. For this
+installation process is necessary day where is the directory using the flag
+\verb|-p| as :
 
 \begin{verbatim}
 username@machine:~$ lpmd-installer -i 0.6.1 -p /home/username/local
@@ -198,7 +259,9 @@ username@machine:~$ lpmd-installer -i 0.6.1 -p /home/username/local
 username@machine:~$
 \end{verbatim}
 
-con este comando hemos instalado entonces {\lpmd} en nuestra cuenta personal, adem\'as podemos elegir mantener el c\'odigo fuente en algun directorio en especial :
+With this command we installed {\lpmd} en the personal account, we can also
+choose the possibility to keep the source code in other directory, for example
+using :
 
 \begin{verbatim}
 username@machine:~$ lpmd-installer -i 0.6.1 -p /home/username/local -d /home/username/sources
@@ -206,18 +269,24 @@ username@machine:~$ lpmd-installer -i 0.6.1 -p /home/username/local -d /home/use
 username@machine:~$
 \end{verbatim}
 
-Para m\'as soporte y ayuda puede enviar e-mail a los desarrolladores o visitar la web principal del proyecto \url{http://www.gnm.cl}.
+For user support and more tips about \verb|lpmd-installer| yo can send an
+e-mail to the developers or visit the web-page of the project in
+\url{http://www.lpmd.cl}.
 
-\section{Descarga sin lpmd-installer}
+\section{Download without lpmd-installer}
 \label{sec:descarga}
 
-Si ha decidido no instalar {\lpmd} utilizando \verb|lpmd-installer| entonces debe descargar los 3 paquetes principales para la posterior instalaci\'on, para ello existen dos versiones disponibles, la versi\'on estable y la versi\'on de pruebas. En ambos casos se deben descargar los tres paquetes principales asociados a {\lpmd}, \verb|API| (libreria principal), \verb|plugins| (m\'odulos y complementos) y \verb|lpmd| (ejecutables y utilitarios).
+If you choose do not install {\lpmd} using the \verb|lpmd-installer| program,
+then you have to download the three principal packages in order to install
+{\lpmd}. You can choose two different version, the last stable version or the
+developer version, in both you will have to download all the three packaes, the
+\verb|API|, the plugins set and the executables (with utilities).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Descarga de versi\'on estable}
+\subsection{Download the last stable version}
 
-La \'ultima versi\'on estable de los paquetes es :
+The last stable version of {\lpmd} packages are :
 
 \begin{itemize}
  \item liblpmd : ver. 0.2.1
@@ -225,13 +294,16 @@ La \'ultima versi\'on estable de los paquetes es :
  \item lpmd    : ver. 0.6.1
 \end{itemize}
 
-Estos pueden ser descargados directamente en la pagina web \url{http://www.gnm.cl/lpmd}, o bien solicitados por e-mail.
+You can download this in the web page \url{http://www.lpmd.cl} or request them 
+by e-mail. The webpage always is more updated that this document.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Descarga de versi\'on en desarrollo}
+\subsection{Download the development version}
 
-Para los interesados en el desarrollo de {\lpmd} y sus complementos principales(API, plugins, utilitarios, etc.), la version de pruebas ``\textit{testing}'' se puede descargar con subversion, esta es la forma principal que utilizan los desarrolladores del c\'odigo, si se desea tener los \'ultimos \textit{updates} es la forma m\'as recomendable :
+For the developers or people interested in the development of the code (API,
+plugins, utilities, etc.) can download the testing version. The testing version
+can be download using \verb|subversion| package. To download lpmd :
 
 \begin{center}
  \begin{verbatim}
@@ -241,67 +313,96 @@ Para los interesados en el desarrollo de {\lpmd} y sus complementos principales(
  \end{verbatim}
 \end{center}
 
-Est\'a disponible adem\'as una rama \verb|unstable|; sin embargo, no recomendamos utilizarla para c\'alculos de Din\'amica Molecular. S\'olo utilizable para investigaci\'on y prueba de c\'odigos.
+For more information about \verb|subversion| you can visit the website
+\url{http://subversion.tigris.org/}.
 
-\section{Instalaci\'on}
+\section{Installation without lpmd-installer}
 
-Para un correcto procedimiento de instalaci\'on es necesario instalar en primer lugar la \verb|API| del proyecto antes de cualquier otro paquete. El orden de las instalaciones posteriores no es importante.
+In order to install {\lpmd} without using \verb|lpmd-installer| the first step
+is install the \verb|API| of the project before install any other package. The
+order for the next installation packages will be no important.
 
-\fb{
-\begin{minipage}[l]{10cm}
-Nota : Los que poseen la versi\'on testing/unstable cuentan con \texttt{NMC} (\textit{NanoMaterialsConfigure}) una utilidad desarrollada por Sergio Davis en python, similar al ya conocido \texttt{configure} de GNU pero mucho m\'as ajustado a nuestros requerimientos.
-\end{minipage}
-}
+% \fb{
+% \begin{minipage}[l]{10cm}
+% Nota : Los que poseen la versi\'on testing/unstable cuentan con \texttt{NMC}
+% (\textit{NanoMaterialsConfigure}) una utilidad desarrollada por Sergio Davis
+% en % python, similar al ya conocido \texttt{configure} de GNU pero mucho m\'as
+% ajustado a nuestros requerimientos.
+% \end{minipage}
+% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instalando API liblpmd}
+\subsection{Installing the liblpmd API}
 
-En primer lugar, si utiliza la versi\'on estable, descomprima el paquete de la \textbf{liblpmd},
+At first, uncompress the package of \textbf{liblpmd}.
 
 \control{tar -xvzf liblpmd-X.X.X.tar.gz}
 
-lo que le generar\'a un nuevo directorio(si usa la versi\'on \textit{testing} el directorio ya existe). Para instalar esta librer\'ia con todos los requerimientos necesarios para el funcionamiento de {\lpmd} y la implementaci\'on de plugins ejecute :
+This will generate a new folder. In order to install this library with all the
+necessary issues for the good operation of {\lpmd}, execute :
 
 \control{./setup \\ make}
 
-y como administrador,
+and with administrator privileges,
 
 \control{make install}
 
-Por \textit{default} el directorio de instalaci\'on de la API es \verb|/usr/local/|, en caso de requerir una ubicaci\'on distinta edite el archivo \verb|packagesetup| que utiliza el comando \verb|setup|. Y si desea instalarlo en un directorio personal refi\'erase a la secci\'on~\ref{subsub:personaldir}.
+By \textit{default} the installation folder of the \verb|API| is
+\verb|/usr/local|, in the case that you need locate the api in a different
+folder, set this using the \verb|--prefix| option in the \verb|./setup|
+process. And in particular if you want install {\lpmd} in your personal home
+check the section~\ref{subsub:personaldir}.
 
-En caso de cualquier error en el proceso de instalaci\'on env\'ie un e-mail a alguno de los desarrolladores principales o en su defecto a \verb|gnm@gnm.cl|.
+In case of error messages or any other problems during the installation of the
+\verb|API| package, please send an e-mail to the developers or to
+\verb|gnm@gnm.cl|.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instalando plugins}
+\subsection{Installing plugins}
 
-Uno de los requerimientos b\'asicos de {\lpmd} es tener bien especificada la ubicaci\'on de los plugins que {\lpmd} requiere, para el caso de que requiera instalar lpmd en un lugar distinto al que viene por \textit{default}, refierase a la secci\'on~\ref{subsub:personaldir}. Si la \verb|API| fue instalada de forma estandard, entonces puede configurar y compilar el paquete de plugins utilizando :
+One of the basic requeriments in the installation process of {\lpmd} is have a
+well defined location of the plugins that {\lpmd} will use. If the \verb|API|
+package was installed in a standard way, you can configure and install plugins
+easily using :
 
 \control{./setup  \\ make}
 
-y proceder la instalaci\'on como administrador:
+and with administrator privileges, run :
 
 \control{make install}
 
-Esto ubicar\'a todos los plugins incluidos en el paquete \verb|plugins| en el directorio \verb|/usr/local/lib/lpmd| (si se instalo en la ubicaci\'on por \textit{default}). De esta forma ya estamos listos para comenzar la instalaci\'on de lpmd y realizar las primeras pruebas.
+With this standard procedure, all the plugins will be installed in the folder
+\verb|/usr/local/bin/lpmd|. If you install the \verb|API| in a different
+location using the \verb|--prefix| option, we suggest that you use the same
+place for the plugin using the same option in the \verb|./setup| command.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instalando lpmd}
+\subsection{Installing lpmd}
 
-Es uno de los paquetes m\'as peque\~nos y r\'apidos de instalar; para proceder, se hace de manera similar que los anteriores, ejecutando:
+This is the smaller and faster packages to install. Is similar to the previous
+packages, if you use the standard procedure and location, execute :
 
 \control{./setup \\ make}
 
-y proceder a instalar como administrador:
+and with administrator privileges, run :
 
 \control{make install}
 
-Esto generar\'a un set de ejecutables \verb|lpmd|, \verb|lpmd-analyzer|, \verb|lpmd-converter| y \verb|lpmd-visualizer| ubicados en \verb|/usr/local/bin/| (si ha realizado la instalaci\'on por \textit{default}), que puede ser ejecutado desde cualquier sitio (si se presenta alg\'un problema, corriga su \verb|PATH|).
+If you choose a different location for the \verb|API|, we suggest that use this
+location too in the \verb|./setup| process for the final package, for this you
+can use the \verb|--prefix| option too.
 
-Puede correr lpmd con
+Finally you will have a set of different executables availables, \verb|lpmd|,
+\verb|lpmd-analyzer|, \verb|lpmd-converter|, \verb|lpmd-visualizer| and
+\verb|lpmd-plotter| availables in your system. In a standard installation
+process this executables are installed in \verb|/usr/local/bin/|, if you
+install {\lpmd} in a different folder please correct your \verb|PATH| in order
+to have acces to the executables.
+
+You can run {\lpmd} using :
 
 \begin{verbatim}
 username@machine:~$ lpmd
@@ -318,21 +419,27 @@ Usage: lpmd [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles |
        lpmd [--help | -h]
 \end{verbatim}
 
-\subsection{Problemas t\'ipicos post-instalaci\'on}
+\subsection{Typical post-installation problems}
 
-\subsubsection{Error cargando librer\'ia}
+In this section you will found the more typical post-installation error related
+to {\lpmd} installation process.
 
-Es uno de los errores m\'as comunes en la rama 0.5.X de {\lpmd}, luego de la instlaci\'on de {\lpmd}. Ocurre que al ejecutar {\lpmd} no muestra nada m\'as que un error referencial a la librer\'ia liblpmd que no puede ser encontrada.
+\subsubsection{Loading library error}
 
-La forma de corregir el problema es,
+This is the more typical installation process in the 0.5 branch of {\lpmd}.
+After the installation process of {\lpmd} you will se only a Error of a error
+refering to liblpmd library can't be found.
+
+The fast way to correct this problem is,
 
 \begin{itemize}
- \item Editar /etc/ld.so.conf
- \item A\~nadir al archivo la l\'inea /usr/local/lib (o donde se haya instalado liblpmd)
- \item Ejecutar como admininistrador el comando: ldconfig
+ \item Edit /etc/ld.so.conf
+ \item Add the line /usr/local/lib to the file.
+ \item Run with administrator privileges: ldconfig
 \end{itemize}
 
-Ahora deber\'ia ejecutar el comando sin problemas.
+Now you will can run \verb|lpmd| without problems, if you still having
+problems, please report these to the developers.
 
 \subsection{Instalaci\'on de lpmd en directorio personal}
 \label{subsub:personaldir}
