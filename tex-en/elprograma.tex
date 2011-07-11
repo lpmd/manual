@@ -14,14 +14,15 @@ colaborators are join to us\footnote{Ver~cap.\ref{chap:auth}}.
 The stable versions available of the software are:
 
 \begin{itemize}
- \item Version 0.6.1 : Released 03 de January 2010.
- \item Version 0.6.0 : Released 12 de June 2009.
- \item Version 0.5.4 : Released 29 de January 2009.
- \item Version 0.5.3 : Released 01 de November 2008.
- \item Version 0.5.2 : Released 05 de August 2008.
- \item Version 0.5.1 : Released 30 de April 2008.
- \item Version 0.5.0 : Released 04 de April 2008.
- \item Version 0.4.0 : Released Julio 2007.
+ \item Version 0.6.2 : Released November 1st 2011.
+ \item Version 0.6.1 : Released January 3th 2010.
+ \item Version 0.6.0 : Released June 12th 2009.
+ \item Version 0.5.4 : Released January 1st 29th 2009.
+ \item Version 0.5.3 : Released November 1st 2008.
+ \item Version 0.5.2 : Released August 5th 2008.
+ \item Version 0.5.1 : Released April 30th 2008.
+ \item Version 0.5.0 : Released April 4th 2008.
+ \item Version 0.4.0 : Released July 2007.
 \end{itemize}
 
 The upgrade system is controled by developers. From the 0.5 version of {\lpmd}
@@ -37,11 +38,12 @@ Is a plugins set that has been developed, and incorporate characteristics from
 the \textbf{API}, usually corresponend to Interatomic Potentials,
 integrators, analyzers, or file managers.
 \index{lpmd} \item lpmd \\
-{\lpmd} Is the molecular dynamics (MD) software that use the plugins developed
-in order to realize the simulations. This include additional tools
-like \textbf{lpmd-analyzer}, \textbf{lpmd-converter} and
-\textbf{lpmd-visualizer} that are used for the generation of structures,
-analyquesis and visualization of atomic configurations.
+{\lpmd} Is the molecular dynamics (MD) software that use the plugins and the
+API in order to realize the simulations. This include additional tools
+like \textbf{lpmd-analyzer}, \textbf{lpmd-converter}, \textbf{lpmd-visualizer}
+and in the last version \textbf{lpmd-plotter} that are used for the generation
+of structures, analysis, visualization and image generation of atomic
+configurations.
 \end{itemize}
 
 \section{Principal Goal}
@@ -99,10 +101,10 @@ a set of different temperatures, for example:
  \texttt{for i in 300 400 500 ; \\do lpmd -o TEMP=\$i simulacion.control > simulacion-\$i.output ; done}
 \end{center}
 \noindent
-This realize three simulations with different initial tempreatures with a
+This realize three simulations with different initial temperatures with just a
 single control file.
 
-Other interesting flag in {\lpmd}lpmd and their utilities is \verb|-p| that give
+Other interesting flag in {\lpmd} and their utilities is \verb|-p| that give
 us information about the plugins that you have instaled in your system and that
 are identified directly by {\lpmd}. You can check this using, for example:
 
@@ -112,10 +114,11 @@ are identified directly by {\lpmd}. You can check this using, for example:
 \noindent
 in this case \verb|angdist| is a plugin that calculate the angular distribution
 function of a simulation cell. For more option of the executable try the
-\verb|-h| option or \verb|man lpmd|.
+\verb|-h| option or \verb|man lpmd|. The next correspond to the standard help
+information of lpmd using the \verb|-h| flag.
 
 \begin{verbatim}
-username@machine:~$lpmd
+username@machine:~$lpmd -h
 .....
 ================================================================================
 ===================== LPMD VERSION 0.X.Y =======================================
@@ -133,7 +136,7 @@ Usage: lpmd [--verbose | -v ] [--lengths | -L <a,b,c>] [--angles | -A <alpha,bet
 username@machine:~$ 
 \end{verbatim}
 
-In the next chapters we will give you a more detailed description of other
-characteristics of {\lpmd} and their utilities.
+In the next chapters of this manual we will give you a more detailed description
+of other characteristics of {\lpmd} and their utilities.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
