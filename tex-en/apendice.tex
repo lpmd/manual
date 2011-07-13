@@ -2,308 +2,353 @@
 %\chapter{Ap\'endice}
 
 \chapter{Plugins}
-A continuaci\'on se muestran las listas de los tipos de m\'odulos implementados a la fecha en {\lpmd}. Adem\'as se indica la calidad del m\'odulo, segun la tabla~\ref{tab:modquality}
+In this section you will found a list with all the different kind of plugins
+availables in {\lpmd}, particullarly in the \texttt{lpmd-plugins} package. A
+brief description of each plugin is added in each list. If you want see a more
+deep description about the plugins and the utilities, please visit the website
+\url{http://www.lpmd.cl/Plugins} or execute \verb|lpmd -p pluginname| in the
+command line.
 
-
-\begin{table}[h!]\centering
- \begin{tabular}{|c|l|}\hline\hline
- Calidad & Descripci\'on \\\hline\hline
- S & \textit{Stable} El plugin funciona de manera estable. \\
- T & \textit{Testing} El plugin funciona y se encuentra usable, pero debe ser precavido. \\
- U & \textit{Unstable} El plugin esta en fase de desarrollo, no utilizar para publicaciones. \\
-\hline
- \end{tabular}
- \label{tab:modquality}
- \caption{Tabla de calidad de implementaci\'on de m\'odulos, s\'olo se presta soporte para los m\'odulos incluidos en el paquete \textbf{lpmd-plugins}}
-\end{table}
-
-\section{Entrada Salida}
-M\'odulos para manejar los ficheros de entrada/salida para las configuraci\'ones at\'omicas que se simulan.
+\section{Input/Output}
+This plugins are designed to read and write different kind of files, in
+particular files with atomic posititons and cell description.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{dlpoly} & 2.0 & S & Lectura/Escritura de ficheros \texttt{HISTORY} y \texttt{CONFIG} de dl\_poly.\\
+ \texttt{dlpoly} & Read/Write of \texttt{HISTORY} and \texttt{CONFIG} file from
+ the dl\_poly software.\\
  \hline
- \texttt{lpmd} & 2.0 & S & Formato propio de {\lpmd}, soporte lectura/escritura, 3 niveles distintos y tags.\\
+ \texttt{lpmd} & Particular format of {\lpmd}, Read/Write of \texttt{lpmd}
+ and \text{zlp} files, support level, and tags.\\
  \hline
- \texttt{vasp} & 5.0 & F & Lee ficheros \textbf{POSCAR} de vasp, el cu\'al posee las posiciones at\'omcias de la configuraci\'on.\\
+ \texttt{mol2} & Read/Write of \texttt{mol2} file types, basic support.\\
  \hline
- \texttt{xyz} & 1.0 & S & Formato de ficheros \texttt{xyz}, sporta 3 niveles distintos.\\
+  \texttt{pdb} & Read/Write of \texttt{pdb} file types, basic support.\\
  \hline
- \texttt{zlp} & 2.0 & S & Formato propio de {\lpmd}, utiliza las zlib, y 3 niveles distintos de manejo, la utilizaci\'on es similar a lpmd pero con ficheros de menor tama\~no.\\
+ \texttt{rawbinary} & Read/Write in binary mode. Used to save velocity and
+ space.\\
  \hline
- \texttt{mol2} & 1.0 & T & Lectura/Escritura de ficheros \texttt{mol2}, soporte b\'asico.\\
+ \texttt{vasp} & Read of \textbf{POSCAR} file from vasp software.\\
  \hline
- \texttt{pdb} & 1.0 & T & Lectura/Escritura de ficheros \texttt{pdb}, soporte b\'asico.\\
- \hline
- \texttt{rawbinary} & 1.0 & S & Lectura/Escritura en modo binario. Ideal para espacio y velocidad.\\
+ \texttt{xyz} & Read/Write of \texttt{xyz} files, support level and other
+ characteristics.\\
  \hline
 \end{tabular}
 \label{tab:modinout}
-\caption{Tabla con los m\'odulos de entrada y salida utilizados por {\lpmd} y sus utilitarios.}
+\caption{Table with input/output plugins in lpmd 0.6.2.}
 \end{table}
 
 
-\section{Generadores de Celda}
-M\'odulos de {\lpmd} que generan celdas at\'omicas de forma autom\'atica.
+\section{Cell Generators}
+Plugins of {\lpmd} package that generate atomic crystal cell automatically.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{crystal3d} & 1.0 & S & Generador de celdas tridimensionales.\\
+ \texttt{crystal2d} & Generator of atomic cell in two dimensions.\\
  \hline
- \texttt{crystal2d} & 1.0 & F & Generador de celdas bidimensionales.\\
+ \texttt{crystal3d} & Generator of atomic cell in three dimensions (fcc,
+         bcc, etc.).\\
  \hline
-\texttt{voronoi} & 1.0 & F & Generador de Nanoestructuras utilizando m\'etodo de voronoi.\\
+ \texttt{skewstart} & Generate atomic cell using the  skewstart method,
+ developed by \textit{K. Refson}, used generally in the \textbf{moldy}
+ software.\\
  \hline
- \texttt{skewstart} & 1.0 & F & Generador de celdas con m\'etodo skewstart, desarrollado por \textit{K. Refson}, para el programa de din\'amica molecular \textbf{moldy}.\\
+ \texttt{voronoi} & Nanostructures grains generator using the skewstart
+ method.\\
  \hline
  \end{tabular}
 \label{tab:cellgen}
-\caption{M\'odulos generadores de celda usados por {\lpmd} y sus utilitarios.}
+\caption{Plugins to generate structures in lpmd 0.6.2.}
 \end{table}
 
-\section{Manejadores de Celda}
-Determinan como es la forma de interactuar entre los \'atomos pertenecientes a la celda de simulaci\'on.
+\section{Cell Managers}
+This plugins determine the interaction way between the atoms of the simulation
+cell.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{linkedcell} & 2.0 & S & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo \textit{Linked Cell}.\\
+ \texttt{lcbinary} & Plugin that control the atomic interaction list using ht
+ \textit{LinkedCell} method with only one atom by cell.\\
  \hline
- \texttt{minimumimage} & 2.0 & S & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{m\'inima im\'agen}.\\
+ \texttt{linkedcell} & Plugin that control the atomic interaction list using the
+ \textit{Linked Cell} method.\\
  \hline
- \texttt{lcbinary} & 1.0 & S & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{Linked Cell} con \'un \'atomo por celda.\\
+ \texttt{minimumimage} & Plugin that control the atomic interaction list using
+the \textit{mimimum-image} method.\\
  \hline
- \texttt{verletlist} & 1.0 & U & M\'odulo que utiliza lpmd, para manejar las listas de interacci\'on, utilizando el m\'etodo de \textit{Verlet List}.\\
+ \texttt{verletlist} & Plugin that control the atomic interaction list using
+the \textit{Verlet List} method.\\
  \hline
  \end{tabular}
 \label{tab:modmanager}
-\caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
+\caption{Cell-Managers plugins, availables in lpmd 0.6.2.}
 \end{table}
 
-\section{Filtros}
-Act\'uan sobre la celda de simulaci\'on y son capaces de seleccionar \'atomos de la celda en distinta forma.
+\section{Filters}
+This plugin filter atoms on a simulation cell, are used to select atoms with
+specific properties.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{box} & 1.0 & S & Selecciona \'atomos fuera o dentro de una caja de largos espec\'ificos.\\
+ \texttt{box} & Select atoms in a defined parallelepiped.\\
  \hline
- \texttt{element} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su s\'imbolo at\'omico.\\
+ \texttt{cylinder} & Select atoms in a cylindrical region.\\
  \hline
- \texttt{index} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su \'indice.\\
+ \texttt{element} & Select atoms by their atomic symbol.\\
  \hline
- \texttt{sphere} & 1.0 & S & Selecciona \'atomos fuera y dentro de una esfera.\\
+ \texttt{external} & Select atoms by some properties in a external file.\\
  \hline
- \texttt{tag} & 1.0 & S & M\'odulo que utiliza lpmd, para seleccionar \'atomos seg\'un su tag.\\
+ \texttt{index} & Select atom by the index number.\\
+ \hline
+ \texttt{random} & Select a group of random atoms.\\
+ \hline
+ \texttt{sphere} & Select atoms in a spherical region.\\
+ \hline
+ \texttt{tag} & Select atoms by their specific tag.\\
  \hline
  \end{tabular}
 \label{tab:filtros}
-\caption{Tabla con los m\'odulos que manejan las interacciones at\'omicas en la din\'amica molecular.}
+\caption{Filter plugins availables in lpmd 0.6.2.}
 \end{table}
 
 
-\section{Modificadores}
-Son los m\'odulos que alteran propiedades de la celda, tales como tama\~no, forma, o bien modifican los \'atomos que se encuentran dentro de ella.
+\section{Modifiers}
+The modifiers plugins are plugins that modify some properties in a simulation
+cell, this can be properties on the cell or on the atoms inside the cell. Some
+of this properties can be applied to in a specific group of atoms mixing this
+plugins with apply and filters directions. For more information check the
+examples avalables online or in the section~\ref{chap:examples}.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin  & Description \\
  \hline\hline
- \texttt{berendsen} & 2.0 & S & Escalamiento de temperatura usando algoritmo de berendsen.\\
+ \texttt{addvelocity} & This add a certain velocity to the atoms.\\
  \hline
- \texttt{cellscaling} & 2.0 & S & Escalamiento din\'amico de Celda.\\
+ \texttt{berendsen} & Scale the atoms temperature using the berensen
+ thermostat.\\
  \hline
- \texttt{displace} & 2.0 & S & Desplazamiento de \'atomos.\\
+ \texttt{cellscaling} & Scale the axis of the cell.\\
  \hline
- \texttt{moleculecm} & 2.0 & S & Crea mol\'eculas diat\'omicas a partir de \'atomos enlazados.\\
+ \texttt{displace} & Displace the atoms in the cell.\\
  \hline
- \texttt{propertycolor} & 1.0 & S & Colorea \'atomos seg\'un propiedad.\\
+ \texttt{moleculecm} & Generate di-atomic molecules from bonding atoms.\\
  \hline
- \texttt{quenchedmd} & 2.0 & S & Modificaci\'on estructural usando \textit{Quenched MD}.\\
+ \texttt{pinatom} & Fix the position of a specific atom(s), and preserve the
+ displacement respect to this atom.\\
  \hline
- \texttt{randomatom} & 2.0 & S & Eliminaci\'on/Selecci\'on de \'atomos al azar.\\
+ \texttt{propertycolor} & Set the atom colors by some property.\\
  \hline
- \texttt{replicate} & 2.0 & S & Replica celda original.\\
+ \texttt{quenchedmd} & Structural quenched method.\\
  \hline
- \texttt{rotate} & 2.0 & S & Rotaci\'on de \'atomos.\\
+ \texttt{randomatom*} & Delete/Select random atoms in the cell.\\
  \hline
- \texttt{setcolor} & 2.0 & S & Setea color de los \'atomos.\\
+ \texttt{replicate} & Replicate the original cell.\\
  \hline
- \texttt{settag} & 2.0 & S & Setea tag de los \'atomos.\\
+ \texttt{rotate} & Rotate atoms.\\
  \hline
- \texttt{setvelocity} & 2.0 & S & Setea velocidad de los \'atomos.\\
+ \texttt{setcolor} & Set atom(s) color.\\
  \hline
- \texttt{shear} & 2.0 & S & Modifica la celda realizando cizalle.\\
+ \texttt{settag} & Set atom(s) tag.\\
  \hline
- \texttt{temperature} & 2.0 & S & Asignaci\'on de temperatura a grupos de \'atomos.\\
+ \texttt{setvelocity} & Set atom(s) velocity.\\
  \hline
- \texttt{tempscaling} & 2.0 & S & Escalamiento de temperatura.\\
+ \texttt{shear} & Modify the cell vectors doing a shear procedure.\\
  \hline
- \texttt{thermalneedle} & 2.0 & S & Aguja t\'ermica - obsoleto.\\
+ \texttt{temperature} & Set atom(s) temperature, using velocity scaling
+ procedure.\\
  \hline
- \texttt{undopbc} & 2.0 & S & Deshacer periodicidad en los ejes.\\
+ \texttt{tempscaling} & Scale temperature procedure.\\
+ \hline
+ \texttt{undopbc} & Undo periodical boundary conditions.\\
  \hline
  \end{tabular}
 \label{tab:modmodify}
-\caption{Tabla con los m\'odulos modificadores del sistema utilizado por {\lpmd}.}
+\caption{Table with modifiers availables in {\lpmd} 0.6.2.}
 \end{table}
 
-\section{Propiedades Instant\'aneas}
-Calculan caracteristicas propias del sistema at\'omico en estudio, son porpiedades que pueden ser calculadas en cada instante de tiempo, además de la posibilidad de ser promediadas sobre intervalos. Estas propiedades pueden ser calculadas durante la simulaci\'on o bien ser calculadas en forma independiente a posteriori.
+\section{Instantaneous Properties}
+This plugins are used to evaluate instantaneous properties over the simulation
+cell. This properties can be calculated during the simulation or after
+simulation doing a analysis with \texttt{lpmd-analyzer}. Some of these
+properties listed below, are available to realize online, if you want you can
+check this in the website \url{http://www.lpmd.cl}.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline
- \texttt{angdist} & 2.0 & S & Calcula la distribuci\'on angular de la muestra.\\
+ \texttt{angdist} & Evaluate the angular distribution function.\\
  \hline
- \texttt{atomtrail} & 1.0 & S & .\\
+ \texttt{angularmomentum} & Evaluate the angular momentum of the system.\\
  \hline
- \texttt{cna} & 2.0 & S & Realiza un \textit{Common Nieghbor Analysis} de la muestra.\\
+ \texttt{atomenergy} & Evaluathe the potential energy by atom.\\
  \hline
- \texttt{cordnumfunc} & 2.0 & S & Calcula la \textit{funci\'on n\'umero de coordinaci\'on} de la muestra.\\
+ \texttt{atomtrail} & Determine the atom trail of the atoms.\\
  \hline
- \texttt{cordnum} & 2.0 & S & Calcula el n\'umero de coordinaci\'on en forma de histograma.\\
+ \texttt{centrosymmetry} & Determine the centro-symetry parameter. Phys. Rev. B
+ 58, 11085 (1998).\\
+ \texttt{cna} & Determine the \textit{Common Neighbor Analysis} of the cell.\\
  \hline
- \texttt{densityprofile} & 2.0 & S & Genera un perfil de la densidad de la muestra.\\
+ \texttt{cordnumfunc} & Evaluate the \textit{Coordination Number function} of
+ the simulation cell.\\
  \hline
- \texttt{gdr} & 2.0 & S & Calcula la funci\'on de distribuci\'on de pares de la muestra.\\
+ \texttt{cordnum} & Evaluate the \textit{Coordination Number function} like an
+ histogram of the simulation cell.\\
  \hline
- \texttt{localpressure} & 2.0 & T & Genera un perfil de presiones locales.\\
+ \texttt{densityprofile} & Generate a density profile of the simulation cell.\\
  \hline
- \texttt{overlap} & 2.0 & S & .\\
+ \texttt{gdr} & Evaluate the \textit{Pair Distribution Function}.\\
  \hline
- \texttt{pairdistances} & 2.0 & S & Busca la distancias entre los pares de una muestra.\\
+ \texttt{localpressure} & Generate a profile of local pressures in the cell.\\
  \hline
- \texttt{rvcorr} & 2.0 & S & .\\
+ \texttt{overlap} & Locate overlap in the sample.\\
  \hline
- \texttt{sitecoord} & 2.0 & S & .\\
+ \texttt{pairdistances} & Generate a file with the pairdistances on the cell.\\
  \hline
- \texttt{tempprofile} & 2.0 & S & Perfil de temperaturas de la muestra.\\
+ \texttt{rvcorr} & Determine the velocity correlation of the atoms.\\
  \hline
- \texttt{veldist} & 2.0 & S & Dsitribuci\'on de velocidades de la muestra.\\
+ \texttt{sitecoord} & Determine the coordination number by site.\\
+ \hline
+ \texttt{tempprofile} & Generate a temperature profile in the sample.\\
+ \hline
+ \texttt{veldist} & Velocities distribution in the cell.\\
  \hline
  \end{tabular}
 \label{tab:modproper}
-\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\caption{Table with instantaneous properties availables in lpmd 0.6.2.}
 \end{table}
 
-\section{Propiedades Temporales}
-Calculan caracteristicas temporales del sistema, estas propiedades no pueden ser calculadas \textit{durante} la simulaci\'on, pero si pueden calcularse utilizando \verb|lpmd-analyzer| para los archivos de salida de las simulaciones previas.
+\section{Temporal properties}
+This plugins are utilized to evaluate temporal properties of a previous
+simulation. These properties \textbf{can not} be evaluated during a simulation,
+these have to be evaluated after the simulation have finished. These can be
+evaluated using the \verb|lpmd-analyzer| utility only.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline
- \texttt{dispvol} & 2.0 & S & Calcula el volumen desplazado de los \'atomos.\\
+ \texttt{dispvol} & Evaluate the displaced volume of the atoms.\\
  \hline
- \texttt{mobility} & 2.0 & S & Calcula la mobilidad at\'omica.\\
+ \texttt{mobility} & Evaluate the atomic mobility during the simulation.\\
  \hline
- \texttt{msd} & 2.0 & S & Calcula el desplazamiento cuadr\'atico medio.\\
+ \texttt{msd} & Evaluate the Mean square displacement.\\
  \hline
- \texttt{vacf} & 2.0 & S & Calcula la funci\'on de autocorrelaci\'on de velocidades.\\
+ \texttt{vacf} & Determine the velocity autocorrelation function.\\
  \hline
  \end{tabular}
 \label{tab:modtempproper}
-\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\caption{Temporal properties available in lpmd 0.6.2.}
 \end{table}
 
-\section{Integradores}
-Resuelven las ecuaciones de movimiento del sistema.
+\section{Integrators}
+This plugins solve the movement equiation during a molecular dynamic simulation.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{beeman} & 2.0 & S & Integrador de Beeman.\\
+ \texttt{beeman} & Integrate the equations using the beeman method.\\
  \hline
- \texttt{euler} & 2.0 & S & Integrador de euler.\\
+ \texttt{euler} & Integrate the equations using the euler method.\\
  \hline
- \texttt{hardspheres} & 1.0 & T & M\'etodo de esferas duras para \textit{mover} los \'atomos.\\
+ \texttt{hardspheres} & Hard spheres method to move the atoms.\\
  \hline
- \texttt{leapfrog} & 2.0 & S & Integrador de leapfrog.\\
+ \texttt{leapfrog} & Leap frog method for integrate the equations.\\
  \hline
- \texttt{metropolis} & 2.0 & T & M\'etodo de metropolis, usado en minimizaci\'on de estructuras.\\
+ \texttt{metropolis} & Metropolis technique, mostly used in structure
+ relaxation.\\
  \hline
- \texttt{nosehoover} & 2.0 & T & Integrador de nosehoover para ensambles NPT.\\
+ \texttt{nosehoover} & Nose-Hoover method used for NPT ensemble.\\
  \hline
- \texttt{nullintegrator} & 2.0 & S & No mueve los \'atomos.\\
+ \texttt{velocityverlet} & Integrate using the velocity-verlet method.\\
  \hline
- \texttt{velocityverlet} & 2.0 & S & Integrador de VelocityVerlet.\\
- \hline
- \texttt{verlet} & 2.0 & S & Integrador de Verlet.\\
+ \texttt{verlet} & Integrate using the verlet method.\\
  \hline
  \end{tabular}
 \label{tab:modinteg}
-\caption{Tabla con los m\'odulos generales utilizados por lpmd.}
+\caption{Integration plugins availables in lpmd 0.6.2.}
 \end{table}
 
-\section{Potenciales de Pares}
-Plugins especializados en la interacci\'on de pares que llevan a cabo los \'atomos involucrados.
+\section{Pair Potentials}
+These plugins are the specialized in the atomic-pair interaction between the
+atoms in a molecular dynamics simulation.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{10cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{buckingham} & 2.0 & S & Interacci\'on at\'omica con potencial de Buckingham.\\
+ \texttt{buckingham} & Buckingham potential.\\
  \hline
- \texttt{harmonic} & 2.0 & S & Interacci\'on at\'omica con potencial Arm\'onico.\\
+ \texttt{fastlj*} & Fast Lennard Jones Potential (tabulated). \\
  \hline
- \texttt{lennardjones} & 2.0 & S & Interacci\'on at\'omica con potencial de Lennard-Jones.\\
+ \texttt{glj*} & Generalized Lennard Jones Potential. \\
  \hline
- \texttt{morse} & 2.0 & S & Interacci\'on at\'omica con potencial de Morse.\\
+ \texttt{harmonic} & Harmonic potential.\\
  \hline
- \texttt{nullpairpotential} & 2.0 & S & Interacci\'on at\'omica nula.\\
+ \texttt{lennardjones} & Lennard-Jones typical potential.\\
  \hline
-\texttt{tabulatedpair} & 1.0 & U & Interacci\'on at\'omica leida desde una tabla de datos.\\
+ \texttt{mcy} & MCY potential.\\
+ \hline
+ \texttt{morse} & Morse potential.\\
+ \hline
+ \texttt{simplebond} & Simple bond type potential.\\
+ \hline
+ \texttt{tabulatedpair} & Potential from a data-table.\\
  \hline
  \end{tabular}
 \label{tab:modpotentials}
-\caption{Tabla con los Potenciales interat\'omicos con los que cuenta {\lpmd}.}
+\caption{Interatomic pair potential for {\lpmd} 0.6.2.}
 \end{table}
 
-\section{Potenciales Metalicos}
-Son los que determinan como interactuan los \'atomos durante la simulaci\'on.
+\section{Metallic Potentials}
+These plugins are the specialized in the atomic-pair interaction between the
+metallic atoms in a molecular dynamic simulation.
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{finnissinclair} & 2.0 & T & Interacci\'on at\'omica con potencial de Finnis-Sinclair.\\
+ \texttt{finnissinclair-ext} & Finnis-Sinclair extended potential.\\
  \hline
- \texttt{gupta} & 2.0 & T & Interacci\'on at\'omica con potencial de Gupta.\\
+ \texttt{finnissinclair} & Finnis-Sinclair potential.\\
  \hline
- \texttt{nullmetalpotential} & 2.0 & S & Interacci\'on at\'omica nula.\\
+ \texttt{gupta} & Gupta interatomic potential.\\
  \hline
- \texttt{suttonchen} & 2.0 & S & Interacci\'on at\'omica con potencial de Sutton-Chen.\\
+ \texttt{suttonchen} & Sutton-Chen interatomic potential.\\
  \hline
  \end{tabular}
 \label{tab:modmetalpotentials}
-\caption{Tabla con los Potenciales interat\'omicos con los que cuenta {\lpmd}.}
+\caption{Table with metallic potentials in {\lpmd} 0.6.2.}
 \end{table}
 
 
-\section{Visualizadores}
-Utilizados para obtener imagenes de la simulaci\'on.
+\section{Visualizers}
+These plugins are used to visualize information of the cell, different way to
+visualize can be used, for example just show in the standard output some
+specific information (average, monitor, printatoms) or more sofisticated
+visualization like 3D open-GL system (lpvisual).
 
 \begin{table}[h!]\centering
- \begin{tabular}{|l|c|c|p{10cm}|}\hline
- M\'odulo & Versi\'on & Calidad & Descripci\'on \\
+ \begin{tabular}{|l|p{13cm}|}\hline
+ Plugin & Description \\
  \hline\hline
- \texttt{average} & 2.0 & S & Visualizador de promedios de datos de simulaci\'on.\\
+ \texttt{average} & Visualize average properties from the simulation.\\
  \hline
- \texttt{lpvisual} & 2.0 & S & Visualizador de archivos de din\'amica molecular basado en openGL.\\
+ \texttt{lpvisual} & openGL visualization tool.\\
  \hline
- \texttt{monitor} & 2.0 & S & Visualizador de datos instant\'aneos de la simulaci\'on.\\
+ \texttt{monitor} & Visualize instantaneous properties from the simulation.\\
  \hline
- \texttt{printatoms} & 2.0 & S & .\\
+ \texttt{printatoms} & Print atomic info over specific atom(s).\\
  \hline
  \end{tabular}
 \label{tab:modgvisual}
@@ -311,18 +356,26 @@ Utilizados para obtener imagenes de la simulaci\'on.
 \end{table}
 
 
-
 \chapter{API - liblpmd}
 \label{ap:API}
-La \textbf{API} (Ap. Programming Interface) es una herramienta de programaci\'on que puede ser utilizada por cualquier usuario/programador que se vea beneficiado por sus caracter\'isticas.
 
-Consideramos que la mejor forma de comprender el funcionamiento de esta \textbf{API}, es directamente con c\'odigos de ejemplo que pueden escribir los desarrolladores. A continuaci\'on se muestran 3 ejemplos de utilizaci\'on de la \textbf{API}, el primero se enmarca en un ``nano-programa'' de \textbf{DM}, el segundo es la evaluaci\'on de una propiedad est\'atica de una celda del tipo \texttt{.xyz} y la \'ultima una propiedad din\'amica de una celda.
+La \textbf{API} (Ap. Programming Interface) es una herramienta de programaci\'on
+que puede ser utilizada por cualquier usuario/programador que se vea beneficiado
+por sus caracter\'isticas.
+
+
+Consideramos que la mejor forma de comprender el funcionamiento de esta
+\textbf{API}, es directamente con c\'odigos de ejemplo que pueden escribir los
+desarrolladores. A continuaci\'on se muestran 3 ejemplos de utilizaci\'on de la
+\textbf{API}, el primero se enmarca en un ``nano-programa'' de \textbf{DM}, el
+segundo es la evaluaci\'on de una propiedad est\'atica de una celda del tipo
+\texttt{.xyz} y la \'ultima una propiedad din\'amica de una celda.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Din\'amica Molecular B\'asica}
-
-A continuaci\'on un c\'odigo que utilza todas las caracter\'isticas de la \textbf{API}, para realizar din\'amica molecular.
+A continuaci\'on un c\'odigo que utilza todas las caracter\'isticas de la
+\textbf{API}, para realizar din\'amica molecular.
 
 \begin{verbatim}
  /*
@@ -390,13 +443,17 @@ Para generar el ejecutable,
 
 \control{g++ -o nanodm main.cc -llpmd -ldl -lm}
 
-y listo, tendremos entonces un ejecutable llamado \verb|nanodm| que realizar\'a una simple corrida de din\'amica molecular.
+y listo, tendremos entonces un ejecutable llamado \verb|nanodm| que realizar\'a
+una simple corrida de din\'amica molecular.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Calculo de Propiedad est\'atica}
 
-Consideremos que tenemos una celda de simulaci\'on y queremos utiliar las ventajas de la \textbf{API} para calcular una propiedad, que sabemos existe en un m\'odulo, por ejemplo \textbf{gdr}. El c\'odigo para el c\'alculo de \textbf{gdr} de la celda nos quea as\'i,
+Consideremos que tenemos una celda de simulaci\'on y queremos utiliar las
+ventajas de la \textbf{API} para calcular una propiedad, que sabemos existe en
+un m\'odulo, por ejemplo \textbf{gdr}. El c\'odigo para el c\'alculo de
+\textbf{gdr} de la celda nos quea as\'i,
 
 \begin{verbatim}
  /*
@@ -459,4 +516,6 @@ int main(int argc, char *argv[])
 }
 \end{verbatim}
 
-Esto, lo compilamos de manera similar al caso anterior, obteniendo un ejecutable para calcular una propiedad est\'atica, en este caso \verb|gdr| para la celda de simulaci\'on.
+Esto, lo compilamos de manera similar al caso anterior, obteniendo un ejecutable
+para calcular una propiedad est\'atica, en este caso \verb|gdr| para la celda de
+simulaci\'on.
