@@ -1,192 +1,207 @@
 \chapter{Plugins}
 \label{chap:modulos}
 
-En \'este cap\'itulo se dar\'a una descripci\'on general de los m\'odulos con
-los que cuenta lpmd, as\'i como tambi\'en propiedades de los mismos, no todos
-tendr\'an ejemplos, m\'as bien se pretende dar una descripci\'on de lo que es
-capaz de realizar cada m\'odulo, sin embargo puede encontrar muchos ejemplos en
-el cap\'itulo~\ref{chap:exa}.
+In thiw chapter a general description about the plugins that are availables in
+the {\lpmd} code. Some properties related to each plugin, examples and for some
+cases a theoretical analysis of teh capabilities availables for the plugin.
+More examples related to the program {\lpmd} and how to use it, are availables
+in the chapter~\ref{chap:exa}.
 
-
-A continuaci\'on veremos los m\'odulos y sus detalles dependiendo de su tipo, en
-cada una de las secciones siguientes. La intenci\'on principal de este
-cap\'itulo es tener un punto de referencia para los m\'odulos que vienen
-incorporados en {\lpmd}.
+The plugins are divided for type in the followging sections. The goal of this
+chapter is maintain a updated references about each module. Neverthless the
+more updated information, including bugs and new features are available online
+in \url{http://www.lpmd.cl}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Input/Output Plugins}
 \label{chap:modulos:entradasalida}
 
-Estos m\'odulos pueden ser cargados por \verb|input| y \verb|output|, por lo que
-los argumentos necesitan ser entregados en esta misma linea. Es decir la
-instrucci\'on ser\'a siempre de la forma:
+This plugins are used with the \verb|input| and \verb|output| options. The
+module name and all the options related to the module are set in the same line.
+The general form to use this plugins is :
 
 \control{input module=mod file=.. opc1=.. ...  opcN=...}
 \control{output module=mod file=.. opc1=.. ... opcN=...}
 
-
-en donde \verb|opcX| son las opciones de cada m\'odulo en paticular, siendo
-\verb|file| una opci\'on com\'un a la mayor\'ia de los m\'odulos de
-entrada/salida.
+\noindent
+where the \verb|opcX| are the option related to each plugins, \verb|file|
+correspond to the file to be load or writed and \verb|module| correspond to the
+name of the plugin that will be used.
 
 \subsection{dlpoly}
 
-Este plugin, pretende dar una soluci\'on eficiente a los archivos de entrada o
-salida que el usuario ya posee en alguno de los formatos del programa
-\verb|dl_poly| (ficheros \verb|HISTORY| y \verb|CONTROL|) y ahorrar el tiempo y
-trabajo que implica migrar estos archivos a otras configuraciones .
+This plugin, is used to read and write file of the type \verb|HISTORY| and
+\verb|CONTROL| related to the \verb|dl_poly| software. The options availables
+in the \verb|dlpoly| plugin are :
 
-
-Con el m\'odulo \verb|dlpoly|, se pueden cambiar los archivos de configuracion
-cristalina de \verb|dlpoly| (\verb|HISTORY| o \verb|CONFIG|) a cualquier otro
-m\'odulo y viceversa. Los argumentos utilizados por el m\'odulo \verb|dlpoly|
-son:
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuraci\'on \\
- &&de \textbf{dlpoly}\\
- level & = & Nivel del archivo (0,1,2).\\
- preiodicity & = & Especifica \textit{key} de periodicidad del \\
- &&fichero CONFIG.\\
- ftype & = & Especif\'ica el tipo de archivo, \texttt{HISTORY} o\\
- &&\texttt{CONFIG}, a ser le\'ido.\\
+ file & = & Input/Output file name.\\
+ level & = & File level (0,1,2).\\
+ preiodicity & = & Set the periodicity \textit{key}\\
+ &&of a CONFIG file.\\
+ ftype & = & Indicate the type of file, \texttt{HISTORY} or\\
+ &&\texttt{CONFIG} are valid variables.\\
 \end{tabular}
 }
+
+A example of how to use this plugin for input output could be found in,
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#dlpoly}.
 
 \subsection{lpmd}\label{subsec:lpmdformato}
 
-Es un formato propio de {\lpmd}, tiene la ventaja de que no s\'olo guarda la
-informaci\'on de las posiciones at\'omicas de las part\'iculas, sino que
-adem\'as guarda informaci\'on sobre la celda de simulaci\'on. Las posiciones, a
-diferencia de \verb|xyz|, se encuentran escaladas, por lo que cuenta con
-opciones muy simples de manejo, encarecidamente recomendamos su uso para
-trabajos serios. Adem\'as a partir de la version 0.6.1 de {\lpmd}, este plugin
-cuenta con la opcion de trabajar directamente formatos comprimidos con zlib.
-Entre las opciones principales destacan
+Is a particular format used in the {\lpmd} software. Between the advantages of
+this format is that save additional information to the atomic position. With
+this format the cell properties are stored in each configuration, and
+additional information about atomic tags can be saved too. In this particular
+format the atom position are stored in fractional coordinated. Three diferent
+levels are available, 0 save/read positions only, 1 save/read positions and
+velocity and level 2 is similar to the level 1, but this save the acceleration
+of the atoms.
+
+This plugins also can read and write in compress format \verb|zlp| that is a
+lpmd format compressed using the zlib. Between the options available with this
+plugins are :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & archivo de entrada/salida.\\
- level & = & indica el nivel del fichero, estos pueden ser \\
+ file & = & Input/Output filename.\\
+ level & = & Set the file level, the valid values are, \\
            &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
- extra & = & Informaci\'on extra en el fichero sobre los \'atomos \\
+ extra & = & Additional information about the atoms tags, \\
            &&rgb, type, etc.\\
- type & = & Especif\'ica el tipo de fichero, \texttt{lpmd}(default) o \\
+ type & = & Specify the type of file, \texttt{lpmd}(default) or \\
            &&\texttt{zlp}.\\
- blocksize & = & tamaño del \textit{block} de compresi\'on cuando es \\
-           &&del tipo \texttt{zlp}.\\ 
+ blocksize & = & Size of the compression\textit{block}, when\\
+           &&type is \texttt{zlp}.\\ 
 \end{tabular}
 }
 
-La forma com\'un de uso en lpmd es,
+A simple example of using the plugin \verb|lpmd| :
 
 \begin{itemize}
- \item \textbf{Cargando un fichero lpmd}
+ \item \textbf{Loading a lpmd file}
        \control{input module=lpmd file=archivo.lpmd}
- \item \textbf{Escribiendo la salida en un fichero lpmd con velocidades}
+ \item \textbf{Writing a lpmd file with velocities}
        \control{output module=lpmd file=salida.lpmd level=1}
 \end{itemize}
 
+More examples can be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#lpmd}.
+
 \subsection{vasp}
 
-El plugin, es utilizado para leer ficheros POSCAR de \verb|vasp| como un fichero
-de configuracion inicial, o bien para otro prop\'osito, entre las opciones del
-m\'odulo, estan:
+This plugin is used to read \verb|POSCAR| files from \verb|vasp| software. This
+type of files(\verb|POSCAR|) have information about the atomic positions and
+the cell size. However is \textbf{very important} highlight that this plugin
+need information about the atoms species in the right order, i.e. the option
+\verb|species| of this plugins have to be correctly assigned, in order to can
+have a good interpreation of the cell.
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion de \textbf{dlpoly}\\
- species & = & lista de las especies (en orden) del fichero \\
- &&POSCAR.\\
- level & = & Especif\'ica el nivel del archivo.\\
- type & = & Tipo de posiciones, direct/cartesian.\\
+ file & = & Input file name\\
+ species & = & List of all the species (oredered) of \\
+ &&the POSCAR file.\\
+ level & = & Indicate the level of the file.\\
+ type & = & Type of positions of the atoms, Direct/Cartesian.\\
 \end{tabular}
 }
+
+Examples about how to use the vasp plugin, can be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#vasp}.
 
 \subsection{xyz}
-\'Este es el m\'odulo que se utiliza para cargar/escribir archivos de
-configuraci\'on en formato \verb|xyz|, las opciones actuales de este m\'odulo
-son :
+
+The \verb|xyz| is one of the more classical format file used in different areas
+of research, in particular molecular dynamics that is our case. This plugin is
+used to read and write the \verb|xyz| filetypes. Between the current option for
+this format we have :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & archivo de entrada/salida.\\
- level & = & indica el nivel del fichero, estos pueden ser \\
+ file & = & Input/Output filename.\\
+ level & = & Set the level of the file, available values are \\
            &&0(pos),1(pos y vel) y 2(pos,vel y ace).\\
- coords & = & utilizado para ``posicionar'' una celda que \\
-           &&ha sido le\'ida, sus valores pueden ser \\
-           &&centered/uncentered.\\
- inside & = & Puede ser true/false, indica si los \'atomos que \\
-          &&est\'an fuera de una celda se deben reubicar.\\
- external & = & ignore/consider. Espec\'ifica si se deben ignorar \\
-          &&o considerar los atomos fuera de la celda.\\
+ coords & = & Used to read/write cells that are centered in the origin \\
+           &&or centered in the positive region of the coordinates axes \\
+           &&available valid values are: centered/uncentered.\\
+ inside & = & The values are true/false, Set if the atoms outside of the \\
+          &&cell must to be rellocated.\\
+ external & = & Values are ignore/consider. Indicate if you want ignore or \\
+          &&considerar the atoms that are located outside the cell.\\
 \end{tabular}
 }
 
-Muchas de estas opciones no son utilizadas en una corrida con {\lpmd}, sin
-embargo pueden ser utiles a la hora de trabajar con utilidades tales como
-\verb|lpmd-analyzer| u otras. En general la forma de utilizar el m\'odulo es,
+Many of this options are not frequently used in a {\lpmd} simulation. However
+that can be useful when you need work with utilties like lpmd-analyzer or
+similars. A general idea of how to use this plugin is :
 
 \begin{itemize}
- \item \textbf{Cargando un fichero xyz}
+ \item \textbf{Loading a xyz file}
        \control{input module=xyz file=archivo.xyz}
- \item \textbf{Escribiendo la salida en un fichero xyz con velocidades}
+ \item \textbf{Writing in a xyz file with atom velocities}
        \control{output module=xyz file=salida.xyz level=1}
 \end{itemize}
 
-
-No todas las opciones son necesarias, muchas de ellas ya tienen valores por
-defecto, vease \verb|lpmd -p xyz| para m\'as informaci\'on.
+Like in all the plugins, not all option are necessary, most of them have
+default values. More examples about this plugin could be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#xyz}.
 
 \subsection{mol2}
 
-Utilizado para lectura/escritura de fichefros de tipo \verb|mol2|, el soporte,
-al igual que el formato \verb|pdb| es b\'asico sin embargo es \'util para
-convertir nuestras configuraciones.
-
-entre las opciones t\'ipicas de \verb|mol2| encontramos :
+This plugin is used to read and write \verb|mol2| file types. Is imperative
+highligh that this support is only partial, the developers do not work more in
+this plugins have only small frequently updates. However this, could be useful
+in some particular cases. The options availables for this plugin are :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion at\'omica\\
+ file & = & File that have the atomic configurations.\\
 \end{tabular}
 }
+
+Althought it is a basic support, the write process had been show good
+performance. Examples of how to use this plugin can be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#mol2}.
 
 \subsection{pdb}
 
-Utilizado para lectura/escritura de archivos de tipo \verb|pdb|, el soporte
-actual de este tipos de ficheros es b\'asico, sin embargo puede ser \'util para
-convertir ficheros para la visualizaci\'on con otros programas.
-
-Entre las opciones t\'ipicas de \verb|pdb| est\'an :
+This plugin is used to read an write \verb|pdb| file types. In a similar way
+that for the case of the \verb|mol2| plugin, the \verb|pdb| plugin is partially
+supported. However you can use for basic read and write of \verb|pdb| files.
+Between the principal options of this plugins are :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion at\'omica\\
+ file & = & Input/Output file in pdb format.\\
 \end{tabular}
 }
+
+Examples of how to use this plugins can be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#pdb}.
 
 \subsection{rawbinary}
 
-Utilizado para lectura/escritura de archivos de tipo binario, son eficientes
-para grandes set de configuraciones, es similar al antiguo formato \texttt{lpmd
-1.0} pero escrito de forma binaria, lo que agiliza cualquier an\'alisis que se
-desee llevar a cabo.
-
-Entre las opciones t\'ipicas de \verb|rawbinary| est\'an :
+The \verb|rawbinary| plugin has been developed in order to improve the
+performance of read and write files when the size of the information is
+considerably big (orders of Gigabytes). This is used for read/write of a binary
+file (\verb|raw|). The goal of use this format is improve the performance of
+analysis and similars. Between the option associated to thisplugins are :
 
 \fb{
 \begin{tabular}{lcl}
- file & = & Archivo que contiene la configuracion at\'omica\\
- level & = & Especif\'ica el nivel del archivo.\\
+ file & = & Input/Output file name.\\
+ level & = & Level of the file.\\
 \end{tabular}
 }
 
-
-Generalmente este archivo es utilizado para analisis sobre configuraciones muy
-grandes, para reducir el tiempo de an\'alisis.
+Is important highlight that this format only store the atom positions
+(velocities and acceleration, depending of the level) and information about the
+cell. Examples of how to use this plugins can be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:in_out#rawbinary}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
