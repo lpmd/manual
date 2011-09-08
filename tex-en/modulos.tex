@@ -208,93 +208,95 @@ cell. Examples of how to use this plugins can be found in
 \section{Cell generators plugins}
 \label{chap:modulos:generadores}
 
-Estos m\'odulos pueden ser cargados por \verb|input|, por lo que los argumentos
-necesitan ser entregados en esta misma linea. Es decir la instrucci\'on ser\'a
-siempre de la forma:
+This plugins are load by the \verb|input| option. The options related to the
+plugins have to be assigned in the same line. A general idea of how to use this
+kind of plugins is :
 
 \control{input module=mod opc1=.. ...  opcN=...}
 
-
-en donde \verb|opcX| son las opciones de cada m\'odulo en paticular. Estos
-m\'odulos s\'olo \textit{generan} celdas de simulaci\'on, su intenci\'on es
-hacer celdas de distintos tipos de manera f\'acil y amigable para el usuario. A
-continuaci\'on listamos los principales generadores de celda.
+\noindent
+where \verb|opcX| are the options of each particular type of plugin. This kind
+of plugins only \textit{generate} simulation cells (do not can be used in the
+\verb|output| option). The goal of this kind of plugins is try to help to the
+users to generate easy types of structures with less work. All these kind of
+plugins will be explained detailed now.
 
 \subsection{crystal3d}
-Genera una celda cristalina tridimiensional. Este m\'odulo se utiliza en lugar
-de un fichero de entrada, para entregar las posiciones at\'omicas de la red
-cristalina, 
+This plugin is used to build 3D critaline strctures. This plugins is used
+\textit{instead} of an input file. Between the princial options allowed for
+thid plugins are :
 
 \fb{
 \begin{tabular}{lcl}
- symbol & = & S\'imbolo at\'omico de la especie.\\
- n$\alpha$ & = & $\alpha=x,y,z$ El n\'umero de replicas de la celda base.\\
- type & = & Tipo de celda, fcc, bcc, hcp, etc.\\
+ symbol & = & Atomic symbol of the atom.\\
+ n$\alpha$ & = & $\alpha=x,y,z$ Number of repetitions in each direcition.\\
+ type & = & Kind of cell, the vailables values are fcc, bcc, hcp and sc.\\
 \end{tabular}
 }
 
-
-Consideremos por ejemplo una celda c\'ubica de \textbf{Fe} con un tama\~no de 10
-\AA por cada lado.
+For example if we want to generate a cubic cell of \textbf{Fe} with a size of
+10 \AA for every axes, we will use :
 
 \begin{itemize}
- \item \textbf{Especificamos el detalle del cristal}
+ \item \textbf{Put the cell details}
        \control{cell crystal a=10 b=10 c=10 alpha=90\textbackslash beta=90
 gamma=90}
- \item \textbf{Generamos una celda  fcc dentro del cristal}       
+ \item \textbf{Generate the atoms fcc inside the cell}       
        \control{input module=crystal3d type=fcc symbol=Fe\textbackslash nx=3
 ny=3 nz=3}
 \end{itemize}
 
 
-Esto generar\'a entonces una celda cristalina \verb|fcc| con par\'ametro de red
-$10/3 = 3.33$, para comenzar la simulaci\'on.
+With this we generate a cristaline cell of the \verb|fcc| type using a network
+parameter $ a = 10/3 = 3.33$, to start our simulation.
 
 \subsection{crystal2d}
 
-A diferencia de los generadores de cristalprevios, este m\'odulo genera
-cristales simples bidimensionales, los argumentos requeridos para generar estos,
-son:
+This plugin is used to generate crystals in 2D. The options available in this
+plugin are :
 
 \fb{
 \begin{tabular}{lcl}
- symbol & = & S\'imbolo at\'omico de la especie.\\
- a & = & Longitud del vector base $\vec{a}$.\\
- b & = & Longitud del vector base $\vec{b}$.\\
- gamma & = & \'Angulo entre los vectores base.\\
- n$\alpha$ & = & $\alpha=x,y$ El inverso sobre el largo del cristal.\\
+ symbol & = & Atomic symbol of the specie.\\
+ a & = & Long of the base vector $\vec{a}$.\\
+ b & = & Long of the base vector $\vec{b}$.\\
+ gamma & = & angle between the vectors.\\
+ n$\alpha$ & = & $\alpha=x,y$ The inverse on the crystal long.\\
 \end{tabular}
 }
 
-Consideremos por ejemplo una celda triangular con atomos de Ar, donde el tamano
-del cristal es de 10 \AA.
+Using as an example, a two dimensional triangular network with Ar atoms, wehere
+the size of the crystal is 10 \AA.
 
 \begin{itemize}
- \item \textbf{Especificamos el detalle del cristal}
+ \item \textbf{Set the cell details}
        \control{cell crystal a=10 b=10 c=0 alpha=90 beta=90 gamma=90}
- \item \textbf{Generamos una estructura bidimensional dentro del cristal}
+ \item \textbf{We put the atoms inside the crystal}
        \control{input module=crystal2d a=2 b=2 symbol=Fe gamma=60\textbackslash 
         nx=2 ny=2}
 \end{itemize}
 
+With this we generate a 2D crystal. More examples could be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:cell_generators#crystal2d}.
+
 \subsection{voronoi}
-Utiliza la construcci\'on de \textbf{voronoi} para generar nanoestructuras de
-materiales, entre sus principales caracter\'isticas para la generaci\'on de
-estas nanoestructuras, est\'an :
+This plugin use the \textbf{voronoi} contruction to generate nanostructures of
+materials. The principal options avilables for this plugins are :
 
 \fb{
 \begin{tabular}{lcl}
- symbol & = & S\'imbolo at\'omico de la especie.\\
- type & = & Especif\'ica el tipo de grano cristalino, fcc, bcc, etc.\\
- a & = & Constante de red del cristal.\\
- grains & = & Cantidad de granos generados dentro de la celda.\\
+ symbol & = & Atomic symbol of the specie.\\
+ type & = & Set the cristaline grain, fcc, bcc, etc.\\
+ a & = & Network constant of the cristal.\\
+ grains & = & Number of grains inside the cell.\\
 \end{tabular}
 }
 
-Al igual que los m\'etodos generadores de celda previos, el detalle general del
-cristal es entregado con la orden \verb|cell|, y el resto es especificado por el
-m\'odulo, consideremos un ejemplo que para hacerlo m\'as vistoso utilizar\'a el
-plugin lpvisual y el \textit{quick-mode}
+Similar to the previous showed cell generators plugins, the general information
+of the cell is assigned in the \verb|cell| option. Instead, the part associated
+to the plugins is assigned in the \verb|input| section. However all this, we
+will use now a different example, using directly the command line (quick-mode)
+to generate the nanostructure. In a single terminal execute :
 
 \begin{verbatim}
  lpmd-visualizer -i voronoi:symbol=Fe,type=fcc,a=3.62,grains=6 -u lpvisual -L 
@@ -305,13 +307,16 @@ plugin lpvisual y el \textit{quick-mode}
  \centering
  \includegraphics[scale=.35]{voronoi-1.png}
  \label{fig:voronoi-1}
- \caption{Screenshoot de \texttt{lpmd-visusalizer} mostrando una celda generada
-con voronoi.}
+ \caption{Screenshoot of \texttt{lpmd}. This use lpvisual to show the cell
+generated using skewstart.}
 \end{figure}
 
-Podemos ver el resultado de la figura~\ref{fig:voronoi-1}, si esta celda
-quisieramos guardarla en un formato \verb|lpmd| incluyendo los colores
-bastar\'ia ejecutarlo con :
+If you don't want to use or do not have installed lpvisual remove the option
+\verb|-u lpvisual| from the command line and define some output to save this
+configuration, for example \verb|-o xyz:file=output.xyz|. The results of the
+quick-mode method are showed in the figure~\ref{fig:voronoi-1}. For the case
+that you want to save this cell and visualize (using lpvisual), you will need
+to execute in this way :
 
  \begin{verbatim}
  lpmd-visualizer -i voronoi:symbol=Fe,type=fcc,a=3.62,grains=6 \
@@ -319,42 +324,48 @@ bastar\'ia ejecutarlo con :
 \end{verbatim}
 
 \subsection{skewstart}
-M\'etodo creado por \textit{K. Refson} para el c\'odigo de din\'amica molecular
-\textbf{moldy}. El objetivo del m\'etodo es generar una configuraci\'on no
-perdi\'odica suficientemente regular para garantizar una separaci\'on m\'inima
-entre los \'atomos. Las opciones junto con la forma de generar una celda con
-\textit{skewstart}, se describe a continuaci\'on:
+This method was developed by \textit{K. Refson} for the molecular dynamics code
+\textbf{moldy}. The goal of this method is build a atomic configuration
+non-periodic and highly regular in order to guarantee a minimal space between
+the atoms. The options availables in this plugin are :
 
 \fb{
 \begin{tabular}{lcl}
- symbol & = & S\'imbolo at\'omico de la especie.\\
- atoms & = & Especif\'ica el n\'umero de \'atomos dentro \\
- &&de la celda.\\
+ symbol & = & Atomic symbol of the specie.\\
+ atoms & = & Set the number of atoms inside of \\
+ &&the cell.\\
 \end{tabular}
 }
 
-Al igual que los m\'etodos generadores de celda previos, el detalle general del
-cristal es entregado con la orden \verb|cell|, y el resto especificadio por el
-m\'odulo, consideremos una celda de arg\'on de 108 \'atomos con un tama\~no de
-20 \AA~ y que inicializamos las posiciones at\'omicas con el m\'etodo
-\textit{skewstart}
+As an example of how to use this plugin, consider a argon cell of 108 atoms in
+a cell of size 20 \AA~. For this :
 
 \begin{itemize}
- \item \textbf{Especificamos el detalle del cristal}
+ \item \textbf{Set the cristal details}
        \control{cell crystal a=20 b=20 c=20 alpha=90 beta=90 gamma=90}
- \item \textbf{Generamos una celda  fcc dentro del cristal}
+ \item \textbf{Build the atoms positions using skewstart method}
        \control{input module=skewstart symbol=Ar}
 \end{itemize}
+
+Other examples can be found in
+\url{http://www.lpmd.cl/Plugins/doku.php?id=plugins:cell_generators#crystal2d}.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Cell managers plugins}
 
-Estos m\'odulos son los encargados de generar las \textbf{lista inteligentes}
-para poder realizar simulaciones o c\'alculos de Din\'amica Molecular, \'estas
-listas ayudan a reducir el tiempo de c\'alculo utilizado por las simulaciones.
+This plugins are responsable to generate the \textbf{smart lists} to realize
+molecular dynamics simulation and/or analysis. This \textbf{smart lists} help
+to reduce the calculation time during a process. The scheme and extra
+information about this type of \textbf{cell-managers} could be found in the
+work of Davis et al.
 
 \subsection{linkedcell}
 
+This is the standard linkedcell list methos, is one of the more fast and more
+used method in Molecular dynamics. The improve for a large number of atoms is
+huge in comparison with different types like minimumimage.
 Utiliza el m\'etodo de listas linkeadas, \'este m\'etodo es mucho m\'as rapido
 que el m\'etodo de m\'inima imagen, y de por s\'i es el m\'as utilizado en la
 mayor\'ia de los c\'odigos de \textbf{DM}, se puede subdividir la celda a
