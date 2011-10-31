@@ -1063,22 +1063,6 @@ La forma de utilizar el plugin es:
 \end{tabular}
 }
 
-\subsection{overlap}
-
-Calcula una presion local de la celda de simulaci\'on, para eso utiliza el
-stress de los \'atomo en cada ``sub-celda'', los valores entregados,
-recomendamos graficarlos con escala de colores para poder observar fen\'omenos. 
-
-La forma de utilizar el plugin es:
-\fb{
-\begin{tabular}{lcl}
- rcut & = & Radio de corte.\\
- n$\alpha$ & = & Divisiones para cada eje ($\alpha=x,y,z$).\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
-\end{tabular}
-}
-
 \subsection{pairdistances}
 
 Calcula una presion local de la celda de simulaci\'on, para eso utiliza el
@@ -1167,12 +1151,6 @@ an\'alisis, es por ello que estos m\'odulos no deben ser cargados en un fichero
 de control para {\lpmd}. Sin embargo estas propiedades pueden calcularase a
 partir de los ficheros de salida, tales como \verb|xyz| o \verb|lpmd|,
 utilizando \verb|lpmd-analyzer|.
-\subsection{dispvol}
-Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin
-esta en etapa de mejora y documentaci\'on.
-\subsection{mobility}
-Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin
-esta en etapa de mejora y documentaci\'on.
 \subsection{msd}
 Calcula el desplazamiento cuadratico medio del sistema. Por el momento el plugin
 esta en etapa de mejora y documentaci\'on.
@@ -1204,10 +1182,6 @@ integraci\'on num\'erica de las ecuaciones.
 Las f\'ormulas para posici\'on esta dada por:
 
 $$r(t+\Delta t) = r(t) + h\times f(t,r(t))$$
-
-\subsection{hardspheres}
-Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de
-forma alternada. Las posiciones y velocidades estan dadas por:
 
 \subsection{leapfrog}
 Es un m\'etodo de integraci\'on que calcula las posiciones y velocidades de
