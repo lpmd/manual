@@ -878,37 +878,40 @@ example remove let's remove the periodicity of a configuration cell.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Instantaneous properties plugins}
-Las propiedades instant\'aneas son aquellas que se pueden evaluar en cualquier
-instante de tiempo sobre una configuraci\'on at\'omica, las que se listan a
-continuaci\'on son las que se han implementado a la fecha en {\lpmd}.
 
-Estas propiedades adem\'as de ser analizadas \textit{post-simulaci\'on} pueden
-lelvarse acabo durante la simulaci\'on misma.
+The instantaneous properties are those that are possible to evaluate at any
+time step, on a atomic structure. The listed bellow are the available in the
+last stable version of {\lpmd}.
+
+This properties can be evaluated during the simulation or like a
+post-simulation process.
 
 \subsection{angdist}
+This evaluate the angular distribution function of the atomic configurations.
+The scheme of this procedure is explained below: 
 Calcula la distribucion angular de la celda de simulaci\'on. Para determinar los
 \'angulos caracter\'isticos de una celda de simulaci\'on es necesario entender
 el esquema o preocedimiento:
 \begin{enumerate}
- \item Se selecciona un \'atomo $i$.
- \item Se busca un \'atomo $j$ que se encuentre dentro del radio de corte $r_{ij}$
- \item Se busca un \'atomo $k$ que se enceuntre dentro del radio de corte $r_{ik}$
- \item Se calcula el \'angulo  $\angle j-i-k$ y se a\~nade en la cuenta
+ \item An atom $i$ is selected.
+ \item Searching for an atom $j$ inside the cutoff $r_{ij}$.
+ \item Searching for an atom $k$ inside the cutoff $r_{ik}$.
+ \item The angle  $\angle j-i-k$ is determined and stored.
 \end{enumerate}
 
-De esta forma obtenemos una funci\'on entre 0 y 180$^\circ$ que nos muestra
-cuales son los principales angulos de ``enlace'' o ``distancia'' de los
-\'atomos. Las opciones de uso son:
+With this we are acapable to obtain a function between 0 and 180 degrees that
+show us which one are the characteristic angles between the atoms. The options
+allowed in the plugins are:
 
 \fb{
 \begin{tabular}{lcl}
- bins & = & N\'umero de intervalos entre 0 y 180 grados. \\
- atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
-&&asociados a cada una.\\
- rcut & = & Se especifican 2 especies at\'omicas y su radio\\
-&&de corte.\\
- output & = & Archivo de salida.\\
- average & = & Se promediar\'an o no los calculos.\\
+ bins & = & Number of subdivisions between 0 and 180. \\
+ atoms & = & Number of atomic species.\\
+&&related to each atomic specie :\\
+ rcut & = & Specify the atomis species and the cutoff\\
+&&associated.\\
+ output & = & A output filename.\\
+ average & = & Average or not between all the atomic configurations readed.\\
 \end{tabular}
 }
 
@@ -948,8 +951,6 @@ d corte $r_{ij}$.
 \fb{
 \begin{tabular}{lcl}
  maxn & = & N\'umero m\'aximo d vecinos para el histograma.\\
- atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
-&&asociados a cada una.\\
  rcut & = & Se especifican 2 especies at\'omicas y su radio\\
 &&de corte.\\
  output & = & Archivo de salida.\\
@@ -974,8 +975,6 @@ La forma de utilizar el m\'etodo esta dada por:
 \fb{
 \begin{tabular}{lcl}
  bins & = & N\'umero m\'aximo de intervalos entre 0 y \textbf{rcut}.\\
- atoms & = & N\'umero de especies at\'omicas y los s\'imbolos\\
-&&asociados a cada una.\\
  rcut & = & Radio de corte m\'aximo para an\'alisis.\\
  output & = & Archivo de salida.\\
  average & = & Se promediar\'an o no los calculos.\\
